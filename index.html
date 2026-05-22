@@ -149,21 +149,21 @@ tr:hover td{background:#fafaf7}
   <div id="tab-mesas" style="display:none">
     <div class="area-block">
       <div class="area-header">
-        <div class="area-name">• Comedor</div>
+        <div class="area-name">🍽️ Comedor</div>
         <div class="area-cap">45 pers. · 11 mesas</div>
       </div>
       <div class="mesas-grid" id="mesas-comedor"></div>
     </div>
     <div class="area-block">
       <div class="area-header">
-        <div class="area-name">• Patio</div>
+        <div class="area-name">🌿 Patio</div>
         <div class="area-cap">15 pers. · 3 mesas</div>
       </div>
       <div class="mesas-grid" id="mesas-patio"></div>
     </div>
     <div class="area-block">
       <div class="area-header">
-        <div class="area-name">• Cava (2do piso)</div>
+        <div class="area-name">🍷 Cava (2do piso)</div>
         <div class="area-cap">8 pers. · 1 mesa</div>
       </div>
       <div class="mesas-grid" id="mesas-cava"></div>
@@ -200,25 +200,34 @@ tr:hover td{background:#fafaf7}
 
 <script>
 const BASEROW_TOKEN = 'H8sBhz0TS1T870ghr5qVmie7CPC3MSey';
-const TABLA_ID = '981190';
+const TABLA_RESERVAS = '981190';
+const TABLA_WALKINS = '990728';
+const CAPACIDAD_TOTAL = 70;
 const WEBHOOK_CONFIRMAR = 'https://qwsd-n8n.hi49ib.easypanel.host/webhook/confirmar-reserva';
 const WEBHOOK_CANCELAR = 'https://qwsd-n8n.hi49ib.easypanel.host/webhook/cancelar-reserva';
-const CAPACIDAD_TOTAL = 70;
-
 const ESTADOS = { confirmada: 6206820, pendiente: 6206821, cancelada: 6206822 };
 
 const mesasData = {
   comedor: [
-    {num:'C1',cap:4,walkin:0},{num:'C2',cap:4,walkin:0},{num:'C3',cap:4,walkin:0},
-    {num:'C4',cap:4,walkin:0},{num:'C5',cap:4,walkin:0},{num:'C6',cap:5,walkin:0},
-    {num:'C7',cap:4,walkin:0},{num:'C8',cap:6,walkin:0},{num:'C9/10',cap:8,walkin:0},
-    {num:'C11',cap:2,walkin:0},{num:'C12',cap:2,walkin:0}
+    {num:'C1',cap:4,walkin:0,walkinId:null},
+    {num:'C2',cap:4,walkin:0,walkinId:null},
+    {num:'C3',cap:4,walkin:0,walkinId:null},
+    {num:'C4',cap:4,walkin:0,walkinId:null},
+    {num:'C5',cap:4,walkin:0,walkinId:null},
+    {num:'C6',cap:5,walkin:0,walkinId:null},
+    {num:'C7',cap:4,walkin:0,walkinId:null},
+    {num:'C8',cap:6,walkin:0,walkinId:null},
+    {num:'C9/10',cap:8,walkin:0,walkinId:null},
+    {num:'C11',cap:2,walkin:0,walkinId:null},
+    {num:'C12',cap:2,walkin:0,walkinId:null}
   ],
   patio: [
-    {num:'P1',cap:2,walkin:0},{num:'P2/3/4',cap:8,walkin:0},{num:'P5',cap:5,walkin:0}
+    {num:'P1',cap:2,walkin:0,walkinId:null},
+    {num:'P2/3/4',cap:8,walkin:0,walkinId:null},
+    {num:'P5',cap:5,walkin:0,walkinId:null}
   ],
   cava: [
-    {num:'CV1',cap:8,walkin:0}
+    {num:'CV1',cap:8,walkin:0,walkinId:null}
   ]
 };
 
@@ -241,11 +250,15 @@ function showToast(msg, color='#1a1a1a'){
 
 function getColorBarra(pct){ return pct>=70?'#1D9E75':pct>=30?'#EF9F27':'#e0e0e0' }
 
+function getHoy(){
+  return new Date().toISOString().split('T')[0];
+}
+
 async function cargarReservas(){
   try {
-    const hoy = new Date().toISOString().split('T')[0];
+    const hoy = getHoy();
     const res = await fetch(
-      `https://api.baserow.io/api/database/rows/table/${TABLA_ID}/?user_field_names=true&filter__field_8586138__date_equals=${hoy}`,
+      `https://api.baserow.io/api/database/rows/table/${TABLA_RESERVAS}/?user_field_names=true&filter__field_8586138__date_equals=${hoy}`,
       { headers: { Authorization: `Token ${BASEROW_TOKEN}` } }
     );
     const data = await res.json();
@@ -258,6 +271,28 @@ async function cargarReservas(){
   }
 }
 
+async function cargarWalkins(){
+  try {
+    const hoy = getHoy();
+    const res = await fetch(
+      `https://api.baserow.io/api/database/rows/table/${TABLA_WALKINS}/?user_field_names=true&filter__field_8672782__date_equals=${hoy}&filter__field_8672820__boolean=true`,
+      { headers: { Authorization: `Token ${BASEROW_TOKEN}` } }
+    );
+    const data = await res.json();
+    const walkins = data.results || [];
+    const allMesas = [...mesasData.comedor,...mesasData.patio,...mesasData.cava];
+    allMesas.forEach(m=>{ m.walkin=0; m.walkinId=null; });
+    walkins.forEach(w=>{
+      const mesa = allMesas.find(m=>m.num===w['Mesa']);
+      if(mesa){ mesa.walkin=w['Personas']||0; mesa.walkinId=w.id; }
+    });
+    renderMesas();
+    renderMetrics();
+  } catch(e) {
+    console.error('Error cargando walkins', e);
+  }
+}
+
 function getEstadoNombre(r){
   const v = r['Estado'];
   if(!v) return 'pendiente';
@@ -267,9 +302,9 @@ function getEstadoNombre(r){
 
 function renderTabla(){
   const tb = document.getElementById('tabla-body');
-  let lista = filtroEstado === 'todas' ? reservas : reservas.filter(r => getEstadoNombre(r) === filtroEstado.toLowerCase());
+  let lista = filtroEstado==='todas' ? reservas : reservas.filter(r=>getEstadoNombre(r)===filtroEstado.toLowerCase());
   if(!lista.length){ tb.innerHTML='<tr><td colspan="7" class="empty">Sin reservas</td></tr>'; return; }
-  tb.innerHTML = lista.map(r => {
+  tb.innerHTML = lista.map(r=>{
     const estado = getEstadoNombre(r);
     const fecha = r['Fecha'] ? r['Fecha'].split('T')[0] : '—';
     return `<tr>
@@ -292,9 +327,9 @@ async function accionReserva(id, accion, telefono){
   const estadoId = accion==='confirmar' ? ESTADOS.confirmada : ESTADOS.cancelada;
   const webhook = accion==='confirmar' ? WEBHOOK_CONFIRMAR : WEBHOOK_CANCELAR;
   try {
-    await fetch(`https://api.baserow.io/api/database/rows/table/${TABLA_ID}/${id}/?user_field_names=false`,{
-      method: 'PATCH',
-      headers: { Authorization: `Token ${BASEROW_TOKEN}`, 'Content-Type': 'application/json' },
+    await fetch(`https://api.baserow.io/api/database/rows/table/${TABLA_RESERVAS}/${id}/?user_field_names=false`,{
+      method:'PATCH',
+      headers:{ Authorization:`Token ${BASEROW_TOKEN}`,'Content-Type':'application/json' },
       body: JSON.stringify({ field_8586169: estadoId })
     });
     await fetch(`${webhook}?reserva_id=${id}&telefono=${telefono}`);
@@ -366,17 +401,55 @@ function abrirModal(area, mesaNum){
   }
 }
 
-function ocuparMesa(area, mesaNum){
+async function ocuparMesa(area, mesaNum){
   const input = document.getElementById('personas-input');
   const personas = parseInt(input.value);
   if(!personas||personas<1){ showToast('Ingresá el número de personas','#e65100'); return; }
   const mesa = mesasData[area].find(m=>m.num===mesaNum);
-  if(mesa){ mesa.walkin=personas; renderMesas(); renderMetrics(); cerrarModal(); showToast('Mesa ocupada'); }
+  if(!mesa) return;
+  try {
+    const hoy = getHoy();
+    const res = await fetch(`https://api.baserow.io/api/database/rows/table/${TABLA_WALKINS}/?user_field_names=false`,{
+      method:'POST',
+      headers:{ Authorization:`Token ${BASEROW_TOKEN}`,'Content-Type':'application/json' },
+      body: JSON.stringify({
+        field_8672780: mesaNum,
+        field_8672781: personas,
+        field_8672782: hoy,
+        field_8672787: area,
+        field_8672820: true
+      })
+    });
+    const data = await res.json();
+    mesa.walkin = personas;
+    mesa.walkinId = data.id;
+    renderMesas();
+    renderMetrics();
+    cerrarModal();
+    showToast('Mesa ocupada');
+  } catch(e) {
+    showToast('Error al ocupar mesa','#c62828');
+  }
 }
 
-function liberarMesa(area, mesaNum){
+async function liberarMesa(area, mesaNum){
   const mesa = mesasData[area].find(m=>m.num===mesaNum);
-  if(mesa){ mesa.walkin=0; renderMesas(); renderMetrics(); cerrarModal(); showToast('Mesa liberada'); }
+  if(!mesa||!mesa.walkinId) return;
+  try {
+    await fetch(`https://api.baserow.io/api/database/rows/table/${TABLA_WALKINS}/${mesa.walkinId}/?user_field_names=false`,{
+      method:'PATCH',
+      headers:{ Authorization:`Token ${BASEROW_TOKEN}`,'Content-Type':'application/json' },
+      body: JSON.stringify({ field_8672820: false })
+    });
+    mesa.walkin = 0;
+    mesa.walkinId = null;
+    renderMesas();
+    renderMetrics();
+    cerrarModal();
+    showToast('Mesa liberada');
+  } catch(e) {
+    showToast('Error al liberar mesa','#c62828');
+  }
 }
 
 function cerrarModal(){ document.getElementById('modal-container').innerHTML=''; }
@@ -416,19 +489,16 @@ function showTab(tab, btn){
 }
 
 function setFecha(){
-  const d = new Date(new Date().toLocaleString('en-US', { timeZone: 'America/Bogota' }));
+  const d = new Date();
   const dias = ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
   const meses = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
-  const horas = d.getHours().toString().padStart(2,'0');
-  const minutos = d.getMinutes().toString().padStart(2,'0');
-  document.getElementById('fecha-hoy').textContent = `${dias[d.getDay()]} ${d.getDate()} de ${meses[d.getMonth()]}, ${d.getFullYear()} · ${horas}:${minutos}`;
+  document.getElementById('fecha-hoy').textContent = `${dias[d.getDay()]} ${d.getDate()} de ${meses[d.getMonth()]}, ${d.getFullYear()}`;
 }
 
 setFecha();
-setInterval(setFecha, 1000);
-renderMesas();
 cargarReservas();
-setInterval(cargarReservas, 30000);
+cargarWalkins();
+setInterval(()=>{ cargarReservas(); cargarWalkins(); }, 30000);
 </script>
 </body>
 </html>
