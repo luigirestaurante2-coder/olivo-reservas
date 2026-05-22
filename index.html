@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OLIVO · Panel de Reservas</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f5f5f0;color:#1a1a1a;font-size:14px}
+.header{display:flex;align-items:center;justify-content:space-between;padding:1rem 1.5rem;background:#fff;border-bottom:1px solid #e5e5e0;position:sticky;top:0;z-index:10}
+.logo{font-size:17px;font-weight:600;color:#1a1a1a}
+.logo span{color:#1D9E75}
+.date{font-size:13px;color:#666;background:#f5f5f0;padding:5px 12px;border-radius:8px}
+.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;padding:1.25rem 1.5rem}
+.metric{background:#fff;border-radius:12px;padding:1rem;border:1px solid #e5e5e0}
+.metric-label{font-size:12px;color:#888;margin-bottom:6px}
+.metric-value{font-size:26px;font-weight:600}
+.metric-sub{font-size:11px;color:#aaa;margin-top:2px}
+.section{padding:0 1.5rem 1.5rem}
+.tab-bar{display:flex;border-bottom:1px solid #e5e5e0;margin-bottom:1.25rem}
+.tab{font-size:13px;padding:8px 16px;cursor:pointer;color:#888;border:none;background:none;border-bottom:2px solid transparent}
+.tab.active{color:#0F6E56;border-bottom:2px solid #1D9E75;font-weight:500}
+.filter-bar{display:flex;gap:8px;margin-bottom:1rem;flex-wrap:wrap}
+.filter-btn{font-size:12px;padding:5px 12px;border-radius:8px;border:1px solid #e5e5e0;background:#f5f5f0;color:#666;cursor:pointer}
+.filter-btn.active{border-color:#1D9E75;color:#0F6E56;background:#e8f7f2}
+.tabla-wrap{border:1px solid #e5e5e0;border-radius:12px;overflow:hidden;background:#fff}
+table{width:100%;border-collapse:collapse;font-size:13px}
+thead{background:#fafafa}
+th{padding:10px 14px;text-align:left;font-weight:500;color:#888;border-bottom:1px solid #e5e5e0}
+td{padding:10px 14px;border-bottom:1px solid #f0f0eb;vertical-align:middle}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:#fafaf7}
+.badge{display:inline-block;font-size:11px;padding:3px 10px;border-radius:6px;font-weight:500}
+.badge-pendiente{background:#fff3e0;color:#e65100}
+.badge-confirmada{background:#e8f5e9;color:#2e7d32}
+.badge-cancelada{background:#ffebee;color:#c62828}
+.btn-confirm{font-size:12px;padding:5px 10px;border-radius:8px;border:1px solid #1D9E75;color:#0F6E56;background:transparent;cursor:pointer;margin-right:4px}
+.btn-confirm:hover{background:#e8f7f2}
+.btn-cancel{font-size:12px;padding:5px 10px;border-radius:8px;border:1px solid #e53935;color:#c62828;background:transparent;cursor:pointer}
+.btn-cancel:hover{background:#ffebee}
+.area-block{background:#fff;border:1px solid #e5e5e0;border-radius:12px;padding:1rem;margin-bottom:12px}
+.area-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.area-name{font-size:14px;font-weight:600}
+.area-cap{font-size:12px;color:#888;background:#f5f5f0;padding:3px 10px;border-radius:6px}
+.mesas-grid{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:8px}
+.mesa{border-radius:10px;border:1px solid #e5e5e0;padding:10px 8px;text-align:center;background:#fff;min-width:76px;cursor:pointer;transition:all 0.15s}
+.mesa:hover{transform:translateY(-1px);box-shadow:0 2px 8px rgba(0,0,0,0.08)}
+.mesa-num{font-size:12px;font-weight:600;color:#555}
+.mesa-cap{font-size:11px;color:#aaa;margin-top:2px}
+.mesa-estado{font-size:10px;margin-top:4px;color:#aaa}
+.mesa.reservada{background:#e8f5e9;border-color:#81c784}
+.mesa.reservada .mesa-num{color:#2e7d32}
+.mesa.reservada .mesa-estado{color:#388e3c}
+.mesa.pendiente-m{background:#fff3e0;border-color:#ffb74d}
+.mesa.pendiente-m .mesa-num{color:#e65100}
+.mesa.walk-in{background:#e3f2fd;border-color:#64b5f6}
+.mesa.walk-in .mesa-num{color:#1565c0}
+.mesa.walk-in .mesa-estado{color:#1976d2}
+.leyenda{display:flex;gap:12px;font-size:12px;color:#888;flex-wrap:wrap;margin-top:8px}
+.leyenda span{display:flex;align-items:center;gap:4px}
+.dot{width:10px;height:10px;border-radius:3px;display:inline-block}
+.horas-wrap{background:#fff;border:1px solid #e5e5e0;border-radius:12px;padding:1rem;margin-bottom:12px}
+.horas{display:flex;gap:6px;align-items:flex-end;height:90px}
+.hora-col{display:flex;flex-direction:column;align-items:center;gap:4px;flex:1}
+.hora-barra{width:100%;border-radius:4px 4px 0 0}
+.hora-label{font-size:11px;color:#aaa}
+.modal-bg{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.4);display:flex;align-items:center;justify-content:center;z-index:100}
+.modal{background:#fff;border-radius:16px;padding:1.5rem;width:300px;box-shadow:0 8px 32px rgba(0,0,0,0.15)}
+.modal-title{font-size:16px;font-weight:600;margin-bottom:4px}
+.modal-sub{font-size:13px;color:#888;margin-bottom:1rem}
+.modal input{width:100%;padding:10px 12px;border-radius:8px;border:1px solid #e5e5e0;font-size:14px;margin-bottom:1rem;outline:none}
+.modal input:focus{border-color:#1D9E75}
+.modal-btns{display:flex;gap:8px}
+.btn-ocupar{flex:1;padding:10px;border-radius:8px;border:1px solid #1D9E75;color:#0F6E56;background:#e8f7f2;cursor:pointer;font-size:13px;font-weight:500}
+.btn-liberar{flex:1;padding:10px;border-radius:8px;border:1px solid #e53935;color:#c62828;background:#ffebee;cursor:pointer;font-size:13px;font-weight:500}
+.btn-cerrar{padding:10px 16px;border-radius:8px;border:1px solid #e5e5e0;color:#888;background:#fff;cursor:pointer;font-size:13px}
+.loading{text-align:center;padding:2rem;color:#888;font-size:13px}
+.empty{text-align:center;padding:2rem;color:#aaa;font-size:13px}
+.toast{position:fixed;bottom:1.5rem;right:1.5rem;background:#1a1a1a;color:#fff;padding:10px 16px;border-radius:10px;font-size:13px;z-index:200;opacity:0;transition:opacity 0.3s}
+.toast.show{opacity:1}
+@media(max-width:600px){
+  .metrics{grid-template-columns:repeat(2,1fr)}
+  th:nth-child(4),td:nth-child(4){display:none}
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="logo">OLIVO <span>·</span> Panel de Reservas</div>
+  <div class="date" id="fecha-hoy"></div>
+</div>
+
+<div class="metrics">
+  <div class="metric">
+    <div class="metric-label">Ocupación total</div>
+    <div class="metric-value" id="m-ocup">—</div>
+    <div class="metric-sub" id="m-ocup-sub">cargando...</div>
+  </div>
+  <div class="metric">
+    <div class="metric-label">Con reserva</div>
+    <div class="metric-value" id="m-conf" style="color:#2e7d32">—</div>
+    <div class="metric-sub">confirmadas hoy</div>
+  </div>
+  <div class="metric">
+    <div class="metric-label">Pendientes</div>
+    <div class="metric-value" id="m-pend" style="color:#e65100">—</div>
+    <div class="metric-sub">por confirmar</div>
+  </div>
+  <div class="metric">
+    <div class="metric-label">Disponibilidad</div>
+    <div class="metric-value" id="m-disp">—</div>
+    <div class="metric-sub">personas disponibles</div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="tab-bar">
+    <button class="tab active" onclick="showTab('solicitudes',this)">Solicitudes</button>
+    <button class="tab" onclick="showTab('mesas',this)">Mesas por área</button>
+    <button class="tab" onclick="showTab('ocupacion',this)">Ocupación por hora</button>
+  </div>
+
+  <div id="tab-solicitudes">
+    <div class="filter-bar">
+      <button class="filter-btn active" onclick="filtrar('todas',this)">Todas</button>
+      <button class="filter-btn" onclick="filtrar('Pendiente',this)">Pendientes</button>
+      <button class="filter-btn" onclick="filtrar('Confirmada',this)">Confirmadas</button>
+      <button class="filter-btn" onclick="filtrar('Cancelada',this)">Canceladas</button>
+    </div>
+    <div class="tabla-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Fecha</th>
+            <th>Hora</th>
+            <th>Pers.</th>
+            <th>Teléfono</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody id="tabla-body"><tr><td colspan="7" class="loading">Cargando reservas...</td></tr></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div id="tab-mesas" style="display:none">
+    <div class="area-block">
+      <div class="area-header">
+        <div class="area-name">• Comedor</div>
+        <div class="area-cap">45 pers. · 11 mesas</div>
+      </div>
+      <div class="mesas-grid" id="mesas-comedor"></div>
+    </div>
+    <div class="area-block">
+      <div class="area-header">
+        <div class="area-name">• Patio</div>
+        <div class="area-cap">15 pers. · 3 mesas</div>
+      </div>
+      <div class="mesas-grid" id="mesas-patio"></div>
+    </div>
+    <div class="area-block">
+      <div class="area-header">
+        <div class="area-name">• Cava (2do piso)</div>
+        <div class="area-cap">8 pers. · 1 mesa</div>
+      </div>
+      <div class="mesas-grid" id="mesas-cava"></div>
+    </div>
+    <div class="leyenda">
+      <span><span class="dot" style="background:#81c784;border:1px solid #4caf50"></span>Con reserva</span>
+      <span><span class="dot" style="background:#64b5f6;border:1px solid #2196f3"></span>Walk-in</span>
+      <span><span class="dot" style="background:#ffb74d;border:1px solid #ff9800"></span>Pendiente</span>
+      <span><span class="dot" style="background:#e5e5e0;border:1px solid #ccc"></span>Libre</span>
+    </div>
+    <p style="font-size:12px;color:#aaa;margin-top:12px">👆 Tocá una mesa libre para marcarla como walk-in, o una walk-in para liberarla.</p>
+  </div>
+
+  <div id="tab-ocupacion" style="display:none">
+    <div class="filter-bar">
+      <button class="filter-btn active" onclick="filtrarArea('todas',this)">Todas las áreas</button>
+      <button class="filter-btn" onclick="filtrarArea('comedor',this)">Comedor</button>
+      <button class="filter-btn" onclick="filtrarArea('patio',this)">Patio</button>
+      <button class="filter-btn" onclick="filtrarArea('cava',this)">Cava</button>
+    </div>
+    <div class="horas-wrap">
+      <div class="horas" id="horas-chart"></div>
+    </div>
+    <div class="leyenda">
+      <span><span class="dot" style="background:#1D9E75"></span>Alta (+70%)</span>
+      <span><span class="dot" style="background:#EF9F27"></span>Media (30-70%)</span>
+      <span><span class="dot" style="background:#e0e0e0"></span>Libre</span>
+    </div>
+  </div>
+</div>
+
+<div id="modal-container"></div>
+<div class="toast" id="toast"></div>
+
+<script>
+const BASEROW_TOKEN = 'H8sBhz0TS1T870ghr5qVmie7CPC3MSey';
+const TABLA_ID = '981190';
+const WEBHOOK_CONFIRMAR = 'https://qwsd-n8n.hi49ib.easypanel.host/webhook/confirmar-reserva';
+const WEBHOOK_CANCELAR = 'https://qwsd-n8n.hi49ib.easypanel.host/webhook/cancelar-reserva';
+const CAPACIDAD_TOTAL = 70;
+
+const ESTADOS = { confirmada: 6206820, pendiente: 6206821, cancelada: 6206822 };
+
+const mesasData = {
+  comedor: [
+    {num:'C1',cap:4,walkin:0},{num:'C2',cap:4,walkin:0},{num:'C3',cap:4,walkin:0},
+    {num:'C4',cap:4,walkin:0},{num:'C5',cap:4,walkin:0},{num:'C6',cap:5,walkin:0},
+    {num:'C7',cap:4,walkin:0},{num:'C8',cap:6,walkin:0},{num:'C9/10',cap:8,walkin:0},
+    {num:'C11',cap:2,walkin:0},{num:'C12',cap:2,walkin:0}
+  ],
+  patio: [
+    {num:'P1',cap:2,walkin:0},{num:'P2/3/4',cap:8,walkin:0},{num:'P5',cap:5,walkin:0}
+  ],
+  cava: [
+    {num:'CV1',cap:8,walkin:0}
+  ]
+};
+
+const horasData = [
+  {h:'12:00'},{h:'12:30'},{h:'13:00'},{h:'13:30'},{h:'14:00'},
+  {h:'19:00'},{h:'19:30'},{h:'20:00'},{h:'20:30'}
+];
+
+let reservas = [];
+let filtroEstado = 'todas';
+let filtroAreaOcup = 'todas';
+
+function showToast(msg, color='#1a1a1a'){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.style.background = color;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), 3000);
+}
+
+function getColorBarra(pct){ return pct>=70?'#1D9E75':pct>=30?'#EF9F27':'#e0e0e0' }
+
+async function cargarReservas(){
+  try {
+    const hoy = new Date().toISOString().split('T')[0];
+    const res = await fetch(
+      `https://api.baserow.io/api/database/rows/table/${TABLA_ID}/?user_field_names=true&filter__field_8586138__date_equals=${hoy}`,
+      { headers: { Authorization: `Token ${BASEROW_TOKEN}` } }
+    );
+    const data = await res.json();
+    reservas = data.results || [];
+    renderTabla();
+    renderMetrics();
+    renderHoras();
+  } catch(e) {
+    document.getElementById('tabla-body').innerHTML = '<tr><td colspan="7" class="empty">Error al cargar reservas</td></tr>';
+  }
+}
+
+function getEstadoNombre(r){
+  const v = r['Estado'];
+  if(!v) return 'pendiente';
+  const val = typeof v === 'object' ? v.value : v;
+  return (val||'').toLowerCase();
+}
+
+function renderTabla(){
+  const tb = document.getElementById('tabla-body');
+  let lista = filtroEstado === 'todas' ? reservas : reservas.filter(r => getEstadoNombre(r) === filtroEstado.toLowerCase());
+  if(!lista.length){ tb.innerHTML='<tr><td colspan="7" class="empty">Sin reservas</td></tr>'; return; }
+  tb.innerHTML = lista.map(r => {
+    const estado = getEstadoNombre(r);
+    const fecha = r['Fecha'] ? r['Fecha'].split('T')[0] : '—';
+    return `<tr>
+      <td style="font-weight:500">${r['Nombre']||'—'}</td>
+      <td>${fecha}</td>
+      <td>${r['Hora']||'—'}</td>
+      <td>${r['Personas']||'—'}</td>
+      <td style="font-size:12px;color:#888">${r['Teléfono']||'—'}</td>
+      <td><span class="badge badge-${estado}">${estado}</span></td>
+      <td>${estado==='pendiente'?`
+        <button class="btn-confirm" onclick="accionReserva(${r.id},'confirmar','${r['Teléfono']}')">✓ Confirmar</button>
+        <button class="btn-cancel" onclick="accionReserva(${r.id},'cancelar','${r['Teléfono']}')">✗ Cancelar</button>
+      `:`<span style="font-size:12px;color:#aaa">${estado==='confirmada'?'Confirmada':'Cancelada'}</span>`}
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+async function accionReserva(id, accion, telefono){
+  const estadoId = accion==='confirmar' ? ESTADOS.confirmada : ESTADOS.cancelada;
+  const webhook = accion==='confirmar' ? WEBHOOK_CONFIRMAR : WEBHOOK_CANCELAR;
+  try {
+    await fetch(`https://api.baserow.io/api/database/rows/table/${TABLA_ID}/${id}/?user_field_names=false`,{
+      method: 'PATCH',
+      headers: { Authorization: `Token ${BASEROW_TOKEN}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ field_8586169: estadoId })
+    });
+    await fetch(`${webhook}?reserva_id=${id}&telefono=${telefono}`);
+    showToast(accion==='confirmar'?'Reserva confirmada y cliente notificado':'Reserva cancelada y cliente notificado', accion==='confirmar'?'#1D9E75':'#c62828');
+    await cargarReservas();
+  } catch(e) {
+    showToast('Error al procesar la acción','#c62828');
+  }
+}
+
+function filtrar(estado, btn){
+  filtroEstado = estado;
+  document.querySelectorAll('#tab-solicitudes .filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderTabla();
+}
+
+function renderMetrics(){
+  const conf = reservas.filter(r=>getEstadoNombre(r)==='confirmada').length;
+  const pend = reservas.filter(r=>getEstadoNombre(r)==='pendiente').length;
+  const persReserva = reservas.filter(r=>getEstadoNombre(r)==='confirmada').reduce((a,r)=>a+(parseInt(r['Personas'])||0),0);
+  const allMesas = [...mesasData.comedor,...mesasData.patio,...mesasData.cava];
+  const persWalkin = allMesas.reduce((a,m)=>a+m.walkin,0);
+  const total = persReserva + persWalkin;
+  const pct = Math.round(total/CAPACIDAD_TOTAL*100);
+  document.getElementById('m-ocup').textContent = pct+'%';
+  document.getElementById('m-ocup-sub').textContent = total+' de '+CAPACIDAD_TOTAL+' personas';
+  document.getElementById('m-conf').textContent = conf;
+  document.getElementById('m-pend').textContent = pend;
+  document.getElementById('m-disp').textContent = Math.max(0, CAPACIDAD_TOTAL-total);
+}
+
+function renderMesas(){
+  Object.keys(mesasData).forEach(area=>{
+    const g = document.getElementById('mesas-'+area);
+    g.innerHTML = mesasData[area].map(m=>{
+      const cls = m.walkin>0?'walk-in':'';
+      const label = m.walkin>0?m.walkin+' walk-in':'Libre';
+      return `<div class="mesa ${cls}" onclick="abrirModal('${area}','${m.num}')">
+        <div class="mesa-num">${m.num}</div>
+        <div class="mesa-cap">${m.cap} pers.</div>
+        <div class="mesa-estado">${label}</div>
+      </div>`;
+    }).join('');
+  });
+}
+
+function abrirModal(area, mesaNum){
+  const mesa = mesasData[area].find(m=>m.num===mesaNum);
+  if(!mesa) return;
+  const mc = document.getElementById('modal-container');
+  if(mesa.walkin>0){
+    mc.innerHTML=`<div class="modal-bg" onclick="cerrarModal()"><div class="modal" onclick="event.stopPropagation()">
+      <div class="modal-title">Mesa ${mesaNum}</div>
+      <div class="modal-sub">${mesa.walkin} personas sin reserva.</div>
+      <div class="modal-btns">
+        <button class="btn-liberar" onclick="liberarMesa('${area}','${mesaNum}')">Liberar mesa</button>
+        <button class="btn-cerrar" onclick="cerrarModal()">Cancelar</button>
+      </div></div></div>`;
+  } else {
+    mc.innerHTML=`<div class="modal-bg" onclick="cerrarModal()"><div class="modal" onclick="event.stopPropagation()">
+      <div class="modal-title">Ocupar mesa ${mesaNum}</div>
+      <div class="modal-sub">Capacidad: ${mesa.cap} personas.</div>
+      <input type="number" id="personas-input" min="1" max="${mesa.cap}" placeholder="Número de personas">
+      <div class="modal-btns">
+        <button class="btn-ocupar" onclick="ocuparMesa('${area}','${mesaNum}')">Ocupar</button>
+        <button class="btn-cerrar" onclick="cerrarModal()">Cancelar</button>
+      </div></div></div>`;
+  }
+}
+
+function ocuparMesa(area, mesaNum){
+  const input = document.getElementById('personas-input');
+  const personas = parseInt(input.value);
+  if(!personas||personas<1){ showToast('Ingresá el número de personas','#e65100'); return; }
+  const mesa = mesasData[area].find(m=>m.num===mesaNum);
+  if(mesa){ mesa.walkin=personas; renderMesas(); renderMetrics(); cerrarModal(); showToast('Mesa ocupada'); }
+}
+
+function liberarMesa(area, mesaNum){
+  const mesa = mesasData[area].find(m=>m.num===mesaNum);
+  if(mesa){ mesa.walkin=0; renderMesas(); renderMetrics(); cerrarModal(); showToast('Mesa liberada'); }
+}
+
+function cerrarModal(){ document.getElementById('modal-container').innerHTML=''; }
+
+function renderHoras(){
+  const c = document.getElementById('horas-chart');
+  const porHora = {};
+  horasData.forEach(h=>{ porHora[h.h]=0; });
+  reservas.filter(r=>getEstadoNombre(r)==='confirmada').forEach(r=>{
+    const hora = (r['Hora']||'').trim();
+    const clave = Object.keys(porHora).find(h=>hora.startsWith(h));
+    if(clave) porHora[clave]+=(parseInt(r['Personas'])||0);
+  });
+  c.innerHTML = horasData.map(h=>{
+    const personas = porHora[h.h]||0;
+    const pct = Math.round(personas/CAPACIDAD_TOTAL*100);
+    return `<div class="hora-col">
+      <div class="hora-barra" style="height:${Math.max(8,Math.round(pct*0.8))}px;background:${getColorBarra(pct)}"></div>
+      <div class="hora-label">${h.h}</div>
+    </div>`;
+  }).join('');
+}
+
+function filtrarArea(area, btn){
+  filtroAreaOcup = area;
+  document.querySelectorAll('#tab-ocupacion .filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderHoras();
+}
+
+function showTab(tab, btn){
+  ['solicitudes','mesas','ocupacion'].forEach(t=>{
+    document.getElementById('tab-'+t).style.display=t===tab?'block':'none';
+  });
+  document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+function setFecha(){
+  const d = new Date(new Date().toLocaleString('en-US', { timeZone: 'America/Bogota' }));
+  const dias = ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
+  const meses = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+  const horas = d.getHours().toString().padStart(2,'0');
+  const minutos = d.getMinutes().toString().padStart(2,'0');
+  document.getElementById('fecha-hoy').textContent = `${dias[d.getDay()]} ${d.getDate()} de ${meses[d.getMonth()]}, ${d.getFullYear()} · ${horas}:${minutos}`;
+}
+
+setFecha();
+setInterval(setFecha, 1000);
+renderMesas();
+cargarReservas();
+setInterval(cargarReservas, 30000);
+</script>
+</body>
+</html>
