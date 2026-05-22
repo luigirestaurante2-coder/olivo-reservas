@@ -275,7 +275,7 @@ async function cargarWalkins(){
   try {
     const hoy = getHoy();
     const res = await fetch(
-      `https://api.baserow.io/api/database/rows/table/${TABLA_WALKINS}/?user_field_names=true&filter__field_8672782__date_equals=${hoy}&ld_8672820__equal=true`,
+      `https://api.baserow.io/api/database/rows/table/${TABLA_WALKINS}/?user_field_names=true&filter__field_8672782__date_equals=${hoy}&ld_8672820__equal=1`,
       { headers: { Authorization: `Token ${BASEROW_TOKEN}` } }
     );
     const data = await res.json();
