@@ -192,7 +192,7 @@ function getHoy(){return new Date().toISOString().split('T')[0]}
 async function cargarReservas(){
   try{
     const hoy=getHoy();
-    const res=await fetch(`https://api.baserow.io/api/database/rows/table/${TABLA_RESERVAS}/?user_field_names=true&filter__field_8586138__date_equals=${hoy}`,
+    const res=await fetch(`https://api.baserow.io/api/database/rows/table/${TABLA_RESERVAS}/?user_field_names=true&filter__field_8586138__equal=${hoy}`,
       {headers:{Authorization:`Token ${BASEROW_TOKEN}`}});
     const data=await res.json();
     reservas=data.results||[];
@@ -205,7 +205,7 @@ async function cargarReservas(){
 async function cargarWalkins(){
   try{
     const hoy=getHoy();
-    const res=await fetch(`https://api.baserow.io/api/database/rows/table/${TABLA_WALKINS}/?user_field_names=true&filter__field_8672782__date_equals=${hoy}`,
+    const res=await fetch(`https://api.baserow.io/api/database/rows/table/${TABLA_WALKINS}/?user_field_names=true&filter__field_8672782__equal=${hoy}`,
       {headers:{Authorization:`Token ${BASEROW_TOKEN}`}});
     const data=await res.json();
     const walkins=(data.results||[]).filter(w=>w['Activo']===true);
