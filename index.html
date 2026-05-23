@@ -117,15 +117,15 @@ tr:hover td{background:#fafaf7}
   </div>
   <div id="tab-mesas" style="display:none">
     <div class="area-block">
-      <div class="area-header"><div class="area-name">🍽️ Comedor</div><div class="area-cap">45 pers. · 11 mesas</div></div>
+      <div class="area-header"><div class="area-name">Comedor</div><div class="area-cap">45 pers. · 11 mesas</div></div>
       <div class="mesas-grid" id="mesas-comedor"></div>
     </div>
     <div class="area-block">
-      <div class="area-header"><div class="area-name">🌿 Patio</div><div class="area-cap">15 pers. · 3 mesas</div></div>
+      <div class="area-header"><div class="area-name">Patio</div><div class="area-cap">15 pers. · 3 mesas</div></div>
       <div class="mesas-grid" id="mesas-patio"></div>
     </div>
     <div class="area-block">
-      <div class="area-header"><div class="area-name">🍷 Cava (2do piso)</div><div class="area-cap">8 pers. · 1 mesa</div></div>
+      <div class="area-header"><div class="area-name">Cava (2do piso)</div><div class="area-cap">8 pers. · 1 mesa</div></div>
       <div class="mesas-grid" id="mesas-cava"></div>
     </div>
     <div class="leyenda">
@@ -134,11 +134,11 @@ tr:hover td{background:#fafaf7}
       <span><span class="dot" style="background:#ffb74d;border:1px solid #ff9800"></span>Pendiente</span>
       <span><span class="dot" style="background:#e5e5e0;border:1px solid #ccc"></span>Libre</span>
     </div>
-    <p style="font-size:12px;color:#aaa;margin-top:12px">👆 Tocá una mesa libre para marcarla como walk-in, o una walk-in para liberarla.</p>
+    <p style="font-size:12px;color:#aaa;margin-top:12px">Toca una mesa libre para marcarla como walk-in, o una walk-in para liberarla.</p>
   </div>
   <div id="tab-ocupacion" style="display:none">
     <div class="filter-bar">
-      <button class="filter-btn active" onclick="filtrarArea('todas',this)">Todas las áreas</button>
+      <button class="filter-btn active" onclick="filtrarArea('todas',this)">Todas las areas</button>
       <button class="filter-btn" onclick="filtrarArea('comedor',this)">Comedor</button>
       <button class="filter-btn" onclick="filtrarArea('patio',this)">Patio</button>
       <button class="filter-btn" onclick="filtrarArea('cava',this)">Cava</button>
@@ -154,14 +154,14 @@ tr:hover td{background:#fafaf7}
 <div id="modal-container"></div>
 <div class="toast" id="toast"></div>
 <script>
-const BASEROW_TOKEN='H8sBhz0TS1T870ghr5qVmie7CPC3MSey';
-const TABLA_RESERVAS='981190';
-const TABLA_WALKINS='990728';
-const CAPACIDAD_TOTAL=70;
-const WEBHOOK_CONFIRMAR='https://qwsd-n8n.hi49ib.easypanel.host/webhook/confirmar-reserva';
-const WEBHOOK_CANCELAR='https://qwsd-n8n.hi49ib.easypanel.host/webhook/cancelar-reserva';
-const ESTADOS={confirmada:6206820,pendiente:6206821,cancelada:6206822};
-const mesasData={
+var BASEROW_TOKEN='H8sBhz0TS1T870ghr5qVmie7CPC3MSey';
+var TABLA_RESERVAS='981190';
+var TABLA_WALKINS='990728';
+var CAPACIDAD_TOTAL=70;
+var WEBHOOK_CONFIRMAR='https://qwsd-n8n.hi49ib.easypanel.host/webhook/confirmar-reserva';
+var WEBHOOK_CANCELAR='https://qwsd-n8n.hi49ib.easypanel.host/webhook/cancelar-reserva';
+var ESTADOS={confirmada:6206820,pendiente:6206821,cancelada:6206822};
+var mesasData={
   comedor:[
     {num:'C1',cap:4,walkin:0,walkinId:null},{num:'C2',cap:4,walkin:0,walkinId:null},
     {num:'C3',cap:4,walkin:0,walkinId:null},{num:'C4',cap:4,walkin:0,walkinId:null},
@@ -176,109 +176,133 @@ const mesasData={
   ],
   cava:[{num:'CV1',cap:8,walkin:0,walkinId:null}]
 };
-const horasData=[{h:'12:00'},{h:'12:30'},{h:'13:00'},{h:'13:30'},{h:'14:00'},{h:'19:00'},{h:'19:30'},{h:'20:00'},{h:'20:30'}];
-let reservas=[];
-let filtroEstado='todas';
+var horasData=[{h:'12:00'},{h:'12:30'},{h:'13:00'},{h:'13:30'},{h:'14:00'},{h:'19:00'},{h:'19:30'},{h:'20:00'},{h:'20:30'}];
+var reservas=[];
+var filtroEstado='todas';
 
-function showToast(msg,color='#1a1a1a'){
-  const t=document.getElementById('toast');
-  t.textContent=msg;t.style.background=color;
-  t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3000);
+function showToast(msg,color){
+  if(!color) color='#1a1a1a';
+  var t=document.getElementById('toast');
+  t.textContent=msg;
+  t.style.background=color;
+  t.classList.add('show');
+  setTimeout(function(){t.classList.remove('show');},3000);
 }
-function getColorBarra(pct){return pct>=70?'#1D9E75':pct>=30?'#EF9F27':'#e0e0e0'}
-function getHoy(){return new Date().toISOString().split('T')[0]}
 
-async function cargarReservas(){
-  try{
-    const hoy=getHoy();
-    const res=await fetch(`https://api.baserow.io/api/database/rows/table/${TABLA_RESERVAS}/?user_field_names=true&size=200`,
-      {headers:{Authorization:`Token ${BASEROW_TOKEN}`}});
-    const data=await res.json();
-    reservas=(data.results||[]).filter(r=>{
-      const fecha=r['Fecha']?r['Fecha'].split('T')[0]:'';
-      return fecha===hoy;
-    });
-    renderTabla();renderMetrics();renderHoras();
-  }catch(e){
-    document.getElementById('tabla-body').innerHTML='<tr><td colspan="7" class="empty">Error al cargar reservas</td></tr>';
+function getColorBarra(pct){
+  if(pct>=70) return '#1D9E75';
+  if(pct>=30) return '#EF9F27';
+  return '#e0e0e0';
+}
+
+function getHoy(){
+  var d=new Date();
+  var mes=d.getMonth()+1;
+  var dia=d.getDate();
+  return d.getFullYear()+'-'+(mes<10?'0':'')+mes+'-'+(dia<10?'0':'')+dia;
+}
+
+function parseFecha(f){
+  if(!f) return '';
+  if(f.indexOf('T')>-1) return f.split('T')[0];
+  if(f.indexOf('/')>-1){
+    var p=f.split('/');
+    if(p[0].length===4) return f;
+    return p[2]+'-'+p[1]+'-'+p[0];
   }
+  return f;
 }
 
-async function async function cargarWalkins(){   try{     const res=await fetch(`https://api.baserow.io/api/database/rows/table/${TABLA_WALKINS}/?user_field_names=true&size=200`,       {headers:{Authorization:`Token ${BASEROW_TOKEN}`}});     const data=await res.json();     const walkins=(data.results||[]).filter(w=>w['Activo']===true);     const allMesas=[...mesasData.comedor,...mesasData.patio,...mesasData.cava];     allMesas.forEach(m=>{m.walkin=0;m.walkinId=null;});     walkins.forEach(w=>{       const mesa=allMesas.find(m=>m.num===w['Mesa']);       if(mesa){mesa.walkin=w['Personas']||0;mesa.walkinId=w.id;}     });     renderMesas();renderMetrics();   }catch(e){console.error('Error cargando walkins',e);} }(){
-  try{
-    const hoy=getHoy();
-    const res=await fetch(`https://api.baserow.io/api/database/rows/table/${TABLA_WALKINS}/?user_field_names=true&size=200`,
-      {headers:{Authorization:`Token ${BASEROW_TOKEN}`}});
-    const data=await res.json();
-    const walkins=(data.results||[]).filter(w=>{
-      const fecha=w['Fecha']?(w['Fecha'].includes('T')?w['Fecha'].split('T')[0]:w['Fecha']):'';
-      return fecha===hoy&&w['Activo']===true;
+function cargarReservas(){
+  var hoy=getHoy();
+  fetch('https://api.baserow.io/api/database/rows/table/'+TABLA_RESERVAS+'/?user_field_names=true&size=200',
+    {headers:{Authorization:'Token '+BASEROW_TOKEN}})
+  .then(function(r){return r.json();})
+  .then(function(data){
+    reservas=(data.results||[]).filter(function(r){
+      return parseFecha(r['Fecha'])===hoy;
     });
-    const allMesas=[...mesasData.comedor,...mesasData.patio,...mesasData.cava];
-    allMesas.forEach(m=>{m.walkin=0;m.walkinId=null;});
-    walkins.forEach(w=>{
-      const mesa=allMesas.find(m=>m.num===w['Mesa']);
+    renderTabla();
+    renderMetrics();
+    renderHoras();
+  })
+  .catch(function(){
+    document.getElementById('tabla-body').innerHTML='<tr><td colspan="7" class="empty">Error al cargar reservas</td></tr>';
+  });
+}
+
+function cargarWalkins(){
+  fetch('https://api.baserow.io/api/database/rows/table/'+TABLA_WALKINS+'/?user_field_names=true&size=200',
+    {headers:{Authorization:'Token '+BASEROW_TOKEN}})
+  .then(function(r){return r.json();})
+  .then(function(data){
+    var walkins=(data.results||[]).filter(function(w){return w['Activo']===true;});
+    var allMesas=mesasData.comedor.concat(mesasData.patio).concat(mesasData.cava);
+    allMesas.forEach(function(m){m.walkin=0;m.walkinId=null;});
+    walkins.forEach(function(w){
+      var mesa=allMesas.filter(function(m){return m.num===w['Mesa'];})[0];
       if(mesa){mesa.walkin=w['Personas']||0;mesa.walkinId=w.id;}
     });
-    renderMesas();renderMetrics();
-  }catch(e){console.error('Error cargando walkins',e);}
+    renderMesas();
+    renderMetrics();
+  })
+  .catch(function(e){console.error('Error walkins',e);});
 }
 
 function getEstadoNombre(r){
-  const v=r['Estado'];
+  var v=r['Estado'];
   if(!v) return 'pendiente';
-  const val=typeof v==='object'?v.value:v;
+  var val=typeof v==='object'?v.value:v;
   return (val||'').toLowerCase();
 }
 
 function renderTabla(){
-  const tb=document.getElementById('tabla-body');
-  let lista=filtroEstado==='todas'?reservas:reservas.filter(r=>getEstadoNombre(r)===filtroEstado.toLowerCase());
+  var tb=document.getElementById('tabla-body');
+  var lista=filtroEstado==='todas'?reservas:reservas.filter(function(r){return getEstadoNombre(r)===filtroEstado.toLowerCase();});
   if(!lista.length){tb.innerHTML='<tr><td colspan="7" class="empty">Sin reservas</td></tr>';return;}
-  tb.innerHTML=lista.map(r=>{
-    const estado=getEstadoNombre(r);
-    const fecha=r['Fecha']?r['Fecha'].split('T')[0]:'—';
-    return `<tr>
-      <td style="font-weight:500">${r['Nombre']||'—'}</td>
-      <td>${fecha}</td><td>${r['Hora']||'—'}</td><td>${r['Personas']||'—'}</td>
-      <td style="font-size:12px;color:#888">${r['Teléfono']||'—'}</td>
-      <td><span class="badge badge-${estado}">${estado}</span></td>
-      <td>${estado==='pendiente'?`
-        <button class="btn-confirm" onclick="accionReserva(${r.id},'confirmar','${r['Teléfono']}')">✓ Confirmar</button>
-        <button class="btn-cancel" onclick="accionReserva(${r.id},'cancelar','${r['Teléfono']}')">✗ Cancelar</button>
-      `:`<span style="font-size:12px;color:#aaa">${estado==='confirmada'?'Confirmada':'Cancelada'}</span>`}</td>
-    </tr>`;
+  tb.innerHTML=lista.map(function(r){
+    var estado=getEstadoNombre(r);
+    var fecha=parseFecha(r['Fecha'])||'--';
+    var acciones=estado==='pendiente'?
+      '<button class="btn-confirm" onclick="accionReserva('+r.id+',\'confirmar\',\''+r['Telefono']+'\')"># Confirmar</button><button class="btn-cancel" onclick="accionReserva('+r.id+',\'cancelar\',\''+r['Telefono']+'\')"># Cancelar</button>':
+      '<span style="font-size:12px;color:#aaa">'+(estado==='confirmada'?'Confirmada':'Cancelada')+'</span>';
+    return '<tr><td style="font-weight:500">'+(r['Nombre']||'--')+'</td><td>'+fecha+'</td><td>'+(r['Hora']||'--')+'</td><td>'+(r['Personas']||'--')+'</td><td style="font-size:12px;color:#888">'+(r['Telefono']||'--')+'</td><td><span class="badge badge-'+estado+'">'+estado+'</span></td><td>'+acciones+'</td></tr>';
   }).join('');
 }
 
-async function accionReserva(id,accion,telefono){
-  const estadoId=accion==='confirmar'?ESTADOS.confirmada:ESTADOS.cancelada;
-  const webhook=accion==='confirmar'?WEBHOOK_CONFIRMAR:WEBHOOK_CANCELAR;
-  try{
-    await fetch(`https://api.baserow.io/api/database/rows/table/${TABLA_RESERVAS}/${id}/?user_field_names=false`,{
-      method:'PATCH',headers:{Authorization:`Token ${BASEROW_TOKEN}`,'Content-Type':'application/json'},
-      body:JSON.stringify({field_8586169:estadoId})
-    });
-    await fetch(`${webhook}?reserva_id=${id}&telefono=${telefono}`);
-    showToast(accion==='confirmar'?'Reserva confirmada y cliente notificado':'Reserva cancelada y cliente notificado',accion==='confirmar'?'#1D9E75':'#c62828');
-    await cargarReservas();
-  }catch(e){showToast('Error al procesar la acción','#c62828');}
+function accionReserva(id,accion,telefono){
+  var estadoId=accion==='confirmar'?ESTADOS.confirmada:ESTADOS.cancelada;
+  var webhook=accion==='confirmar'?WEBHOOK_CONFIRMAR:WEBHOOK_CANCELAR;
+  var body={};
+  body['field_8586169']=estadoId;
+  fetch('https://api.baserow.io/api/database/rows/table/'+TABLA_RESERVAS+'/'+id+'/?user_field_names=false',{
+    method:'PATCH',
+    headers:{Authorization:'Token '+BASEROW_TOKEN,'Content-Type':'application/json'},
+    body:JSON.stringify(body)
+  })
+  .then(function(){return fetch(webhook+'?reserva_id='+id+'&telefono='+telefono);})
+  .then(function(){
+    showToast(accion==='confirmar'?'Reserva confirmada':'Reserva cancelada',accion==='confirmar'?'#1D9E75':'#c62828');
+    cargarReservas();
+  })
+  .catch(function(){showToast('Error al procesar','#c62828');});
 }
 
 function filtrar(estado,btn){
   filtroEstado=estado;
-  document.querySelectorAll('#tab-solicitudes .filter-btn').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');renderTabla();
+  document.querySelectorAll('#tab-solicitudes .filter-btn').forEach(function(b){b.classList.remove('active');});
+  btn.classList.add('active');
+  renderTabla();
 }
 
 function renderMetrics(){
-  const conf=reservas.filter(r=>getEstadoNombre(r)==='confirmada').length;
-  const pend=reservas.filter(r=>getEstadoNombre(r)==='pendiente').length;
-  const persReserva=reservas.filter(r=>getEstadoNombre(r)==='confirmada').reduce((a,r)=>a+(parseInt(r['Personas'])||0),0);
-  const allMesas=[...mesasData.comedor,...mesasData.patio,...mesasData.cava];
-  const persWalkin=allMesas.reduce((a,m)=>a+m.walkin,0);
-  const total=persReserva+persWalkin;
-  const pct=Math.round(total/CAPACIDAD_TOTAL*100);
+  var conf=reservas.filter(function(r){return getEstadoNombre(r)==='confirmada';}).length;
+  var pend=reservas.filter(function(r){return getEstadoNombre(r)==='pendiente';}).length;
+  var persReserva=reservas.filter(function(r){return getEstadoNombre(r)==='confirmada';}).reduce(function(a,r){return a+(parseInt(r['Personas'])||0);},0);
+  var allMesas=mesasData.comedor.concat(mesasData.patio).concat(mesasData.cava);
+  var persWalkin=allMesas.reduce(function(a,m){return a+m.walkin;},0);
+  var total=persReserva+persWalkin;
+  var pct=Math.round(total/CAPACIDAD_TOTAL*100);
   document.getElementById('m-ocup').textContent=pct+'%';
   document.getElementById('m-ocup-sub').textContent=total+' de '+CAPACIDAD_TOTAL+' personas';
   document.getElementById('m-conf').textContent=conf;
@@ -287,120 +311,122 @@ function renderMetrics(){
 }
 
 function renderMesas(){
-  Object.keys(mesasData).forEach(area=>{
-    const g=document.getElementById('mesas-'+area);
-    g.innerHTML=mesasData[area].map(m=>{
-      const cls=m.walkin>0?'walk-in':'';
-      const label=m.walkin>0?m.walkin+' walk-in':'Libre';
-      return `<div class="mesa ${cls}" onclick="abrirModal('${area}','${m.num}')">
-        <div class="mesa-num">${m.num}</div>
-        <div class="mesa-cap">${m.cap} pers.</div>
-        <div class="mesa-estado">${label}</div>
-      </div>`;
+  Object.keys(mesasData).forEach(function(area){
+    var g=document.getElementById('mesas-'+area);
+    g.innerHTML=mesasData[area].map(function(m){
+      var cls=m.walkin>0?'walk-in':'';
+      var label=m.walkin>0?m.walkin+' walk-in':'Libre';
+      return '<div class="mesa '+cls+'" onclick="abrirModal(\''+area+'\',\''+m.num+'\')"><div class="mesa-num">'+m.num+'</div><div class="mesa-cap">'+m.cap+' pers.</div><div class="mesa-estado">'+label+'</div></div>';
     }).join('');
   });
 }
 
 function abrirModal(area,mesaNum){
-  const mesa=mesasData[area].find(m=>m.num===mesaNum);
+  var mesa=mesasData[area].filter(function(m){return m.num===mesaNum;})[0];
   if(!mesa) return;
-  const mc=document.getElementById('modal-container');
+  var mc=document.getElementById('modal-container');
   if(mesa.walkin>0){
-    mc.innerHTML=`<div class="modal-bg" onclick="cerrarModal()"><div class="modal" onclick="event.stopPropagation()">
-      <div class="modal-title">Mesa ${mesaNum}</div>
-      <div class="modal-sub">${mesa.walkin} personas sin reserva.</div>
-      <div class="modal-btns">
-        <button class="btn-liberar" onclick="liberarMesa('${area}','${mesaNum}')">Liberar mesa</button>
-        <button class="btn-cerrar" onclick="cerrarModal()">Cancelar</button>
-      </div></div></div>`;
+    mc.innerHTML='<div class="modal-bg" onclick="cerrarModal()"><div class="modal" onclick="event.stopPropagation()"><div class="modal-title">Mesa '+mesaNum+'</div><div class="modal-sub">'+mesa.walkin+' personas sin reserva.</div><div class="modal-btns"><button class="btn-liberar" onclick="liberarMesa(\''+area+'\',\''+mesaNum+'\')">Liberar mesa</button><button class="btn-cerrar" onclick="cerrarModal()">Cancelar</button></div></div></div>';
   }else{
-    mc.innerHTML=`<div class="modal-bg" onclick="cerrarModal()"><div class="modal" onclick="event.stopPropagation()">
-      <div class="modal-title">Ocupar mesa ${mesaNum}</div>
-      <div class="modal-sub">Capacidad: ${mesa.cap} personas.</div>
-      <input type="number" id="personas-input" min="1" max="${mesa.cap}" placeholder="Número de personas">
-      <div class="modal-btns">
-        <button class="btn-ocupar" onclick="ocuparMesa('${area}','${mesaNum}')">Ocupar</button>
-        <button class="btn-cerrar" onclick="cerrarModal()">Cancelar</button>
-      </div></div></div>`;
+    mc.innerHTML='<div class="modal-bg" onclick="cerrarModal()"><div class="modal" onclick="event.stopPropagation()"><div class="modal-title">Ocupar mesa '+mesaNum+'</div><div class="modal-sub">Capacidad: '+mesa.cap+' personas.</div><input type="number" id="personas-input" min="1" max="'+mesa.cap+'" placeholder="Numero de personas"><div class="modal-btns"><button class="btn-ocupar" onclick="ocuparMesa(\''+area+'\',\''+mesaNum+'\')">Ocupar</button><button class="btn-cerrar" onclick="cerrarModal()">Cancelar</button></div></div></div>';
   }
 }
 
-async function ocuparMesa(area,mesaNum){
-  const input=document.getElementById('personas-input');
-  const personas=parseInt(input.value);
-  if(!personas||personas<1){showToast('Ingresá el número de personas','#e65100');return;}
-  const mesa=mesasData[area].find(m=>m.num===mesaNum);
+function ocuparMesa(area,mesaNum){
+  var input=document.getElementById('personas-input');
+  var personas=parseInt(input.value);
+  if(!personas||personas<1){showToast('Ingresa el numero de personas','#e65100');return;}
+  var mesa=mesasData[area].filter(function(m){return m.num===mesaNum;})[0];
   if(!mesa) return;
-  try{
-    const hoy=getHoy();
-    const res=await fetch(`https://api.baserow.io/api/database/rows/table/${TABLA_WALKINS}/?user_field_names=false`,{
-      method:'POST',headers:{Authorization:`Token ${BASEROW_TOKEN}`,'Content-Type':'application/json'},
-      body:JSON.stringify({field_8672780:mesaNum,field_8672781:personas,field_8672782:hoy+'T00:00:00.000Z',field_8672787:area,field_8672820:true})
-    });
-    const data=await res.json();
-    mesa.walkin=personas;mesa.walkinId=data.id;
-    renderMesas();renderMetrics();cerrarModal();showToast('Mesa ocupada');
-  }catch(e){showToast('Error al ocupar mesa','#c62828');}
+  var body={};
+  body['field_8672780']=mesaNum;
+  body['field_8672781']=personas;
+  body['field_8672782']=getHoy();
+  body['field_8672787']=area;
+  body['field_8672820']=true;
+  fetch('https://api.baserow.io/api/database/rows/table/'+TABLA_WALKINS+'/?user_field_names=false',{
+    method:'POST',
+    headers:{Authorization:'Token '+BASEROW_TOKEN,'Content-Type':'application/json'},
+    body:JSON.stringify(body)
+  })
+  .then(function(r){return r.json();})
+  .then(function(data){
+    mesa.walkin=personas;
+    mesa.walkinId=data.id;
+    renderMesas();
+    renderMetrics();
+    cerrarModal();
+    showToast('Mesa ocupada');
+  })
+  .catch(function(){showToast('Error al ocupar mesa','#c62828');});
 }
 
-async function liberarMesa(area,mesaNum){
-  const mesa=mesasData[area].find(m=>m.num===mesaNum);
+function liberarMesa(area,mesaNum){
+  var mesa=mesasData[area].filter(function(m){return m.num===mesaNum;})[0];
   if(!mesa||!mesa.walkinId) return;
-  try{
-    await fetch(`https://api.baserow.io/api/database/rows/table/${TABLA_WALKINS}/${mesa.walkinId}/?user_field_names=false`,{
-      method:'PATCH',headers:{Authorization:`Token ${BASEROW_TOKEN}`,'Content-Type':'application/json'},
-      body:JSON.stringify({field_8672820:false})
-    });
-    mesa.walkin=0;mesa.walkinId=null;
-    renderMesas();renderMetrics();cerrarModal();showToast('Mesa liberada');
-  }catch(e){showToast('Error al liberar mesa','#c62828');}
+  var body={};
+  body['field_8672820']=false;
+  fetch('https://api.baserow.io/api/database/rows/table/'+TABLA_WALKINS+'/'+mesa.walkinId+'/?user_field_names=false',{
+    method:'PATCH',
+    headers:{Authorization:'Token '+BASEROW_TOKEN,'Content-Type':'application/json'},
+    body:JSON.stringify(body)
+  })
+  .then(function(){
+    mesa.walkin=0;
+    mesa.walkinId=null;
+    renderMesas();
+    renderMetrics();
+    cerrarModal();
+    showToast('Mesa liberada');
+  })
+  .catch(function(){showToast('Error al liberar mesa','#c62828');});
 }
 
 function cerrarModal(){document.getElementById('modal-container').innerHTML='';}
 
 function renderHoras(){
-  const c=document.getElementById('horas-chart');
-  const porHora={};
-  horasData.forEach(h=>{porHora[h.h]=0;});
-  reservas.filter(r=>getEstadoNombre(r)==='confirmada').forEach(r=>{
-    const hora=(r['Hora']||'').trim();
-    const clave=Object.keys(porHora).find(h=>hora.startsWith(h));
+  var c=document.getElementById('horas-chart');
+  var porHora={};
+  horasData.forEach(function(h){porHora[h.h]=0;});
+  reservas.filter(function(r){return getEstadoNombre(r)==='confirmada';}).forEach(function(r){
+    var hora=(r['Hora']||'').trim();
+    var clave=null;
+    Object.keys(porHora).forEach(function(h){if(hora.indexOf(h)===0) clave=h;});
     if(clave) porHora[clave]+=(parseInt(r['Personas'])||0);
   });
-  c.innerHTML=horasData.map(h=>{
-    const personas=porHora[h.h]||0;
-    const pct=Math.round(personas/CAPACIDAD_TOTAL*100);
-    return `<div class="hora-col">
-      <div class="hora-barra" style="height:${Math.max(8,Math.round(pct*0.8))}px;background:${getColorBarra(pct)}"></div>
-      <div class="hora-label">${h.h}</div>
-    </div>`;
+  c.innerHTML=horasData.map(function(h){
+    var personas=porHora[h.h]||0;
+    var pct=Math.round(personas/CAPACIDAD_TOTAL*100);
+    var altura=Math.max(8,Math.round(pct*0.8));
+    return '<div class="hora-col"><div class="hora-barra" style="height:'+altura+'px;background:'+getColorBarra(pct)+'"></div><div class="hora-label">'+h.h+'</div></div>';
   }).join('');
 }
 
 function filtrarArea(area,btn){
-  document.querySelectorAll('#tab-ocupacion .filter-btn').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');renderHoras();
+  document.querySelectorAll('#tab-ocupacion .filter-btn').forEach(function(b){b.classList.remove('active');});
+  btn.classList.add('active');
+  renderHoras();
 }
 
 function showTab(tab,btn){
-  ['solicitudes','mesas','ocupacion'].forEach(t=>{
+  ['solicitudes','mesas','ocupacion'].forEach(function(t){
     document.getElementById('tab-'+t).style.display=t===tab?'block':'none';
   });
-  document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(function(b){b.classList.remove('active');});
   btn.classList.add('active');
 }
 
 function setFecha(){
-  const d=new Date();
-  const dias=['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
-  const meses=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
-  document.getElementById('fecha-hoy').textContent=`${dias[d.getDay()]} ${d.getDate()} de ${meses[d.getMonth()]}, ${d.getFullYear()}`;
+  var d=new Date();
+  var dias=['Domingo','Lunes','Martes','Miercoles','Jueves','Viernes','Sabado'];
+  var meses=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+  document.getElementById('fecha-hoy').textContent=dias[d.getDay()]+' '+d.getDate()+' de '+meses[d.getMonth()]+', '+d.getFullYear();
 }
 
 setFecha();
 cargarReservas();
-async function cargarWalkins(){   try{     const res=await fetch(`https://api.baserow.io/api/database/rows/table/${TABLA_WALKINS}/?user_field_names=true&size=200`,       {headers:{Authorization:`Token ${BASEROW_TOKEN}`}});     const data=await res.json();     const walkins=(data.results||[]).filter(w=>w['Activo']===true);     const allMesas=[...mesasData.comedor,...mesasData.patio,...mesasData.cava];     allMesas.forEach(m=>{m.walkin=0;m.walkinId=null;});     walkins.forEach(w=>{       const mesa=allMesas.find(m=>m.num===w['Mesa']);       if(mesa){mesa.walkin=w['Personas']||0;mesa.walkinId=w.id;}     });     renderMesas();renderMetrics();   }catch(e){console.error('Error cargando walkins',e);} }();
-setInterval(()=>{cargarReservas();async function cargarWalkins(){   try{     const res=await fetch(`https://api.baserow.io/api/database/rows/table/${TABLA_WALKINS}/?user_field_names=true&size=200`,       {headers:{Authorization:`Token ${BASEROW_TOKEN}`}});     const data=await res.json();     const walkins=(data.results||[]).filter(w=>w['Activo']===true);     const allMesas=[...mesasData.comedor,...mesasData.patio,...mesasData.cava];     allMesas.forEach(m=>{m.walkin=0;m.walkinId=null;});     walkins.forEach(w=>{       const mesa=allMesas.find(m=>m.num===w['Mesa']);       if(mesa){mesa.walkin=w['Personas']||0;mesa.walkinId=w.id;}     });     renderMesas();renderMetrics();   }catch(e){console.error('Error cargando walkins',e);} }();},30000);
+cargarWalkins();
+setInterval(function(){cargarReservas();cargarWalkins();},60000);
 </script>
 </body>
 </html>
