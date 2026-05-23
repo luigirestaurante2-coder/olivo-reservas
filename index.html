@@ -179,7 +179,6 @@ const mesasData={
 const horasData=[{h:'12:00'},{h:'12:30'},{h:'13:00'},{h:'13:30'},{h:'14:00'},{h:'19:00'},{h:'19:30'},{h:'20:00'},{h:'20:30'}];
 let reservas=[];
 let filtroEstado='todas';
-let filtroAreaOcup='todas';
 
 function showToast(msg,color='#1a1a1a'){
   const t=document.getElementById('toast');
@@ -187,15 +186,18 @@ function showToast(msg,color='#1a1a1a'){
   t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3000);
 }
 function getColorBarra(pct){return pct>=70?'#1D9E75':pct>=30?'#EF9F27':'#e0e0e0'}
-function getHoy(){const d=new Date();return d.toISOString().split('T')[0];} function getHoyFiltro(){const d=new Date();return `${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}/${d.getFullYear()}`;}
+function getHoy(){return new Date().toISOString().split('T')[0]}
 
 async function cargarReservas(){
   try{
     const hoy=getHoy();
-    const res=await fetch(`https://api.baserow.io/api/database/rows/table/${TABLA_RESERVAS}/?user_field_names=true&filter__field_8586138__equal=${hoy}`,
+    const res=await fetch(`https://api.baserow.io/api/database/rows/table/${TABLA_RESERVAS}/?user_field_names=true&size=200`,
       {headers:{Authorization:`Token ${BASEROW_TOKEN}`}});
     const data=await res.json();
-    reservas=data.results||[];
+    reservas=(data.results||[]).filter(r=>{
+      const fecha=r['Fecha']?r['Fecha'].split('T')[0]:'';
+      return fecha===hoy;
+    });
     renderTabla();renderMetrics();renderHoras();
   }catch(e){
     document.getElementById('tabla-body').innerHTML='<tr><td colspan="7" class="empty">Error al cargar reservas</td></tr>';
@@ -205,10 +207,13 @@ async function cargarReservas(){
 async function cargarWalkins(){
   try{
     const hoy=getHoy();
-    const res=await fetch(`https://api.baserow.io/api/database/rows/table/${TABLA_WALKINS}/?user_field_names=true&filter__field_8672782__equal=${hoy}`,
+    const res=await fetch(`https://api.baserow.io/api/database/rows/table/${TABLA_WALKINS}/?user_field_names=true&size=200`,
       {headers:{Authorization:`Token ${BASEROW_TOKEN}`}});
     const data=await res.json();
-    const walkins=(data.results||[]).filter(w=>w['Activo']===true);
+    const walkins=(data.results||[]).filter(w=>{
+      const fecha=w['Fecha']?w['Fecha'].split('T')[0]:'';
+      return fecha===hoy&&w['Activo']===true;
+    });
     const allMesas=[...mesasData.comedor,...mesasData.patio,...mesasData.cava];
     allMesas.forEach(m=>{m.walkin=0;m.walkinId=null;});
     walkins.forEach(w=>{
@@ -373,7 +378,6 @@ function renderHoras(){
 }
 
 function filtrarArea(area,btn){
-  filtroAreaOcup=area;
   document.querySelectorAll('#tab-ocupacion .filter-btn').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');renderHoras();
 }
