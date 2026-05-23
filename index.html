@@ -187,7 +187,7 @@ function showToast(msg,color='#1a1a1a'){
   t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3000);
 }
 function getColorBarra(pct){return pct>=70?'#1D9E75':pct>=30?'#EF9F27':'#e0e0e0'}
-function getHoy(){return new Date().toISOString().split('T')[0]}
+function getHoy(){const d=new Date();return d.toISOString().split('T')[0];} function getHoyFiltro(){const d=new Date();return `${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}/${d.getFullYear()}`;}
 
 async function cargarReservas(){
   try{
