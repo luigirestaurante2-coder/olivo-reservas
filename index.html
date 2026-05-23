@@ -300,7 +300,7 @@ function renderMetrics(){
   var pend=reservas.filter(function(r){return getEstadoNombre(r)==='pendiente';}).length;
   var persReserva=reservas.filter(function(r){return getEstadoNombre(r)==='confirmada';}).reduce(function(a,r){return a+(parseInt(r['Personas'])||0);},0);
   var allMesas=mesasData.comedor.concat(mesasData.patio).concat(mesasData.cava);
-  var persWalkin=allMesas.reduce(function(a,m){return a+m.walkin;},0);
+  var persWalkin=allMesas.reduce(function(a,m){return a+(parseInt(m.walkin)||0);},0);
   var total=persReserva+persWalkin;
   var pct=Math.round(total/CAPACIDAD_TOTAL*100);
   document.getElementById('m-ocup').textContent=pct+'%';
