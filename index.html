@@ -211,7 +211,7 @@ async function cargarWalkins(){
       {headers:{Authorization:`Token ${BASEROW_TOKEN}`}});
     const data=await res.json();
     const walkins=(data.results||[]).filter(w=>{
-      const fecha=w['Fecha']?w['Fecha'].split('T')[0]:'';
+      const fecha=w['Fecha']?w['Fecha'].replace(/T.*/,'').split('/').reverse().join('-'):'';
       return fecha===hoy&&w['Activo']===true;
     });
     const allMesas=[...mesasData.comedor,...mesasData.patio,...mesasData.cava];
