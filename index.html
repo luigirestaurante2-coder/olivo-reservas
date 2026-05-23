@@ -241,7 +241,7 @@ function cargarWalkins(){
     allMesas.forEach(function(m){m.walkin=0;m.walkinId=null;});
     walkins.forEach(function(w){
       var mesa=allMesas.filter(function(m){return m.num===w['Mesa'];})[0];
-      if(mesa){mesa.walkin=w['Personas']||0;mesa.walkinId=w.id;}
+      if(mesa){mesa.walkin=parseInt(w['Personas'])||0;mesa.walkinId=w.id;}
     });
     renderMesas();
     renderMetrics();
