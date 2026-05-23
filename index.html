@@ -335,7 +335,7 @@ async function ocuparMesa(area,mesaNum){
     const hoy=getHoy();
     const res=await fetch(`https://api.baserow.io/api/database/rows/table/${TABLA_WALKINS}/?user_field_names=false`,{
       method:'POST',headers:{Authorization:`Token ${BASEROW_TOKEN}`,'Content-Type':'application/json'},
-      body:JSON.stringify({field_8672780:mesaNum,field_8672781:personas,field_8672782:hoy,field_8672787:area,field_8672820:true})
+      body:JSON.stringify({field_8672780:mesaNum,field_8672781:personas,field_8672782:hoy+'T00:00:00.000Z',field_8672787:area,field_8672820:true})
     });
     const data=await res.json();
     mesa.walkin=personas;mesa.walkinId=data.id;
