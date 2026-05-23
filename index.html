@@ -204,7 +204,7 @@ async function cargarReservas(){
   }
 }
 
-async function cargarWalkins(){
+async function async function cargarWalkins(){   try{     const res=await fetch(`https://api.baserow.io/api/database/rows/table/${TABLA_WALKINS}/?user_field_names=true&size=200`,       {headers:{Authorization:`Token ${BASEROW_TOKEN}`}});     const data=await res.json();     const walkins=(data.results||[]).filter(w=>w['Activo']===true);     const allMesas=[...mesasData.comedor,...mesasData.patio,...mesasData.cava];     allMesas.forEach(m=>{m.walkin=0;m.walkinId=null;});     walkins.forEach(w=>{       const mesa=allMesas.find(m=>m.num===w['Mesa']);       if(mesa){mesa.walkin=w['Personas']||0;mesa.walkinId=w.id;}     });     renderMesas();renderMetrics();   }catch(e){console.error('Error cargando walkins',e);} }(){
   try{
     const hoy=getHoy();
     const res=await fetch(`https://api.baserow.io/api/database/rows/table/${TABLA_WALKINS}/?user_field_names=true&size=200`,
@@ -399,8 +399,8 @@ function setFecha(){
 
 setFecha();
 cargarReservas();
-cargarWalkins();
-setInterval(()=>{cargarReservas();cargarWalkins();},30000);
+async function cargarWalkins(){   try{     const res=await fetch(`https://api.baserow.io/api/database/rows/table/${TABLA_WALKINS}/?user_field_names=true&size=200`,       {headers:{Authorization:`Token ${BASEROW_TOKEN}`}});     const data=await res.json();     const walkins=(data.results||[]).filter(w=>w['Activo']===true);     const allMesas=[...mesasData.comedor,...mesasData.patio,...mesasData.cava];     allMesas.forEach(m=>{m.walkin=0;m.walkinId=null;});     walkins.forEach(w=>{       const mesa=allMesas.find(m=>m.num===w['Mesa']);       if(mesa){mesa.walkin=w['Personas']||0;mesa.walkinId=w.id;}     });     renderMesas();renderMetrics();   }catch(e){console.error('Error cargando walkins',e);} }();
+setInterval(()=>{cargarReservas();async function cargarWalkins(){   try{     const res=await fetch(`https://api.baserow.io/api/database/rows/table/${TABLA_WALKINS}/?user_field_names=true&size=200`,       {headers:{Authorization:`Token ${BASEROW_TOKEN}`}});     const data=await res.json();     const walkins=(data.results||[]).filter(w=>w['Activo']===true);     const allMesas=[...mesasData.comedor,...mesasData.patio,...mesasData.cava];     allMesas.forEach(m=>{m.walkin=0;m.walkinId=null;});     walkins.forEach(w=>{       const mesa=allMesas.find(m=>m.num===w['Mesa']);       if(mesa){mesa.walkin=w['Personas']||0;mesa.walkinId=w.id;}     });     renderMesas();renderMetrics();   }catch(e){console.error('Error cargando walkins',e);} }();},30000);
 </script>
 </body>
 </html>
