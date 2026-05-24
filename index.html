@@ -76,20 +76,23 @@ body.dark .mesa-num{color:#aaa}
 body.dark .mesa-cap{color:#555}
 .mesa-estado{font-size:10px;margin-top:4px;color:#aaa}
 body.dark .mesa-estado{color:#555}
-.mesa-cliente{font-size:10px;margin-top:2px;font-weight:500;color:#2e7d32;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:76px}
-body.dark .mesa-cliente{color:#9FE1CB}
-.mesa.reservada{background:#e8f5e9;border-color:#81c784}
-.mesa.reservada .mesa-num{color:#2e7d32}
-body.dark .mesa.reservada{background:#173404;border-color:#3B6D11}
-body.dark .mesa.reservada .mesa-num{color:#C0DD97}
+.mesa-cliente{font-size:10px;margin-top:2px;font-weight:500;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:76px}
+.mesa.reservada{background:#4CAF50;border-color:#2E7D32}
+.mesa.reservada .mesa-num{color:#fff}
+.mesa.reservada .mesa-cap{color:#C8E6C9}
+.mesa.reservada .mesa-estado{color:#C8E6C9}
+body.dark .mesa.reservada{background:#2E7D32;border-color:#1B5E20}
+body.dark .mesa.reservada .mesa-num{color:#fff}
 .mesa.pendiente-m{background:#fff3e0;border-color:#ffb74d}
 .mesa.pendiente-m .mesa-num{color:#e65100}
 body.dark .mesa.pendiente-m{background:#412402;border-color:#854F0B}
 body.dark .mesa.pendiente-m .mesa-num{color:#FAC775}
 .mesa.walk-in{background:#e3f2fd;border-color:#64b5f6}
 .mesa.walk-in .mesa-num{color:#1565c0}
+.mesa.walk-in .mesa-estado{color:#1976d2}
 body.dark .mesa.walk-in{background:#0C447C;border-color:#185FA5}
 body.dark .mesa.walk-in .mesa-num{color:#B5D4F4}
+body.dark .mesa.walk-in .mesa-estado{color:#85B7EB}
 .leyenda{display:flex;gap:12px;font-size:12px;color:#888;flex-wrap:wrap;margin-top:8px}
 .leyenda span{display:flex;align-items:center;gap:4px}
 .dot{width:10px;height:10px;border-radius:3px;display:inline-block}
@@ -178,7 +181,7 @@ body.dark .mesa-opt.selected{background:#085041;color:#9FE1CB;border-color:#0F6E
       <div class="mesas-grid" id="mesas-cava"></div>
     </div>
     <div class="leyenda">
-      <span><span class="dot" style="background:#81c784;border:1px solid #4caf50"></span>Con reserva</span>
+      <span><span class="dot" style="background:#4CAF50;border:1px solid #2E7D32"></span>Con reserva</span>
       <span><span class="dot" style="background:#64b5f6;border:1px solid #2196f3"></span>Walk-in</span>
       <span><span class="dot" style="background:#ffb74d;border:1px solid #ff9800"></span>Pendiente</span>
       <span><span class="dot" style="background:#e5e5e0;border:1px solid #ccc"></span>Libre</span>
@@ -307,7 +310,7 @@ function cargarReservas(){
       if(mesaNom){
         var mesa=allMesas.filter(function(m){return m.num===mesaNom;})[0];
         if(mesa&&getEstadoNombre(r)==='confirmada'){
-          mesa.reserva={nombre:r['Nombre']||'',hora:r['Hora']||''};
+          mesa.reserva={nombre:r['Nombre']||'',hora:r['Hora']||'',personas:parseInt(r['Personas'])||0,id:r.id};
         }
       }
     });
@@ -402,8 +405,7 @@ function confirmarConMesa(){
   .then(function(){return fetch(WEBHOOK_CONFIRMAR+'?reserva_id='+reservaActual.id+'&telefono='+reservaActual.telefono);})
   .then(function(){
     showToast('Reserva confirmada en mesa '+mesaSeleccionada,'#1D9E75');
-    cerrarModal();
-    cargarReservas();
+    cerrarModal();cargarReservas();
   })
   .catch(function(){showToast('Error al confirmar','#c62828');});
 }
@@ -414,10 +416,7 @@ function accionReserva(id,accion,telefono){
     method:'PATCH',headers:{Authorization:'Token '+BASEROW_TOKEN,'Content-Type':'application/json'},body:JSON.stringify(body)
   })
   .then(function(){return fetch(WEBHOOK_CANCELAR+'?reserva_id='+id+'&telefono='+telefono);})
-  .then(function(){
-    showToast('Reserva cancelada','#c62828');
-    cargarReservas();
-  })
+  .then(function(){showToast('Reserva cancelada','#c62828');cargarReservas();})
   .catch(function(){showToast('Error al cancelar','#c62828');});
 }
 
@@ -451,29 +450,55 @@ function renderMesas(){
       var clienteHtml='';
       if(m.reserva){
         cls='reservada';
-        label=m.reserva.hora;
+        label=m.reserva.hora+' · '+m.reserva.personas+' pers.';
         clienteHtml='<div class="mesa-cliente">'+m.reserva.nombre+'</div>';
       }else if(m.walkin>0){
         cls='walk-in';
         label=m.walkin+' walk-in';
       }
-      if(m.walkin>0&&!m.reserva){
-        return '<div class="mesa '+cls+'" onclick="abrirModal(\''+area+'\',\''+m.num+'\')"><div class="mesa-num">'+m.num+'</div><div class="mesa-cap">'+m.cap+' pers.</div><div class="mesa-estado">'+label+'</div></div>';
-      }
-      return '<div class="mesa '+cls+'" onclick="'+(m.reserva?'':'abrirModal(\''+area+'\',\''+m.num+'\')')+'"><div class="mesa-num">'+m.num+'</div><div class="mesa-cap">'+m.cap+' pers.</div>'+clienteHtml+'<div class="mesa-estado">'+label+'</div></div>';
+      return '<div class="mesa '+cls+'" onclick="abrirModal(\''+area+'\',\''+m.num+'\')"><div class="mesa-num">'+m.num+'</div><div class="mesa-cap">'+m.cap+' pers.</div>'+clienteHtml+'<div class="mesa-estado">'+label+'</div></div>';
     }).join('');
   });
 }
 
 function abrirModal(area,mesaNum){
   var mesa=mesasData[area].filter(function(m){return m.num===mesaNum;})[0];
-  if(!mesa||mesa.reserva) return;
+  if(!mesa) return;
   var mc=document.getElementById('modal-container');
+  if(mesa.reserva){
+    var r=reservas.filter(function(r){return r['Mesa']===mesaNum&&getEstadoNombre(r)==='confirmada';})[0];
+    var tel=r?(r['Telefono']||r['Tel\u00e9fono']||'--'):'--';
+    var rid=mesa.reserva.id;
+    mc.innerHTML='<div class="modal-bg" onclick="cerrarModal()"><div class="modal" onclick="event.stopPropagation()">'+
+      '<div class="modal-title">Mesa '+mesaNum+'</div>'+
+      '<div class="modal-sub">'+mesa.reserva.nombre+'</div>'+
+      '<div style="font-size:13px;color:#888;margin-bottom:4px">Hora: '+mesa.reserva.hora+'</div>'+
+      '<div style="font-size:13px;color:#888;margin-bottom:4px">Personas: '+mesa.reserva.personas+'</div>'+
+      '<div style="font-size:13px;color:#888;margin-bottom:1rem">Telefono: '+tel+'</div>'+
+      '<div class="modal-btns">'+
+      '<button class="btn-liberar" onclick="liberarReserva(\''+area+'\',\''+mesaNum+'\','+rid+')">Liberar mesa</button>'+
+      '<button class="btn-cerrar" onclick="cerrarModal()">Cerrar</button>'+
+      '</div></div></div>';
+    return;
+  }
   if(mesa.walkin>0){
     mc.innerHTML='<div class="modal-bg" onclick="cerrarModal()"><div class="modal" onclick="event.stopPropagation()"><div class="modal-title">Mesa '+mesaNum+'</div><div class="modal-sub">'+mesa.walkin+' personas sin reserva.</div><div class="modal-btns"><button class="btn-liberar" onclick="liberarMesa(\''+area+'\',\''+mesaNum+'\')">Liberar mesa</button><button class="btn-cerrar" onclick="cerrarModal()">Cancelar</button></div></div></div>';
   }else{
     mc.innerHTML='<div class="modal-bg" onclick="cerrarModal()"><div class="modal" onclick="event.stopPropagation()"><div class="modal-title">Ocupar mesa '+mesaNum+'</div><div class="modal-sub">Capacidad: '+mesa.cap+' personas.</div><input type="number" id="personas-input" min="1" max="'+mesa.cap+'" placeholder="Numero de personas"><div class="modal-btns"><button class="btn-ocupar" onclick="ocuparMesa(\''+area+'\',\''+mesaNum+'\')">Ocupar</button><button class="btn-cerrar" onclick="cerrarModal()">Cancelar</button></div></div></div>';
   }
+}
+
+function liberarReserva(area,mesaNum,reservaId){
+  var mesa=mesasData[area].filter(function(m){return m.num===mesaNum;})[0];
+  if(!mesa) return;
+  var body={};body['field_'+FIELD_MESA]='';
+  fetch('https://api.baserow.io/api/database/rows/table/'+TABLA_RESERVAS+'/'+reservaId+'/?user_field_names=false',{
+    method:'PATCH',headers:{Authorization:'Token '+BASEROW_TOKEN,'Content-Type':'application/json'},body:JSON.stringify(body)
+  })
+  .then(function(){
+    mesa.reserva=null;renderMesas();renderMetrics();cerrarModal();showToast('Mesa liberada');
+  })
+  .catch(function(){showToast('Error al liberar','#c62828');});
 }
 
 function ocuparMesa(area,mesaNum){
