@@ -14,19 +14,19 @@ body.dark .header{background:#1e1e1e;border-color:#333}
 body.dark .logo{color:#e5e5e0}
 .logo span{color:#1D9E75}
 .header-right{display:flex;align-items:center;gap:10px;position:relative}
-.date-btn{font-size:13px;color:#666;background:#f5f5f0;padding:5px 12px;border-radius:8px;cursor:pointer;border:none;position:relative}
+.date-btn{font-size:13px;color:#666;background:#f5f5f0;padding:5px 12px;border-radius:8px;cursor:pointer;border:none}
 body.dark .date-btn{background:#2a2a2a;color:#888}
 .date-btn:hover{background:#e8f7f2;color:#0F6E56}
 body.dark .date-btn:hover{background:#085041;color:#9FE1CB}
 .dark-btn{font-size:11px;padding:4px 10px;border-radius:6px;border:0.5px solid #e5e5e0;background:#fff;color:#666;cursor:pointer}
 body.dark .dark-btn{border-color:#444;background:#2a2a2a;color:#aaa}
-.calendar-dropdown{position:absolute;top:calc(100% + 8px);right:0;background:#fff;border:1px solid #e5e5e0;border-radius:12px;padding:1rem;z-index:50;box-shadow:0 4px 20px rgba(0,0,0,0.12);width:280px;max-height:none;overflow:visible}
+.calendar-dropdown{position:absolute;top:calc(100% + 8px);right:0;background:#fff;border:1px solid #e5e5e0;border-radius:12px;padding:1rem;z-index:50;box-shadow:0 4px 20px rgba(0,0,0,0.12);width:290px}
 body.dark .calendar-dropdown{background:#1e1e1e;border-color:#333}
 .cal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
 .cal-title{font-size:14px;font-weight:500}
-.cal-nav{background:none;border:none;cursor:pointer;color:#888;font-size:16px;padding:4px 8px;border-radius:6px}
-.cal-nav:hover{background:#f5f5f0;color:#1a1a1a}
-body.dark .cal-nav:hover{background:#2a2a2a;color:#e5e5e0}
+.cal-nav{background:none;border:none;cursor:pointer;color:#888;font-size:18px;padding:2px 8px;border-radius:6px}
+.cal-nav:hover{background:#f5f5f0}
+body.dark .cal-nav:hover{background:#2a2a2a}
 .cal-days-header{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;margin-bottom:4px}
 .cal-day-name{font-size:11px;color:#aaa;text-align:center;padding:2px}
 .cal-days{display:grid;grid-template-columns:repeat(7,1fr);gap:2px}
@@ -35,14 +35,12 @@ body.dark .cal-day{color:#e5e5e0}
 .cal-day:hover{background:#e8f7f2;color:#0F6E56}
 body.dark .cal-day:hover{background:#085041;color:#9FE1CB}
 .cal-day.today{font-weight:500;color:#0F6E56}
-body.dark .cal-day.today{color:#1D9E75}
 .cal-day.selected{background:#1D9E75;color:#fff;font-weight:500}
-body.dark .cal-day.selected{background:#0F6E56}
 .cal-day.disabled{color:#ccc;cursor:not-allowed;pointer-events:none}
 body.dark .cal-day.disabled{color:#444}
-.cal-day.empty{cursor:default}
+.cal-day.empty{cursor:default;pointer-events:none}
 .dias-rapidos{display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap}
-.dia-rapido{font-size:11px;padding:4px 10px;border-radius:6px;border:1px solid #e5e5e0;background:#f5f5f0;color:#666;cursor:pointer}
+.dia-rapido{font-size:11px;padding:4px 8px;border-radius:6px;border:1px solid #e5e5e0;background:#f5f5f0;color:#666;cursor:pointer}
 body.dark .dia-rapido{background:#2a2a2a;border-color:#444;color:#888}
 .dia-rapido:hover{border-color:#1D9E75;background:#e8f7f2;color:#0F6E56}
 .dia-rapido.active{border-color:#1D9E75;background:#e8f7f2;color:#0F6E56;font-weight:500}
@@ -273,6 +271,7 @@ var fechaSeleccionada=new Date();
 fechaSeleccionada.setHours(0,0,0,0);
 var calMes=new Date();
 calMes.setDate(1);
+calMes.setHours(0,0,0,0);
 var calAbierto=false;
 
 function formatFecha(d){
@@ -304,26 +303,27 @@ function renderCalendario(){
   var maxFecha=new Date(hoy);maxFecha.setDate(hoy.getDate()+6);
   var meses=['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
   var diasNom=['Do','Lu','Ma','Mi','Ju','Vi','Sa'];
-  var primerDia=new Date(calMes.getFullYear(),calMes.getMonth(),1);
-  var ultimoDia=new Date(calMes.getFullYear(),calMes.getMonth()+1,0);
+  var anio=calMes.getFullYear();
+  var mes=calMes.getMonth();
+  var primerDiaSemana=new Date(anio,mes,1).getDay();
+  var totalDias=new Date(anio,mes+1,0).getDate();
   var diasRapidos='';
   for(var i=0;i<7;i++){
     var d=new Date(hoy);d.setDate(hoy.getDate()+i);
     var activo=formatFecha(d)===formatFecha(fechaSeleccionada);
-    var lbl=i===0?'Hoy':i===1?'Manana':formatFechaLabel(d).split(' ')[0]+' '+d.getDate();
+    var lbl=i===0?'Hoy':i===1?'Manana':diasNom[d.getDay()]+' '+d.getDate();
     diasRapidos+='<button class="dia-rapido'+(activo?' active':'')+'" onclick="seleccionarFecha(\''+formatFecha(d)+'\')">'+lbl+'</button>';
   }
-  var cabecera=diasNom.map(function(d){return '<div class="cal-day-name">'+d+'</div>';}).join('');
-  var blancos='';
-  for(var b=0;b<primerDia.getDay();b++) blancos+='<div class="cal-day empty"></div>';
+  var cabecera=diasNom.map(function(n){return '<div class="cal-day-name">'+n+'</div>';}).join('');
   var celdas='';
-  for(var dia=1;dia<=ultimoDia.getDate();dia++){
-    var fecha=new Date(calMes.getFullYear(),calMes.getMonth(),dia);
+  for(var b=0;b<primerDiaSemana;b++) celdas+='<div class="cal-day empty"></div>';
+  for(var dia=1;dia<=totalDias;dia++){
+    var fecha=new Date(anio,mes,dia);
     fecha.setHours(0,0,0,0);
     var fechaStr=formatFecha(fecha);
     var cls='cal-day';
-    if(formatFecha(fecha)===formatFecha(hoy)) cls+=' today';
-    if(formatFecha(fecha)===formatFecha(fechaSeleccionada)) cls+=' selected';
+    if(fechaStr===formatFecha(hoy)) cls+=' today';
+    if(fechaStr===formatFecha(fechaSeleccionada)) cls+=' selected';
     if(fecha<hoy||fecha>maxFecha) cls+=' disabled';
     celdas+='<div class="'+cls+'" onclick="seleccionarFecha(\''+fechaStr+'\')">'+dia+'</div>';
   }
@@ -331,33 +331,35 @@ function renderCalendario(){
     '<div class="dias-rapidos">'+diasRapidos+'</div>'+
     '<div class="cal-header">'+
     '<button class="cal-nav" onclick="cambiarMes(-1)">&#8249;</button>'+
-    '<div class="cal-title">'+meses[calMes.getMonth()]+' '+calMes.getFullYear()+'</div>'+
+    '<div class="cal-title">'+meses[mes]+' '+anio+'</div>'+
     '<button class="cal-nav" onclick="cambiarMes(1)">&#8250;</button>'+
     '</div>'+
     '<div class="cal-days-header">'+cabecera+'</div>'+
-    '<div class="cal-days" style="min-height:220px">'+blancos+celdas+'</div>';
+    '<div class="cal-days">'+celdas+'</div>';
 }
 
 function cambiarMes(dir){
-  calMes.setMonth(calMes.getMonth()+dir);
+  calMes=new Date(calMes.getFullYear(),calMes.getMonth()+dir,1);
   renderCalendario();
 }
 
 function seleccionarFecha(fechaStr){
-  var partes=fechaStr.split('-');
-  fechaSeleccionada=new Date(parseInt(partes[0]),parseInt(partes[1])-1,parseInt(partes[2]));
+  var p=fechaStr.split('-');
+  fechaSeleccionada=new Date(parseInt(p[0]),parseInt(p[1])-1,parseInt(p[2]));
   fechaSeleccionada.setHours(0,0,0,0);
   document.getElementById('fecha-hoy').textContent=formatFechaLabel(fechaSeleccionada)+', '+fechaSeleccionada.getFullYear();
   cerrarCalendario();
-  cargarReservas();
   var allMesas=mesasData.comedor.concat(mesasData.patio).concat(mesasData.cava);
   allMesas.forEach(function(m){m.walkin=0;m.walkinId=null;m.reserva=null;});
+  cargarReservas();
   renderMesas();renderMetrics();
 }
 
 document.addEventListener('click',function(e){
-  if(calAbierto&&!document.getElementById('calendar-dropdown').contains(e.target)&&e.target.id!=='date-btn'&&!document.getElementById('date-btn').contains(e.target)){
-    cerrarCalendario();
+  if(calAbierto){
+    var cal=document.getElementById('calendar-dropdown');
+    var btn=document.getElementById('date-btn');
+    if(!cal.contains(e.target)&&!btn.contains(e.target)) cerrarCalendario();
   }
 });
 
