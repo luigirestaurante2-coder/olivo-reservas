@@ -301,7 +301,7 @@ function cerrarCalendario(){
 
 function renderCalendario(){
   var hoy=new Date();hoy.setHours(0,0,0,0);
-  var maxFecha=new Date(hoy);maxFecha.setDate(hoy.getDate()+5);
+  var maxFecha=new Date(hoy);maxFecha.setDate(hoy.getDate()+6);
   var meses=['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
   var diasNom=['Do','Lu','Ma','Mi','Ju','Vi','Sa'];
   var primerDia=new Date(calMes.getFullYear(),calMes.getMonth(),1);
