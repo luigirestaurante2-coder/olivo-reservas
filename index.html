@@ -307,7 +307,7 @@ function renderCalendario(){
   var primerDia=new Date(calMes.getFullYear(),calMes.getMonth(),1);
   var ultimoDia=new Date(calMes.getFullYear(),calMes.getMonth()+1,0);
   var diasRapidos='';
-  for(var i=0;i<5;i++){
+  for(var i=0;i<7;i++){
     var d=new Date(hoy);d.setDate(hoy.getDate()+i);
     var activo=formatFecha(d)===formatFecha(fechaSeleccionada);
     var lbl=i===0?'Hoy':i===1?'Manana':formatFechaLabel(d).split(' ')[0]+' '+d.getDate();
