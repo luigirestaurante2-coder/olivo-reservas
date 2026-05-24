@@ -8,7 +8,7 @@
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f5f5f0;color:#1a1a1a;font-size:14px;transition:background 0.2s,color 0.2s}
 body.dark{background:#141414;color:#e5e5e0}
-.header{display:flex;align-items:center;justify-content:space-between;padding:1rem 1.5rem;background:#fff;border-bottom:1px solid #e5e5e0;position:sticky;top:0;z-index:10;transition:background 0.2s}
+.header{display:flex;align-items:center;justify-content:space-between;padding:1rem 1.5rem;background:#fff;border-bottom:1px solid #e5e5e0;position:sticky;top:0;z-index:10}
 body.dark .header{background:#1e1e1e;border-color:#333}
 .logo{font-size:17px;font-weight:500;color:#1a1a1a}
 body.dark .logo{color:#e5e5e0}
@@ -16,31 +16,27 @@ body.dark .logo{color:#e5e5e0}
 .header-right{display:flex;align-items:center;gap:10px}
 .date{font-size:13px;color:#666;background:#f5f5f0;padding:5px 12px;border-radius:8px}
 body.dark .date{background:#2a2a2a;color:#888}
-.dark-btn{font-size:11px;padding:4px 10px;border-radius:6px;border:0.5px solid #e5e5e0;background:#fff;color:#666;cursor:pointer;transition:all 0.2s}
+.dark-btn{font-size:11px;padding:4px 10px;border-radius:6px;border:0.5px solid #e5e5e0;background:#fff;color:#666;cursor:pointer}
 body.dark .dark-btn{border-color:#444;background:#2a2a2a;color:#aaa}
-.dark-btn:hover{background:#f5f5f0}
-body.dark .dark-btn:hover{background:#333}
 .metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;padding:1.25rem 1.5rem}
-.metric{background:#fff;border-radius:12px;padding:1rem;border:1px solid #e5e5e0;transition:background 0.2s}
+.metric{background:#fff;border-radius:12px;padding:1rem;border:1px solid #e5e5e0}
 body.dark .metric{background:#1e1e1e;border-color:#333}
 .metric-label{font-size:12px;color:#888;margin-bottom:6px}
-body.dark .metric-label{color:#666}
 .metric-value{font-size:26px;font-weight:500}
 .metric-sub{font-size:11px;color:#aaa;margin-top:2px}
-body.dark .metric-sub{color:#555}
 .section{padding:0 1.5rem 1.5rem}
-.tab-bar{display:flex;border-bottom:1px solid #e5e5e0;margin-bottom:1.25rem;transition:border-color 0.2s}
+.tab-bar{display:flex;border-bottom:1px solid #e5e5e0;margin-bottom:1.25rem}
 body.dark .tab-bar{border-color:#333}
 .tab{font-size:13px;padding:8px 16px;cursor:pointer;color:#888;border:none;background:none;border-bottom:2px solid transparent}
 .tab.active{color:#0F6E56;border-bottom:2px solid #1D9E75;font-weight:500}
 body.dark .tab{color:#666}
 body.dark .tab.active{color:#1D9E75}
 .filter-bar{display:flex;gap:8px;margin-bottom:1rem;flex-wrap:wrap}
-.filter-btn{font-size:12px;padding:5px 12px;border-radius:8px;border:1px solid #e5e5e0;background:#f5f5f0;color:#666;cursor:pointer;transition:all 0.2s}
+.filter-btn{font-size:12px;padding:5px 12px;border-radius:8px;border:1px solid #e5e5e0;background:#f5f5f0;color:#666;cursor:pointer}
 body.dark .filter-btn{border-color:#444;background:#2a2a2a;color:#888}
 .filter-btn.active{border-color:#1D9E75;color:#0F6E56;background:#e8f7f2}
 body.dark .filter-btn.active{background:#085041;color:#9FE1CB;border-color:#0F6E56}
-.tabla-wrap{border:1px solid #e5e5e0;border-radius:12px;overflow:hidden;background:#fff;transition:background 0.2s}
+.tabla-wrap{border:1px solid #e5e5e0;border-radius:12px;overflow:hidden;background:#fff}
 body.dark .tabla-wrap{background:#1e1e1e;border-color:#333}
 table{width:100%;border-collapse:collapse;font-size:13px}
 thead{background:#fafafa}
@@ -62,47 +58,42 @@ body.dark .badge-cancelada{background:#501313;color:#F7C1C1}
 .btn-confirm{font-size:12px;padding:5px 10px;border-radius:8px;border:1px solid #1D9E75;color:#0F6E56;background:transparent;cursor:pointer;margin-right:4px}
 .btn-confirm:hover{background:#e8f7f2}
 body.dark .btn-confirm{color:#1D9E75;border-color:#0F6E56}
-body.dark .btn-confirm:hover{background:#085041}
 .btn-cancel{font-size:12px;padding:5px 10px;border-radius:8px;border:1px solid #e53935;color:#c62828;background:transparent;cursor:pointer}
-.btn-cancel:hover{background:#ffebee}
 body.dark .btn-cancel{color:#E24B4A;border-color:#A32D2D}
-body.dark .btn-cancel:hover{background:#501313}
-.area-block{background:#fff;border:1px solid #e5e5e0;border-radius:12px;padding:1rem;margin-bottom:12px;transition:background 0.2s}
+.area-block{background:#fff;border:1px solid #e5e5e0;border-radius:12px;padding:1rem;margin-bottom:12px}
 body.dark .area-block{background:#1e1e1e;border-color:#333}
 .area-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
 .area-name{font-size:14px;font-weight:500}
 .area-cap{font-size:12px;color:#888;background:#f5f5f0;padding:3px 10px;border-radius:6px}
 body.dark .area-cap{background:#2a2a2a;color:#666}
 .mesas-grid{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:8px}
-.mesa{border-radius:10px;border:1px solid #e5e5e0;padding:10px 8px;text-align:center;background:#fff;min-width:76px;cursor:pointer;transition:all 0.15s}
+.mesa{border-radius:10px;border:1px solid #e5e5e0;padding:10px 8px;text-align:center;background:#fff;min-width:80px;cursor:pointer;transition:all 0.15s}
 body.dark .mesa{background:#2a2a2a;border-color:#444}
 .mesa:hover{transform:translateY(-1px);box-shadow:0 2px 8px rgba(0,0,0,0.08)}
 .mesa-num{font-size:12px;font-weight:500;color:#555}
 body.dark .mesa-num{color:#aaa}
-.mesa-cap{font-size:11px;color:#aaa;margin-top:2px}
+.mesa-cap{font-size:10px;color:#aaa;margin-top:2px}
 body.dark .mesa-cap{color:#555}
 .mesa-estado{font-size:10px;margin-top:4px;color:#aaa}
 body.dark .mesa-estado{color:#555}
+.mesa-cliente{font-size:10px;margin-top:2px;font-weight:500;color:#2e7d32;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:76px}
+body.dark .mesa-cliente{color:#9FE1CB}
 .mesa.reservada{background:#e8f5e9;border-color:#81c784}
 .mesa.reservada .mesa-num{color:#2e7d32}
-.mesa.reservada .mesa-estado{color:#388e3c}
 body.dark .mesa.reservada{background:#173404;border-color:#3B6D11}
 body.dark .mesa.reservada .mesa-num{color:#C0DD97}
-body.dark .mesa.reservada .mesa-estado{color:#97C459}
 .mesa.pendiente-m{background:#fff3e0;border-color:#ffb74d}
 .mesa.pendiente-m .mesa-num{color:#e65100}
 body.dark .mesa.pendiente-m{background:#412402;border-color:#854F0B}
 body.dark .mesa.pendiente-m .mesa-num{color:#FAC775}
 .mesa.walk-in{background:#e3f2fd;border-color:#64b5f6}
 .mesa.walk-in .mesa-num{color:#1565c0}
-.mesa.walk-in .mesa-estado{color:#1976d2}
 body.dark .mesa.walk-in{background:#0C447C;border-color:#185FA5}
 body.dark .mesa.walk-in .mesa-num{color:#B5D4F4}
-body.dark .mesa.walk-in .mesa-estado{color:#85B7EB}
 .leyenda{display:flex;gap:12px;font-size:12px;color:#888;flex-wrap:wrap;margin-top:8px}
 .leyenda span{display:flex;align-items:center;gap:4px}
 .dot{width:10px;height:10px;border-radius:3px;display:inline-block}
-.horas-wrap{background:#fff;border:1px solid #e5e5e0;border-radius:12px;padding:1rem;margin-bottom:12px;transition:background 0.2s}
+.horas-wrap{background:#fff;border:1px solid #e5e5e0;border-radius:12px;padding:1rem;margin-bottom:12px}
 body.dark .horas-wrap{background:#1e1e1e;border-color:#333}
 .horas{display:flex;gap:6px;align-items:flex-end;height:90px}
 .hora-col{display:flex;flex-direction:column;align-items:center;gap:4px;flex:1}
@@ -110,18 +101,25 @@ body.dark .horas-wrap{background:#1e1e1e;border-color:#333}
 .hora-label{font-size:11px;color:#aaa}
 body.dark .hora-label{color:#555}
 .modal-bg{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);display:flex;align-items:center;justify-content:center;z-index:100}
-.modal{background:#fff;border-radius:16px;padding:1.5rem;width:300px;box-shadow:0 8px 32px rgba(0,0,0,0.15)}
+.modal{background:#fff;border-radius:16px;padding:1.5rem;width:320px;box-shadow:0 8px 32px rgba(0,0,0,0.15);max-height:80vh;overflow-y:auto}
 body.dark .modal{background:#1e1e1e;border:0.5px solid #333}
 .modal-title{font-size:16px;font-weight:500;margin-bottom:4px}
 .modal-sub{font-size:13px;color:#888;margin-bottom:1rem}
 .modal input{width:100%;padding:10px 12px;border-radius:8px;border:1px solid #e5e5e0;font-size:14px;margin-bottom:1rem;outline:none;background:#fff;color:#1a1a1a}
 body.dark .modal input{background:#2a2a2a;border-color:#444;color:#e5e5e0}
 .modal input:focus{border-color:#1D9E75}
-.modal-btns{display:flex;gap:8px}
+.modal-btns{display:flex;gap:8px;margin-top:1rem}
 .btn-ocupar{flex:1;padding:10px;border-radius:8px;border:1px solid #1D9E75;color:#0F6E56;background:#e8f7f2;cursor:pointer;font-size:13px;font-weight:500}
 .btn-liberar{flex:1;padding:10px;border-radius:8px;border:1px solid #e53935;color:#c62828;background:#ffebee;cursor:pointer;font-size:13px;font-weight:500}
 .btn-cerrar{padding:10px 16px;border-radius:8px;border:1px solid #e5e5e0;color:#888;background:#fff;cursor:pointer;font-size:13px}
 body.dark .btn-cerrar{background:#2a2a2a;border-color:#444;color:#888}
+.mesas-selector{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:1rem}
+.mesa-opt{padding:6px 10px;border-radius:8px;border:1px solid #e5e5e0;background:#f5f5f0;font-size:12px;cursor:pointer;text-align:center;transition:all 0.15s}
+body.dark .mesa-opt{background:#2a2a2a;border-color:#444;color:#aaa}
+.mesa-opt:hover{border-color:#1D9E75;background:#e8f7f2;color:#0F6E56}
+.mesa-opt.ocupada{opacity:0.4;cursor:not-allowed;pointer-events:none}
+.mesa-opt.selected{border-color:#1D9E75;background:#e8f7f2;color:#0F6E56;font-weight:500}
+body.dark .mesa-opt.selected{background:#085041;color:#9FE1CB;border-color:#0F6E56}
 .loading{text-align:center;padding:2rem;color:#888;font-size:13px}
 .empty{text-align:center;padding:2rem;color:#aaa;font-size:13px}
 .toast{position:fixed;bottom:1.5rem;right:1.5rem;background:#1a1a1a;color:#fff;padding:10px 16px;border-radius:10px;font-size:13px;z-index:200;opacity:0;transition:opacity 0.3s}
@@ -161,8 +159,8 @@ body.dark .btn-cerrar{background:#2a2a2a;border-color:#444;color:#888}
     </div>
     <div class="tabla-wrap">
       <table>
-        <thead><tr><th>Nombre</th><th>Fecha</th><th>Hora</th><th>Pers.</th><th>Telefono</th><th>Estado</th><th>Acciones</th></tr></thead>
-        <tbody id="tabla-body"><tr><td colspan="7" class="loading">Cargando reservas...</td></tr></tbody>
+        <thead><tr><th>Nombre</th><th>Fecha</th><th>Hora</th><th>Pers.</th><th>Telefono</th><th>Estado</th><th>Mesa</th><th>Acciones</th></tr></thead>
+        <tbody id="tabla-body"><tr><td colspan="8" class="loading">Cargando reservas...</td></tr></tbody>
       </table>
     </div>
   </div>
@@ -212,24 +210,33 @@ var CAPACIDAD_TOTAL=70;
 var WEBHOOK_CONFIRMAR='https://qwsd-n8n.hi49ib.easypanel.host/webhook/confirmar-reserva';
 var WEBHOOK_CANCELAR='https://qwsd-n8n.hi49ib.easypanel.host/webhook/cancelar-reserva';
 var ESTADOS={confirmada:6206820,pendiente:6206821,cancelada:6206822};
+var FIELD_MESA=8694049;
 var mesasData={
   comedor:[
-    {num:'C1',cap:4,walkin:0,walkinId:null},{num:'C2',cap:4,walkin:0,walkinId:null},
-    {num:'C3',cap:4,walkin:0,walkinId:null},{num:'C4',cap:4,walkin:0,walkinId:null},
-    {num:'C5',cap:4,walkin:0,walkinId:null},{num:'C6',cap:5,walkin:0,walkinId:null},
-    {num:'C7',cap:4,walkin:0,walkinId:null},{num:'C8',cap:6,walkin:0,walkinId:null},
-    {num:'C9/10',cap:8,walkin:0,walkinId:null},{num:'C11',cap:2,walkin:0,walkinId:null},
-    {num:'C12',cap:2,walkin:0,walkinId:null}
+    {num:'C1',cap:4,walkin:0,walkinId:null,reserva:null},
+    {num:'C2',cap:4,walkin:0,walkinId:null,reserva:null},
+    {num:'C3',cap:4,walkin:0,walkinId:null,reserva:null},
+    {num:'C4',cap:4,walkin:0,walkinId:null,reserva:null},
+    {num:'C5',cap:4,walkin:0,walkinId:null,reserva:null},
+    {num:'C6',cap:5,walkin:0,walkinId:null,reserva:null},
+    {num:'C7',cap:4,walkin:0,walkinId:null,reserva:null},
+    {num:'C8',cap:6,walkin:0,walkinId:null,reserva:null},
+    {num:'C9/10',cap:8,walkin:0,walkinId:null,reserva:null},
+    {num:'C11',cap:2,walkin:0,walkinId:null,reserva:null},
+    {num:'C12',cap:2,walkin:0,walkinId:null,reserva:null}
   ],
   patio:[
-    {num:'P1',cap:2,walkin:0,walkinId:null},{num:'P2/3/4',cap:8,walkin:0,walkinId:null},
-    {num:'P5',cap:5,walkin:0,walkinId:null}
+    {num:'P1',cap:2,walkin:0,walkinId:null,reserva:null},
+    {num:'P2/3/4',cap:8,walkin:0,walkinId:null,reserva:null},
+    {num:'P5',cap:5,walkin:0,walkinId:null,reserva:null}
   ],
-  cava:[{num:'CV1',cap:8,walkin:0,walkinId:null}]
+  cava:[{num:'CV1',cap:8,walkin:0,walkinId:null,reserva:null}]
 };
 var horasData=[{h:'12:00'},{h:'12:30'},{h:'13:00'},{h:'13:30'},{h:'14:00'},{h:'19:00'},{h:'19:30'},{h:'20:00'},{h:'20:30'}];
 var reservas=[];
 var filtroEstado='todas';
+var mesaSeleccionada=null;
+var reservaActual=null;
 
 function toggleDark(){
   var btn=document.getElementById('dark-btn');
@@ -275,6 +282,15 @@ function parseFecha(f){
   return f;
 }
 
+function getMesasOcupadas(){
+  var ocupadas=[];
+  var allMesas=mesasData.comedor.concat(mesasData.patio).concat(mesasData.cava);
+  allMesas.forEach(function(m){
+    if(m.walkin>0||m.reserva) ocupadas.push(m.num);
+  });
+  return ocupadas;
+}
+
 function cargarReservas(){
   var hoy=getHoy();
   fetch('https://api.baserow.io/api/database/rows/table/'+TABLA_RESERVAS+'/?user_field_names=true&size=200',
@@ -284,10 +300,21 @@ function cargarReservas(){
     reservas=(data.results||[]).filter(function(r){
       return parseFecha(r['Fecha'])===hoy;
     });
-    renderTabla();renderMetrics();renderHoras();
+    var allMesas=mesasData.comedor.concat(mesasData.patio).concat(mesasData.cava);
+    allMesas.forEach(function(m){m.reserva=null;});
+    reservas.forEach(function(r){
+      var mesaNom=r['Mesa']||'';
+      if(mesaNom){
+        var mesa=allMesas.filter(function(m){return m.num===mesaNom;})[0];
+        if(mesa&&getEstadoNombre(r)==='confirmada'){
+          mesa.reserva={nombre:r['Nombre']||'',hora:r['Hora']||''};
+        }
+      }
+    });
+    renderTabla();renderMetrics();renderHoras();renderMesas();
   })
   .catch(function(){
-    document.getElementById('tabla-body').innerHTML='<tr><td colspan="7" class="empty">Error al cargar reservas</td></tr>';
+    document.getElementById('tabla-body').innerHTML='<tr><td colspan="8" class="empty">Error al cargar reservas</td></tr>';
   });
 }
 
@@ -318,31 +345,80 @@ function getEstadoNombre(r){
 function renderTabla(){
   var tb=document.getElementById('tabla-body');
   var lista=filtroEstado==='todas'?reservas:reservas.filter(function(r){return getEstadoNombre(r)===filtroEstado.toLowerCase();});
-  if(!lista.length){tb.innerHTML='<tr><td colspan="7" class="empty">Sin reservas</td></tr>';return;}
+  if(!lista.length){tb.innerHTML='<tr><td colspan="8" class="empty">Sin reservas</td></tr>';return;}
   tb.innerHTML=lista.map(function(r){
     var estado=getEstadoNombre(r);
     var fecha=parseFecha(r['Fecha'])||'--';
-    var tel=r['Telefono']||r['\u0054\u0065l\u00e9fono']||'--';
+    var tel=r['Telefono']||r['Tel\u00e9fono']||'--';
+    var mesa=r['Mesa']||'--';
     var acciones=estado==='pendiente'?
-      '<button class="btn-confirm" onclick="accionReserva('+r.id+',\'confirmar\',\''+tel+'\')">Confirmar</button><button class="btn-cancel" onclick="accionReserva('+r.id+',\'cancelar\',\''+tel+'\')">Cancelar</button>':
+      '<button class="btn-confirm" onclick="abrirModalConfirmar('+r.id+',\''+tel+'\',\''+r['Nombre']+'\',\''+r['Hora']+'\','+r['Personas']+')">Confirmar</button><button class="btn-cancel" onclick="accionReserva('+r.id+',\'cancelar\',\''+tel+'\')">Cancelar</button>':
       '<span style="font-size:12px;color:#aaa">'+(estado==='confirmada'?'Confirmada':'Cancelada')+'</span>';
-    return '<tr><td style="font-weight:500">'+(r['Nombre']||'--')+'</td><td>'+fecha+'</td><td>'+(r['Hora']||'--')+'</td><td>'+(r['Personas']||'--')+'</td><td style="font-size:12px;color:#888">'+tel+'</td><td><span class="badge badge-'+estado+'">'+estado+'</span></td><td>'+acciones+'</td></tr>';
+    return '<tr><td style="font-weight:500">'+(r['Nombre']||'--')+'</td><td>'+fecha+'</td><td>'+(r['Hora']||'--')+'</td><td>'+(r['Personas']||'--')+'</td><td style="font-size:12px;color:#888">'+tel+'</td><td><span class="badge badge-'+estado+'">'+estado+'</span></td><td style="font-size:12px;color:#888">'+mesa+'</td><td>'+acciones+'</td></tr>';
   }).join('');
 }
 
+function abrirModalConfirmar(id,telefono,nombre,hora,personas){
+  reservaActual={id:id,telefono:telefono,nombre:nombre,hora:hora,personas:personas};
+  mesaSeleccionada=null;
+  var ocupadas=getMesasOcupadas();
+  var allMesas=mesasData.comedor.concat(mesasData.patio).concat(mesasData.cava);
+  var opcionesMesas=allMesas.map(function(m){
+    var estaOcupada=ocupadas.indexOf(m.num)>-1;
+    return '<div class="mesa-opt'+(estaOcupada?' ocupada':'')+'" onclick="seleccionarMesa(\''+m.num+'\')" id="opt-'+m.num.replace('/','_')+'">'+m.num+'<br><span style="font-size:10px;color:inherit">'+m.cap+' pers.</span></div>';
+  }).join('');
+  var mc=document.getElementById('modal-container');
+  mc.innerHTML='<div class="modal-bg" onclick="cerrarModal()"><div class="modal" onclick="event.stopPropagation()">'+
+    '<div class="modal-title">Confirmar reserva</div>'+
+    '<div class="modal-sub">'+nombre+' · '+hora+' · '+personas+' personas</div>'+
+    '<div style="font-size:12px;color:#888;margin-bottom:8px">Selecciona una mesa disponible:</div>'+
+    '<div class="mesas-selector">'+opcionesMesas+'</div>'+
+    '<div class="modal-btns">'+
+    '<button class="btn-ocupar" id="btn-confirmar-final" onclick="confirmarConMesa()" style="opacity:0.5;pointer-events:none">Confirmar reserva</button>'+
+    '<button class="btn-cerrar" onclick="cerrarModal()">Cancelar</button>'+
+    '</div></div></div>';
+}
+
+function seleccionarMesa(mesaNum){
+  mesaSeleccionada=mesaNum;
+  document.querySelectorAll('.mesa-opt').forEach(function(el){el.classList.remove('selected');});
+  var id='opt-'+mesaNum.replace('/','_');
+  var el=document.getElementById(id);
+  if(el) el.classList.add('selected');
+  var btn=document.getElementById('btn-confirmar-final');
+  if(btn){btn.style.opacity='1';btn.style.pointerEvents='auto';}
+}
+
+function confirmarConMesa(){
+  if(!mesaSeleccionada||!reservaActual) return;
+  var body={};
+  body['field_8586169']=ESTADOS.confirmada;
+  body['field_'+FIELD_MESA]=mesaSeleccionada;
+  fetch('https://api.baserow.io/api/database/rows/table/'+TABLA_RESERVAS+'/'+reservaActual.id+'/?user_field_names=false',{
+    method:'PATCH',
+    headers:{Authorization:'Token '+BASEROW_TOKEN,'Content-Type':'application/json'},
+    body:JSON.stringify(body)
+  })
+  .then(function(){return fetch(WEBHOOK_CONFIRMAR+'?reserva_id='+reservaActual.id+'&telefono='+reservaActual.telefono);})
+  .then(function(){
+    showToast('Reserva confirmada en mesa '+mesaSeleccionada,'#1D9E75');
+    cerrarModal();
+    cargarReservas();
+  })
+  .catch(function(){showToast('Error al confirmar','#c62828');});
+}
+
 function accionReserva(id,accion,telefono){
-  var estadoId=accion==='confirmar'?ESTADOS.confirmada:ESTADOS.cancelada;
-  var webhook=accion==='confirmar'?WEBHOOK_CONFIRMAR:WEBHOOK_CANCELAR;
-  var body={};body['field_8586169']=estadoId;
+  var body={};body['field_8586169']=ESTADOS.cancelada;
   fetch('https://api.baserow.io/api/database/rows/table/'+TABLA_RESERVAS+'/'+id+'/?user_field_names=false',{
     method:'PATCH',headers:{Authorization:'Token '+BASEROW_TOKEN,'Content-Type':'application/json'},body:JSON.stringify(body)
   })
-  .then(function(){return fetch(webhook+'?reserva_id='+id+'&telefono='+telefono);})
+  .then(function(){return fetch(WEBHOOK_CANCELAR+'?reserva_id='+id+'&telefono='+telefono);})
   .then(function(){
-    showToast(accion==='confirmar'?'Reserva confirmada':'Reserva cancelada',accion==='confirmar'?'#1D9E75':'#c62828');
+    showToast('Reserva cancelada','#c62828');
     cargarReservas();
   })
-  .catch(function(){showToast('Error al procesar','#c62828');});
+  .catch(function(){showToast('Error al cancelar','#c62828');});
 }
 
 function filtrar(estado,btn){
@@ -370,16 +446,28 @@ function renderMesas(){
   Object.keys(mesasData).forEach(function(area){
     var g=document.getElementById('mesas-'+area);
     g.innerHTML=mesasData[area].map(function(m){
-      var cls=m.walkin>0?'walk-in':'';
-      var label=m.walkin>0?m.walkin+' walk-in':'Libre';
-      return '<div class="mesa '+cls+'" onclick="abrirModal(\''+area+'\',\''+m.num+'\')"><div class="mesa-num">'+m.num+'</div><div class="mesa-cap">'+m.cap+' pers.</div><div class="mesa-estado">'+label+'</div></div>';
+      var cls='';
+      var label='Libre';
+      var clienteHtml='';
+      if(m.reserva){
+        cls='reservada';
+        label=m.reserva.hora;
+        clienteHtml='<div class="mesa-cliente">'+m.reserva.nombre+'</div>';
+      }else if(m.walkin>0){
+        cls='walk-in';
+        label=m.walkin+' walk-in';
+      }
+      if(m.walkin>0&&!m.reserva){
+        return '<div class="mesa '+cls+'" onclick="abrirModal(\''+area+'\',\''+m.num+'\')"><div class="mesa-num">'+m.num+'</div><div class="mesa-cap">'+m.cap+' pers.</div><div class="mesa-estado">'+label+'</div></div>';
+      }
+      return '<div class="mesa '+cls+'" onclick="'+(m.reserva?'':'abrirModal(\''+area+'\',\''+m.num+'\')')+'"><div class="mesa-num">'+m.num+'</div><div class="mesa-cap">'+m.cap+' pers.</div>'+clienteHtml+'<div class="mesa-estado">'+label+'</div></div>';
     }).join('');
   });
 }
 
 function abrirModal(area,mesaNum){
   var mesa=mesasData[area].filter(function(m){return m.num===mesaNum;})[0];
-  if(!mesa) return;
+  if(!mesa||mesa.reserva) return;
   var mc=document.getElementById('modal-container');
   if(mesa.walkin>0){
     mc.innerHTML='<div class="modal-bg" onclick="cerrarModal()"><div class="modal" onclick="event.stopPropagation()"><div class="modal-title">Mesa '+mesaNum+'</div><div class="modal-sub">'+mesa.walkin+' personas sin reserva.</div><div class="modal-btns"><button class="btn-liberar" onclick="liberarMesa(\''+area+'\',\''+mesaNum+'\')">Liberar mesa</button><button class="btn-cerrar" onclick="cerrarModal()">Cancelar</button></div></div></div>';
@@ -422,7 +510,7 @@ function liberarMesa(area,mesaNum){
   .catch(function(){showToast('Error al liberar mesa','#c62828');});
 }
 
-function cerrarModal(){document.getElementById('modal-container').innerHTML='';}
+function cerrarModal(){document.getElementById('modal-container').innerHTML='';mesaSeleccionada=null;reservaActual=null;}
 
 function renderHoras(){
   var c=document.getElementById('horas-chart');
