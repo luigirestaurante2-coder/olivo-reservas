@@ -333,7 +333,7 @@ function renderCalendario(){
   var primerDiaSemana=new Date(anio,mes,1).getDay();
   var totalDias=new Date(anio,mes+1,0).getDate();
   var diasRapidos='';
-  var limite=tabActual==='eventos'?7:7;
+  var limite=7;
   for(var i=0;i<limite;i++){
     var d=new Date(hoy);d.setDate(hoy.getDate()+i);
     var activo=formatFecha(d)===formatFecha(fechaSeleccionada);
@@ -497,7 +497,6 @@ function cargarWalkins(){
 
 function renderTablaEventos(){
   var tb=document.getElementById('tabla-eventos-body');
-  var fechaStr=formatFecha(fechaSeleccionada);
   var listaReservas=reservas.map(function(r){return {tipo:'reserva',data:r};});
   var listaEventos=eventos.map(function(e){return {tipo:'evento',data:e};});
   var lista=listaReservas.concat(listaEventos);
@@ -530,12 +529,12 @@ function filtrarEventos(filtro,btn){
 }
 
 function confirmarEvento(id,telefono){
-  var body={};
-  var estadoVal=typeof eventos[0]==='object'&&eventos[0]['Estado']&&typeof eventos[0]['Estado']==='object'?{id:8694936,value:'Confirmada'}:'Confirmada';
-  body['field_8694936']='Confirmada';
   fetch('https://api.baserow.io/api/database/rows/table/'+TABLA_EVENTOS+'/'+id+'/?user_field_names=false',{
     method:'PATCH',headers:{Authorization:'Token '+BASEROW_TOKEN,'Content-Type':'application/json'},
-    body:JSON.stringify({'field_8694936':estadoVal})
+    body:JSON.stringify({'field_8694936':'Confirmada'})
+  })
+  .then(function(){
+    return fetch(WEBHOOK_CONFIRMAR+'?reserva_id='+id+'&telefono='+telefono);
   })
   .then(function(){
     showToast('Evento confirmado','#1D9E75');
@@ -548,6 +547,9 @@ function cancelarEvento(id,telefono){
   fetch('https://api.baserow.io/api/database/rows/table/'+TABLA_EVENTOS+'/'+id+'/?user_field_names=false',{
     method:'PATCH',headers:{Authorization:'Token '+BASEROW_TOKEN,'Content-Type':'application/json'},
     body:JSON.stringify({'field_8694936':'Cancelada'})
+  })
+  .then(function(){
+    return fetch(WEBHOOK_CANCELAR+'?reserva_id='+id+'&telefono='+telefono);
   })
   .then(function(){
     showToast('Evento cancelado','#c62828');
