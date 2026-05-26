@@ -20,6 +20,10 @@ body.dark .date-btn{background:#2a2a2a;color:#888}
 body.dark .date-btn:hover{background:#085041;color:#9FE1CB}
 .dark-btn{font-size:11px;padding:4px 10px;border-radius:6px;border:0.5px solid #e5e5e0;background:#fff;color:#666;cursor:pointer}
 body.dark .dark-btn{border-color:#444;background:#2a2a2a;color:#aaa}
+#settings-dropdown{background:#fff}
+body.dark #settings-dropdown{background:#1e1e1e;border-color:#333}
+body.dark #settings-dropdown div{color:#e5e5e0}
+body.dark #settings-dropdown button{border-color:#444;color:#aaa}
 .calendar-dropdown{position:absolute;top:calc(100% + 8px);right:0;background:#fff;border:1px solid #e5e5e0;border-radius:12px;padding:1rem;z-index:50;box-shadow:0 4px 20px rgba(0,0,0,0.12);width:268px}
 body.dark .calendar-dropdown{background:#1e1e1e;border-color:#333}
 .cal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
@@ -167,6 +171,12 @@ body.dark .mesa-opt.selected{background:#085041;color:#9FE1CB;border-color:#0F6E
   <div class="logo">OLIVO <span>·</span> Panel de Reservas</div>
   <div class="header-right">
     <button class="dark-btn" id="dark-btn" onclick="toggleDark()">Modo oscuro</button>
+    <button class="dark-btn" id="settings-btn" onclick="toggleSettings()" style="display:none">Settings</button>
+    <div id="settings-dropdown" style="display:none;position:absolute;top:calc(100% + 8px);right:0;background:#fff;border:1px solid #e5e5e0;border-radius:12px;padding:1rem;z-index:50;box-shadow:0 4px 20px rgba(0,0,0,0.12);width:220px;text-align:left">
+      <div style="font-size:13px;font-weight:500;margin-bottom:8px;color:#1a1a1a">Configuración del plano</div>
+      <button id="btn-mover-mesas" onclick="toggleMoverMesas()" style="width:100%;padding:8px 12px;border:1px solid #e5e5e0;border-radius:8px;background:transparent;color:#666;cursor:pointer;font-size:12px;text-align:left;margin-bottom:6px">Mover mesas: OFF</button>
+      <button onclick="resetMesasPos()" style="width:100%;padding:8px 12px;border:1px solid #e5e5e0;border-radius:8px;background:transparent;color:#666;cursor:pointer;font-size:12px;text-align:left">Restablecer posiciones originales</button>
+    </div>
     <button class="date-btn" id="date-btn" onclick="toggleCalendario()">
       <span id="fecha-hoy"></span>
     </button>
@@ -310,7 +320,7 @@ body.dark .mesa-opt.selected{background:#085041;color:#9FE1CB;border-color:#0F6E
     <span><span class="dot" style="background:#ffb74d;border:1px solid #ff9800"></span>Pendiente</span>
     <span><span class="dot" style="background:#e5e5e0;border:1px solid #ccc"></span>Libre</span>
   </div>
-  <p style="font-size:12px;color:#aaa;margin-top:12px">Toca una mesa libre para marcarla como walk-in, o una walk-in para liberarla.</p>
+  <p style="font-size:12px;color:#aaa;margin-top:12px">Arrastra las mesas para reorganizarlas. Toca una mesa libre para marcarla como walk-in.</p>
 </div>
 <div id="tab-ocupacion" style="display:none">
     <div class="filter-bar">
@@ -891,6 +901,139 @@ cargarReservas();
 cargarWalkins();
 cargarEventos();
 setInterval(function(){cargarReservas();cargarWalkins();cargarEventos();},5000);
+
+// Drag & Drop para mesas del plano
+var dragEl=null, dragOffX=0, dragOffY=0, moverActivo=false;
+
+function toggleMoverMesas(){
+  moverActivo=!moverActivo;
+  var btn=document.getElementById('btn-mover-mesas');
+  if(moverActivo){
+    btn.textContent='Mover mesas: ON';
+    btn.style.background='#E1F5EE';
+    btn.style.color='#0F6E56';
+    btn.style.borderColor='#1D9E75';
+    document.querySelectorAll('.pm').forEach(function(el){el.style.cursor='grab';});
+  } else {
+    btn.textContent='Mover mesas: OFF';
+    btn.style.background='transparent';
+    btn.style.color='#666';
+    btn.style.borderColor='#e5e5e0';
+    document.querySelectorAll('.pm').forEach(function(el){el.style.cursor='pointer';});
+  }
+}
+
+function initDrag(){
+  document.querySelectorAll('.pm').forEach(function(el){
+    // Restaurar posición guardada
+    var key='mesa-pos-'+el.id;
+    var saved=localStorage.getItem(key);
+    if(saved){
+      var pos=JSON.parse(saved);
+      el.style.left=pos.left;
+      el.style.top=pos.top;
+    }
+
+    el.addEventListener('mousedown',function(e){
+      if(e.button!==0||!moverActivo) return;
+      dragEl=el;
+      var rect=el.getBoundingClientRect();
+      dragOffX=e.clientX-rect.left;
+      dragOffY=e.clientY-rect.top;
+      el.style.zIndex=100;
+      el.style.opacity='0.85';
+      e.preventDefault();
+    });
+
+    // Touch
+    el.addEventListener('touchstart',function(e){
+      if(!moverActivo) return;
+      dragEl=el;
+      var touch=e.touches[0];
+      var rect=el.getBoundingClientRect();
+      dragOffX=touch.clientX-rect.left;
+      dragOffY=touch.clientY-rect.top;
+      el.style.zIndex=100;
+      el.style.opacity='0.85';
+      e.preventDefault();
+    },{passive:false});
+  });
+
+  document.addEventListener('mousemove',function(e){
+    if(!dragEl) return;
+    var parentRect=dragEl.parentElement.getBoundingClientRect();
+    var x=e.clientX-parentRect.left-dragOffX;
+    var y=e.clientY-parentRect.top-dragOffY;
+    x=Math.max(0,Math.min(x,parentRect.width-dragEl.offsetWidth));
+    y=Math.max(0,Math.min(y,parentRect.height-dragEl.offsetHeight));
+    dragEl.style.left=x+'px';
+    dragEl.style.top=y+'px';
+  });
+
+  document.addEventListener('touchmove',function(e){
+    if(!dragEl) return;
+    var touch=e.touches[0];
+    var parentRect=dragEl.parentElement.getBoundingClientRect();
+    var x=touch.clientX-parentRect.left-dragOffX;
+    var y=touch.clientY-parentRect.top-dragOffY;
+    x=Math.max(0,Math.min(x,parentRect.width-dragEl.offsetWidth));
+    y=Math.max(0,Math.min(y,parentRect.height-dragEl.offsetHeight));
+    dragEl.style.left=x+'px';
+    dragEl.style.top=y+'px';
+    e.preventDefault();
+  },{passive:false});
+
+  function stopDrag(){
+    if(!dragEl) return;
+    dragEl.style.zIndex='';
+    dragEl.style.opacity='1';
+    // Guardar posición
+    var key='mesa-pos-'+dragEl.id;
+    localStorage.setItem(key,JSON.stringify({left:dragEl.style.left,top:dragEl.style.top}));
+    dragEl=null;
+  }
+
+  document.addEventListener('mouseup',stopDrag);
+  document.addEventListener('touchend',stopDrag);
+}
+
+// Botón para resetear posiciones
+function resetMesasPos(){
+  document.querySelectorAll('.pm').forEach(function(el){
+    localStorage.removeItem('mesa-pos-'+el.id);
+  });
+  location.reload();
+}
+
+// Inicializar drag cuando se muestra la pestaña de mesas
+var origShowTab=showTab;
+showTab=function(tab,btn){
+  origShowTab(tab,btn);
+  if(tab==='mesas'){
+    setTimeout(initDrag,100);
+    document.getElementById('settings-btn').style.display='';
+  } else {
+    document.getElementById('settings-btn').style.display='none';
+    document.getElementById('settings-dropdown').style.display='none';
+    moverActivo=false;
+    var btnM=document.getElementById('btn-mover-mesas');
+    if(btnM){btnM.textContent='Mover mesas: OFF';btnM.style.background='transparent';btnM.style.color='#666';btnM.style.borderColor='#e5e5e0';}
+  }
+};
+
+function toggleSettings(){
+  var dd=document.getElementById('settings-dropdown');
+  dd.style.display=dd.style.display==='none'?'block':'none';
+}
+
+document.addEventListener('click',function(e){
+  var dd=document.getElementById('settings-dropdown');
+  var btn=document.getElementById('settings-btn');
+  if(dd&&dd.style.display==='block'&&!dd.contains(e.target)&&!btn.contains(e.target)){
+    dd.style.display='none';
+  }
+});
+
 </script>
 </body>
 </html>
