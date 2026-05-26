@@ -107,10 +107,10 @@ body.dark .mesa-num{color:#aaa}
 .mesa-estado{font-size:10px;margin-top:4px;color:#aaa}
 body.dark .mesa-estado{color:#555}
 .mesa-cliente{font-size:10px;margin-top:2px;font-weight:500;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:76px}
-.mesa.reservada{background:#4CAF50;border-color:#2E7D32}
+.mesa.reservada{background:#6DBF87;border-color:#4a9e6a}
 .mesa.reservada .mesa-num{color:#fff}
-.mesa.reservada .mesa-estado{color:#C8E6C9}
-body.dark .mesa.reservada{background:#2E7D32;border-color:#1B5E20}
+.mesa.reservada .mesa-estado{color:#d0f0dd}
+body.dark .mesa.reservada{background:#4a9e6a;border-color:#2E7D32}
 body.dark .mesa.reservada .mesa-num{color:#fff}
 .mesa.pendiente-m{background:#fff3e0;border-color:#ffb74d}
 .mesa.pendiente-m .mesa-num{color:#e65100}
@@ -676,12 +676,16 @@ function abrirModal(area,mesaNum){
     var r=reservas.filter(function(r){return r['Mesa']===mesaNum&&getEstadoNombre(r)==='confirmada';})[0];
     var tel=r?(r['Telefono']||r['Tel\u00e9fono']||'--'):'--';
     var rid=mesa.reserva.id;
+    var tipoEvento=r?(r['Tipo_Evento']&&typeof r['Tipo_Evento']==='object'?r['Tipo_Evento'].value:(r['Tipo_Evento']||'')):'';
+    var restricciones=r?(r['Restricciones']||''):'';
     mc.innerHTML='<div class="modal-bg" onclick="cerrarModal()"><div class="modal" onclick="event.stopPropagation()">'+
       '<div class="modal-title">Mesa '+mesaNum+'</div>'+
       '<div class="modal-sub">'+mesa.reserva.nombre+'</div>'+
       '<div style="font-size:13px;color:#888;margin-bottom:4px">Hora: '+mesa.reserva.hora+'</div>'+
       '<div style="font-size:13px;color:#888;margin-bottom:4px">Personas: '+mesa.reserva.personas+'</div>'+
-      '<div style="font-size:13px;color:#888;margin-bottom:1rem">Telefono: '+tel+'</div>'+
+      '<div style="font-size:13px;color:#888;margin-bottom:4px">Telefono: '+tel+'</div>'+
+      (tipoEvento?'<div style="font-size:13px;color:#888;margin-bottom:4px">Ocasion: '+tipoEvento+'</div>':'')+
+      (restricciones?'<div style="font-size:13px;color:#e65100;margin-bottom:1rem">Restricciones: '+restricciones+'</div>':'<div style="margin-bottom:1rem"></div>')+
       '<div class="modal-btns">'+
       '<button class="btn-liberar" onclick="liberarReserva(\''+area+'\',\''+mesaNum+'\','+rid+')">Liberar mesa</button>'+
       '<button class="btn-cerrar" onclick="cerrarModal()">Cerrar</button>'+
