@@ -20,10 +20,10 @@ body.dark .date-btn{background:#2a2a2a;color:#888}
 body.dark .date-btn:hover{background:#085041;color:#9FE1CB}
 .dark-btn{font-size:11px;padding:4px 10px;border-radius:6px;border:0.5px solid #e5e5e0;background:#fff;color:#666;cursor:pointer}
 body.dark .dark-btn{border-color:#444;background:#2a2a2a;color:#aaa}
-#settings-dropdown{background:#fff}
-body.dark #settings-dropdown{background:#1e1e1e;border-color:#333}
-body.dark #settings-dropdown div{color:#e5e5e0}
-body.dark #settings-dropdown button{border-color:#444;color:#aaa}
+#settings-dropdown{background:#fff;color:#1a1a1a}
+body.dark #settings-dropdown{background:#1e1e1e !important;border-color:#333 !important;color:#e5e5e0}
+body.dark #settings-dropdown>div{color:#e5e5e0 !important}
+body.dark #settings-dropdown button{border-color:#444 !important;color:#aaa !important;background:#2a2a2a !important}
 .calendar-dropdown{position:absolute;top:calc(100% + 8px);right:0;background:#fff;border:1px solid #e5e5e0;border-radius:12px;padding:1rem;z-index:50;box-shadow:0 4px 20px rgba(0,0,0,0.12);width:268px}
 body.dark .calendar-dropdown{background:#1e1e1e;border-color:#333}
 .cal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
@@ -240,8 +240,12 @@ body.dark .mesa-opt.selected{background:#085041;color:#9FE1CB;border-color:#0F6E
   .pm small{font-size:10px;color:#aaa;margin-top:2px}
   body.dark .pm small{color:#555}
   .pm.reservada{background:#3DB58A;border-color:#2a8a67}
-  .pm.reservada span{color:#fff}
-  .pm.reservada small{color:#c8ede3}
+  .pm.reservada span{color:#fff !important}
+  .pm.reservada small{color:#c8ede3 !important}
+  .pm.reservada .pm-cliente{color:#fff !important}
+  body.dark .pm.reservada{background:#3DB58A;border-color:#2a8a67}
+  body.dark .pm.reservada span{color:#fff !important}
+  body.dark .pm.reservada small{color:#c8ede3 !important}
   .pm.walk-in{background:#e3f2fd;border-color:#64b5f6}
   .pm.walk-in span{color:#1565c0}
   .pm.walk-in small{color:#1976d2}
