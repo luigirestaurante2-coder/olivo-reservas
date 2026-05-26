@@ -215,27 +215,91 @@ body.dark .mesa-opt.selected{background:#085041;color:#9FE1CB;border-color:#0F6E
     </div>
   </div>
   <div id="tab-mesas" style="display:none">
-    <div class="area-block">
-      <div class="area-header"><div class="area-name">Comedor</div><div class="area-cap">45 pers. · 11 mesas</div></div>
-      <div class="mesas-grid" id="mesas-comedor"></div>
+  <style>
+  .plano-zona{background:#fff;border:1px solid #e5e5e0;border-radius:12px;padding:1rem;margin-bottom:12px}
+  body.dark .plano-zona{background:#1e1e1e;border-color:#333}
+  .plano-area{position:relative;background:#f5f5f0;border-radius:8px}
+  body.dark .plano-area{background:#242424}
+  .pm{position:absolute;border-radius:8px;display:flex;flex-direction:column;align-items:center;justify-content:center;border:1px solid #e5e5e0;background:#fff;cursor:pointer;transition:all 0.15s}
+  body.dark .pm{background:#2a2a2a;border-color:#444}
+  .pm:hover{transform:translateY(-1px)}
+  .pm span{font-size:11px;font-weight:500;color:#555}
+  body.dark .pm span{color:#aaa}
+  .pm small{font-size:9px;color:#aaa;margin-top:1px}
+  body.dark .pm small{color:#555}
+  .pm.reservada{background:#3DB58A;border-color:#2a8a67}
+  .pm.reservada span{color:#fff}
+  .pm.reservada small{color:#c8ede3}
+  .pm.walk-in{background:#e3f2fd;border-color:#64b5f6}
+  .pm.walk-in span{color:#1565c0}
+  .pm.walk-in small{color:#1976d2}
+  body.dark .pm.walk-in{background:#0C447C;border-color:#185FA5}
+  body.dark .pm.walk-in span{color:#B5D4F4}
+  .pm.pendiente-m{background:#fff3e0;border-color:#ffb74d}
+  .pm.pendiente-m span{color:#e65100}
+  body.dark .pm.pendiente-m{background:#412402;border-color:#854F0B}
+  body.dark .pm.pendiente-m span{color:#FAC775}
+  .pm-cliente{font-size:9px;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:58px;text-align:center}
+  .zona-lbl{position:absolute;font-size:10px;font-weight:500;color:#888;background:#f5f5f0;padding:1px 6px;border-radius:4px}
+  body.dark .zona-lbl{background:#242424;color:#555}
+  .plano-divider-h{position:absolute;left:10px;right:10px;height:0.5px;background:#e5e5e0}
+  body.dark .plano-divider-h{background:#333}
+  .plano-divider-v{position:absolute;width:0.5px;background:#e5e5e0}
+  body.dark .plano-divider-v{background:#333}
+  .plano-zona-title{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+  .plano-zona-name{font-size:14px;font-weight:500}
+  .plano-zona-cap{font-size:12px;color:#888;background:#f5f5f0;padding:3px 10px;border-radius:6px}
+  body.dark .plano-zona-cap{background:#2a2a2a;color:#666}
+  </style>
+
+  <!-- COMEDOR + PATIO -->
+  <div class="plano-zona">
+    <div class="plano-zona-title">
+      <div class="plano-zona-name">Comedor + Patio</div>
+      <div class="plano-zona-cap">60 pers. · 15 mesas</div>
     </div>
-    <div class="area-block">
-      <div class="area-header"><div class="area-name">Patio</div><div class="area-cap">15 pers. · 3 mesas</div></div>
-      <div class="mesas-grid" id="mesas-patio"></div>
+    <div class="plano-area" style="height:400px" id="plano-comedor-patio">
+      <div class="zona-lbl" style="left:10px;top:8px">Comedor</div>
+      <div class="pm" id="pm-C1" style="width:64px;height:52px;left:10px;top:28px" onclick="abrirModal('comedor','C1')"><span>C1</span><small>4 pers.</small></div>
+      <div class="pm" id="pm-C2" style="width:64px;height:52px;left:10px;top:90px" onclick="abrirModal('comedor','C2')"><span>C2</span><small>4 pers.</small></div>
+      <div class="pm" id="pm-C3" style="width:64px;height:52px;left:10px;top:152px" onclick="abrirModal('comedor','C3')"><span>C3</span><small>4 pers.</small></div>
+      <div class="pm" id="pm-C4" style="width:64px;height:52px;left:10px;top:214px" onclick="abrirModal('comedor','C4')"><span>C4</span><small>4 pers.</small></div>
+      <div class="pm" id="pm-C5" style="width:64px;height:52px;left:90px;top:256px" onclick="abrirModal('comedor','C5')"><span>C5</span><small>4 pers.</small></div>
+      <div class="pm" id="pm-C6" style="width:64px;height:52px;left:180px;top:28px" onclick="abrirModal('comedor','C6')"><span>C6</span><small>5 pers.</small></div>
+      <div class="pm" id="pm-C7" style="width:64px;height:52px;left:180px;top:90px" onclick="abrirModal('comedor','C7')"><span>C7</span><small>4 pers.</small></div>
+      <div class="pm" id="pm-C8" style="width:64px;height:52px;left:180px;top:152px" onclick="abrirModal('comedor','C8')"><span>C8</span><small>6 pers.</small></div>
+      <div class="pm" id="pm-C9/10" style="width:64px;height:110px;left:260px;top:196px" onclick="abrirModal('comedor','C9/10')"><span>C9/10</span><small>8 pers.</small></div>
+      <div class="pm" id="pm-C11" style="width:64px;height:52px;left:350px;top:28px" onclick="abrirModal('comedor','C11')"><span>C11</span><small>2 pers.</small></div>
+      <div class="pm" id="pm-C12" style="width:64px;height:52px;left:350px;top:90px" onclick="abrirModal('comedor','C12')"><span>C12</span><small>2 pers.</small></div>
+      <div class="plano-divider-h" style="top:320px"></div>
+      <div class="zona-lbl" style="left:10px;top:328px">Patio · exterior</div>
+      <div class="pm" id="pm-P2/3/4" style="width:84px;height:48px;left:10px;top:348px" onclick="abrirModal('patio','P2/3/4')"><span>Patio 3y4</span><small>8 pers.</small></div>
+      <div class="pm" id="pm-P1" style="width:54px;height:48px;left:104px;top:348px" onclick="abrirModal('patio','P1')"><span>P1</span><small>2 pers.</small></div>
+      <div class="pm" id="pm-P2" style="width:54px;height:48px;left:168px;top:348px" onclick="abrirModal('patio','P2')"><span>P2</span><small>2 pers.</small></div>
+      <div class="pm" id="pm-P5" style="width:54px;height:48px;left:232px;top:348px" onclick="abrirModal('patio','P5')"><span>P5</span><small>5 pers.</small></div>
     </div>
-    <div class="area-block">
-      <div class="area-header"><div class="area-name">Cava (2do piso)</div><div class="area-cap">8 pers. · 1 mesa</div></div>
-      <div class="mesas-grid" id="mesas-cava"></div>
-    </div>
-    <div class="leyenda">
-      <span><span class="dot" style="background:#4CAF50;border:1px solid #2E7D32"></span>Con reserva</span>
-      <span><span class="dot" style="background:#64b5f6;border:1px solid #2196f3"></span>Walk-in</span>
-      <span><span class="dot" style="background:#ffb74d;border:1px solid #ff9800"></span>Pendiente</span>
-      <span><span class="dot" style="background:#e5e5e0;border:1px solid #ccc"></span>Libre</span>
-    </div>
-    <p style="font-size:12px;color:#aaa;margin-top:12px">Toca una mesa libre para marcarla como walk-in, o una walk-in para liberarla.</p>
   </div>
-  <div id="tab-ocupacion" style="display:none">
+
+  <!-- CAVA -->
+  <div class="plano-zona">
+    <div class="plano-zona-title">
+      <div class="plano-zona-name">Cava</div>
+      <div class="plano-zona-cap">8 pers. · 1 mesa · 2do piso</div>
+    </div>
+    <div class="plano-area" style="height:90px">
+      <div class="pm" id="pm-CV1" style="width:110px;height:58px;left:50%;transform:translateX(-50%);top:16px" onclick="abrirModal('cava','CV1')"><span>CV1</span><small>8 pers.</small></div>
+    </div>
+  </div>
+
+  <div class="leyenda">
+    <span><span class="dot" style="background:#3DB58A;border:1px solid #2a8a67"></span>Con reserva</span>
+    <span><span class="dot" style="background:#64b5f6;border:1px solid #2196f3"></span>Walk-in</span>
+    <span><span class="dot" style="background:#ffb74d;border:1px solid #ff9800"></span>Pendiente</span>
+    <span><span class="dot" style="background:#e5e5e0;border:1px solid #ccc"></span>Libre</span>
+  </div>
+  <p style="font-size:12px;color:#aaa;margin-top:12px">Toca una mesa libre para marcarla como walk-in, o una walk-in para liberarla.</p>
+</div>
+<div id="tab-ocupacion" style="display:none">
     <div class="filter-bar">
       <button class="filter-btn active" onclick="filtrarArea('todas',this)">Todas las areas</button>
       <button class="filter-btn" onclick="filtrarArea('comedor',this)">Comedor</button>
@@ -655,19 +719,22 @@ function renderMetrics(){
 }
 
 function renderMesas(){
+  var caps={C1:4,C2:4,C3:4,C4:4,C5:4,C6:5,C7:4,C8:6,'C9/10':8,C11:2,C12:2,P1:2,P2:2,'P2/3/4':8,P5:5,CV1:8};
   Object.keys(mesasData).forEach(function(area){
-    var g=document.getElementById('mesas-'+area);
-    g.innerHTML=mesasData[area].map(function(m){
-      var cls='';var label='Libre';var clienteHtml='';
+    mesasData[area].forEach(function(m){
+      var el=document.getElementById('pm-'+m.num);
+      if(!el) return;
+      el.className='pm';
       if(m.reserva){
-        cls='reservada';
-        label=m.reserva.hora+' · '+m.reserva.personas+' pers.';
-        clienteHtml='<div class="mesa-cliente">'+m.reserva.nombre+'</div>';
+        el.className='pm reservada';
+        el.innerHTML='<span>'+m.num+'</span><div class="pm-cliente">'+m.reserva.nombre+'</div><small>'+m.reserva.hora+'</small>';
       }else if(m.walkin>0){
-        cls='walk-in';label=m.walkin+' walk-in';
+        el.className='pm walk-in';
+        el.innerHTML='<span>'+m.num+'</span><small>'+m.walkin+' walk-in</small>';
+      }else{
+        el.innerHTML='<span>'+m.num+'</span><small>'+(caps[m.num]||'')+' pers.</small>';
       }
-      return '<div class="mesa '+cls+'" onclick="abrirModal(\''+area+'\',\''+m.num+'\')"><div class="mesa-num">'+m.num+'</div>'+clienteHtml+'<div class="mesa-estado">'+label+'</div></div>';
-    }).join('');
+    });
   });
 }
 
