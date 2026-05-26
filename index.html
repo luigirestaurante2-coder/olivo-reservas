@@ -716,7 +716,6 @@ function abrirModal(area,mesaNum){
       '</div></div></div>';
     return;
   }
-  }
   if(mesa.walkin>0){
     mc.innerHTML='<div class="modal-bg" onclick="cerrarModal()"><div class="modal" onclick="event.stopPropagation()"><div class="modal-title">Mesa '+mesaNum+'</div><div class="modal-sub">'+mesa.walkin+' personas sin reserva.</div><div class="modal-btns"><button class="btn-liberar" onclick="liberarMesa(\''+area+'\',\''+mesaNum+'\')">Liberar mesa</button><button class="btn-cerrar" onclick="cerrarModal()">Cancelar</button></div></div></div>';
   }else{
