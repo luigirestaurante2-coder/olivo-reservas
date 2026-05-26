@@ -682,13 +682,29 @@ function abrirModal(area,mesaNum){
     var tipoEvento=r?(r['Tipo_Evento']&&typeof r['Tipo_Evento']==='object'?r['Tipo_Evento'].value:(r['Tipo_Evento']||'')):'';
     var restricciones=r?(r['Restricciones']||''):'';
     mc.innerHTML='<div class="modal-bg" onclick="cerrarModal()"><div class="modal" onclick="event.stopPropagation()">'+
-      '<div class="modal-title">Mesa '+mesaNum+'</div>'+
-      '<div class="modal-sub">'+mesa.reserva.nombre+'</div>'+
-      '<div style="font-size:13px;color:#888;margin-bottom:4px">Hora: '+mesa.reserva.hora+'</div>'+
-      '<div style="font-size:13px;color:#888;margin-bottom:4px">Personas: '+mesa.reserva.personas+'</div>'+
-      '<div style="font-size:13px;color:#888;margin-bottom:4px">Telefono: '+tel+'</div>'+
-      (tipoEvento?'<div style="font-size:13px;color:#888;margin-bottom:4px">Ocasion: '+tipoEvento+'</div>':'')+
-      (restricciones?'<div style="font-size:13px;color:#e65100;margin-bottom:1rem">Restricciones: '+restricciones+'</div>':'<div style="margin-bottom:1rem"></div>')+
+      '<div style="font-size:16px;font-weight:500;margin-bottom:2px">'+mesa.reserva.nombre+'</div>'+
+      '<div style="font-size:12px;color:#888;margin-bottom:14px">Mesa '+mesaNum+'</div>'+
+      '<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">'+
+        '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#3DB58A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>'+
+        '<span style="font-size:13px">'+mesa.reserva.hora+'</span>'+
+        '<span style="margin-left:auto;font-size:15px;font-weight:500">'+mesa.reserva.personas+' personas</span>'+
+      '</div>'+
+      '<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">'+
+        '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#3DB58A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.8a19.79 19.79 0 01-3.07-8.63A2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14.92z"/></svg>'+
+        '<span style="font-size:13px">'+tel+'</span>'+
+      '</div>'+
+      (tipoEvento?
+        '<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">'+
+          '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#3DB58A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1010 10A10 10 0 0012 2z"/><path d="M8.56 2.75c4.37 6.03 6.02 9.42 8.03 17.72m2.54-15.38c-3.72 4.35-8.94 5.66-16.88 5.85m19.5 1.9c-3.5-.93-6.63-.82-8.94 0-2.58.92-5.01 2.86-7.44 6.32"/></svg>'+
+          '<span style="font-size:13px">'+tipoEvento+'</span>'+
+        '</div>':'')+
+      '<div style="border-top:0.5px solid #e5e5e0;margin:10px 0"></div>'+
+      (restricciones?
+        '<div style="background:#FCEBEB;border-radius:8px;padding:8px 10px;display:flex;align-items:flex-start;gap:8px;margin-bottom:1rem">'+
+          '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#A32D2D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-top:1px;flex-shrink:0"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>'+
+          '<div><div style="font-size:11px;font-weight:500;color:#A32D2D;margin-bottom:2px">Restriccion alimenticia</div><div style="font-size:12px;color:#A32D2D">'+restricciones+'</div></div>'+
+        '</div>':
+        '<div style="margin-bottom:1rem"></div>')+
       '<div class="modal-btns">'+
       '<button class="btn-liberar" onclick="liberarReserva(\''+area+'\',\''+mesaNum+'\','+rid+')">Liberar mesa</button>'+
       '<button class="btn-cerrar" onclick="cerrarModal()">Cerrar</button>'+
