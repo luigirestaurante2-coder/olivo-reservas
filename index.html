@@ -285,6 +285,7 @@ var mesasData={
 };
 var horasData=[{h:'12:00'},{h:'12:30'},{h:'13:00'},{h:'13:30'},{h:'14:00'},{h:'19:00'},{h:'19:30'},{h:'20:00'},{h:'20:30'}];
 var reservas=[];
+var reservasSolicitudes=[];
 var eventos=[];
 var filtroEstado='todas';
 var filtroEventos='todas';
@@ -447,7 +448,8 @@ function cargarReservas(){
     {headers:{Authorization:'Token '+BASEROW_TOKEN}})
   .then(function(r){return r.json();})
   .then(function(data){
-    reservas=(data.results||[]).filter(function(r){return parseFecha(r['Fecha'])===fechaStr;});
+    var todasReservas=data.results||[];
+    reservas=todasReservas.filter(function(r){return parseFecha(r['Fecha'])===fechaStr;});
     var allMesas=mesasData.comedor.concat(mesasData.patio).concat(mesasData.cava);
     allMesas.forEach(function(m){m.reserva=null;});
     reservas.forEach(function(r){
@@ -459,6 +461,7 @@ function cargarReservas(){
         }
       }
     });
+    reservasSolicitudes=todasReservas;
     renderTabla();renderMetrics();renderHoras();renderMesas();
     renderTablaEventos();
   })
@@ -560,7 +563,7 @@ function cancelarEvento(id,telefono){
 
 function renderTabla(){
   var tb=document.getElementById('tabla-body');
-  var lista=filtroEstado==='todas'?reservas:reservas.filter(function(r){return getEstadoNombre(r)===filtroEstado.toLowerCase();});
+  var lista=filtroEstado==='todas'?reservasSolicitudes:reservasSolicitudes.filter(function(r){return getEstadoNombre(r)===filtroEstado.toLowerCase();});
   if(!lista.length){tb.innerHTML='<tr><td colspan="8" class="empty">Sin reservas</td></tr>';return;}
   tb.innerHTML=lista.map(function(r){
     var estado=getEstadoNombre(r);
