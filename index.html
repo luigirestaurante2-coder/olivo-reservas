@@ -216,18 +216,18 @@ body.dark .mesa-opt.selected{background:#085041;color:#9FE1CB;border-color:#0F6E
   </div>
   <div id="tab-mesas" style="display:none">
   <style>
-  .plano-zona{background:#fff;border:1px solid #e5e5e0;border-radius:12px;padding:12px;margin-bottom:12px}
+  .plano-zona{background:#fff;border:1px solid #e5e5e0;border-radius:12px;padding:14px;margin-bottom:12px}
   body.dark .plano-zona{background:#1e1e1e;border-color:#333}
   .plano-area{position:relative;background:#f5f5f0;border-radius:8px}
   body.dark .plano-area{background:#242424}
   .pm{position:absolute;display:flex;flex-direction:column;align-items:center;justify-content:center;border:1px solid #e5e5e0;background:#fff;cursor:pointer;transition:all 0.15s}
   .pm.circulo{border-radius:50%}
-  .pm.rect{border-radius:8px}
+  .pm.rect{border-radius:10px}
   body.dark .pm{background:#2a2a2a;border-color:#444}
   .pm:hover{transform:scale(1.05)}
-  .pm span{font-size:11px;font-weight:500;color:#555}
+  .pm span{font-size:12px;font-weight:500;color:#555}
   body.dark .pm span{color:#aaa}
-  .pm small{font-size:9px;color:#aaa;margin-top:1px}
+  .pm small{font-size:10px;color:#aaa;margin-top:2px}
   body.dark .pm small{color:#555}
   .pm.reservada{background:#3DB58A;border-color:#2a8a67}
   .pm.reservada span{color:#fff}
@@ -241,13 +241,13 @@ body.dark .mesa-opt.selected{background:#085041;color:#9FE1CB;border-color:#0F6E
   .pm.pendiente-m span{color:#e65100}
   body.dark .pm.pendiente-m{background:#412402;border-color:#854F0B}
   body.dark .pm.pendiente-m span{color:#FAC775}
-  .pm-cliente{font-size:9px;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:48px;text-align:center}
-  .plano-zona-title{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+  .pm-cliente{font-size:10px;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:58px;text-align:center}
+  .plano-zona-title{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
   .plano-zona-name{font-size:14px;font-weight:500}
   .plano-zona-cap{font-size:12px;color:#888;background:#f5f5f0;padding:3px 10px;border-radius:6px}
   body.dark .plano-zona-cap{background:#2a2a2a;color:#666}
-  .plano-main{display:grid;grid-template-columns:1.7fr 1fr;gap:10px;margin-bottom:12px}
-  .plano-col-r{display:flex;flex-direction:column;gap:10px}
+  .plano-main{display:grid;grid-template-columns:2fr 1fr;gap:12px;margin-bottom:12px}
+  .plano-col-r{display:flex;flex-direction:column;gap:12px}
   </style>
 
   <div class="plano-main">
@@ -258,22 +258,22 @@ body.dark .mesa-opt.selected{background:#085041;color:#9FE1CB;border-color:#0F6E
         <div class="plano-zona-name">Comedor</div>
         <div class="plano-zona-cap">45 pers. · 11 mesas</div>
       </div>
-      <div class="plano-area" style="height:290px">
-        <div class="pm circulo" id="pm-C1" style="width:52px;height:52px;left:6px;top:6px" onclick="abrirModal('comedor','C1')"><span>C1</span><small>4p</small></div>
-        <div class="pm circulo" id="pm-C2" style="width:52px;height:52px;left:6px;top:66px" onclick="abrirModal('comedor','C2')"><span>C2</span><small>4p</small></div>
-        <div class="pm circulo" id="pm-C3" style="width:52px;height:52px;left:6px;top:126px" onclick="abrirModal('comedor','C3')"><span>C3</span><small>4p</small></div>
-        <div class="pm circulo" id="pm-C4" style="width:52px;height:52px;left:6px;top:186px" onclick="abrirModal('comedor','C4')"><span>C4</span><small>4p</small></div>
-        <div class="pm circulo" id="pm-C5" style="width:52px;height:52px;left:66px;top:226px" onclick="abrirModal('comedor','C5')"><span>C5</span><small>4p</small></div>
-        <div class="pm circulo" id="pm-C6" style="width:52px;height:52px;left:132px;top:6px" onclick="abrirModal('comedor','C6')"><span>C6</span><small>5p</small></div>
-        <div class="pm circulo" id="pm-C7" style="width:52px;height:52px;left:132px;top:66px" onclick="abrirModal('comedor','C7')"><span>C7</span><small>4p</small></div>
-        <div class="pm circulo" id="pm-C8" style="width:52px;height:52px;left:132px;top:126px" onclick="abrirModal('comedor','C8')"><span>C8</span><small>6p</small></div>
-        <div class="pm rect" id="pm-C9/10" style="width:54px;height:108px;left:198px;top:172px" onclick="abrirModal('comedor','C9/10')"><span>C9/10</span><small>8p</small></div>
-        <div class="pm circulo" id="pm-C11" style="width:52px;height:52px;left:266px;top:6px" onclick="abrirModal('comedor','C11')"><span>C11</span><small>2p</small></div>
-        <div class="pm circulo" id="pm-C12" style="width:52px;height:52px;left:266px;top:66px" onclick="abrirModal('comedor','C12')"><span>C12</span><small>2p</small></div>
+      <div class="plano-area" style="height:360px">
+        <div class="pm circulo" id="pm-C1" style="width:70px;height:70px;left:10px;top:10px" onclick="abrirModal('comedor','C1')"><span>C1</span><small>4 pers.</small></div>
+        <div class="pm circulo" id="pm-C2" style="width:70px;height:70px;left:10px;top:90px" onclick="abrirModal('comedor','C2')"><span>C2</span><small>4 pers.</small></div>
+        <div class="pm circulo" id="pm-C3" style="width:70px;height:70px;left:10px;top:170px" onclick="abrirModal('comedor','C3')"><span>C3</span><small>4 pers.</small></div>
+        <div class="pm circulo" id="pm-C4" style="width:70px;height:70px;left:10px;top:250px" onclick="abrirModal('comedor','C4')"><span>C4</span><small>4 pers.</small></div>
+        <div class="pm circulo" id="pm-C5" style="width:70px;height:70px;left:100px;top:280px" onclick="abrirModal('comedor','C5')"><span>C5</span><small>4 pers.</small></div>
+        <div class="pm circulo" id="pm-C6" style="width:70px;height:70px;left:190px;top:10px" onclick="abrirModal('comedor','C6')"><span>C6</span><small>5 pers.</small></div>
+        <div class="pm circulo" id="pm-C7" style="width:70px;height:70px;left:190px;top:90px" onclick="abrirModal('comedor','C7')"><span>C7</span><small>4 pers.</small></div>
+        <div class="pm circulo" id="pm-C8" style="width:70px;height:70px;left:190px;top:170px" onclick="abrirModal('comedor','C8')"><span>C8</span><small>6 pers.</small></div>
+        <div class="pm rect" id="pm-C9/10" style="width:70px;height:140px;left:278px;top:210px" onclick="abrirModal('comedor','C9/10')"><span>C9/10</span><small>8 pers.</small></div>
+        <div class="pm circulo" id="pm-C11" style="width:70px;height:70px;left:368px;top:10px" onclick="abrirModal('comedor','C11')"><span>C11</span><small>2 pers.</small></div>
+        <div class="pm circulo" id="pm-C12" style="width:70px;height:70px;left:368px;top:90px" onclick="abrirModal('comedor','C12')"><span>C12</span><small>2 pers.</small></div>
       </div>
     </div>
 
-    <!-- Columna derecha: PATIO + CAVA -->
+    <!-- Columna derecha -->
     <div class="plano-col-r">
 
       <!-- PATIO -->
@@ -282,11 +282,11 @@ body.dark .mesa-opt.selected{background:#085041;color:#9FE1CB;border-color:#0F6E
           <div class="plano-zona-name">Patio</div>
           <div class="plano-zona-cap">15 pers. · 4 mesas</div>
         </div>
-        <div class="plano-area" style="height:160px">
-          <div class="pm rect" id="pm-P2/3/4" style="width:68px;height:46px;left:6px;top:12px" onclick="abrirModal('patio','P2/3/4')"><span>3/4</span><small>8 pers.</small></div>
-          <div class="pm circulo" id="pm-P2" style="width:46px;height:46px;left:82px;top:12px" onclick="abrirModal('patio','P2')"><span>P2</span><small>2p</small></div>
-          <div class="pm circulo" id="pm-P1" style="width:46px;height:46px;left:136px;top:12px" onclick="abrirModal('patio','P1')"><span>P1</span><small>2p</small></div>
-          <div class="pm circulo" id="pm-P5" style="width:46px;height:46px;left:6px;top:70px" onclick="abrirModal('patio','P5')"><span>P5</span><small>5p</small></div>
+        <div class="plano-area" style="height:220px">
+          <div class="pm rect" id="pm-P2/3/4" style="width:85px;height:60px;left:10px;top:16px" onclick="abrirModal('patio','P2/3/4')"><span>3/4</span><small>8 pers.</small></div>
+          <div class="pm circulo" id="pm-P2" style="width:60px;height:60px;left:108px;top:16px" onclick="abrirModal('patio','P2')"><span>P2</span><small>2 pers.</small></div>
+          <div class="pm circulo" id="pm-P1" style="width:60px;height:60px;left:178px;top:16px" onclick="abrirModal('patio','P1')"><span>P1</span><small>2 pers.</small></div>
+          <div class="pm circulo" id="pm-P5" style="width:60px;height:60px;left:10px;top:96px" onclick="abrirModal('patio','P5')"><span>P5</span><small>5 pers.</small></div>
         </div>
       </div>
 
@@ -296,8 +296,8 @@ body.dark .mesa-opt.selected{background:#085041;color:#9FE1CB;border-color:#0F6E
           <div class="plano-zona-name">Cava</div>
           <div class="plano-zona-cap">8 pers. · 2do piso</div>
         </div>
-        <div class="plano-area" style="height:80px">
-          <div class="pm rect" id="pm-CV1" style="width:96px;height:50px;left:50%;transform:translateX(-50%);top:15px" onclick="abrirModal('cava','CV1')"><span>CV1</span><small>8 pers.</small></div>
+        <div class="plano-area" style="height:100px">
+          <div class="pm rect" id="pm-CV1" style="width:120px;height:65px;left:50%;transform:translateX(-50%);top:18px" onclick="abrirModal('cava','CV1')"><span>CV1</span><small>8 pers.</small></div>
         </div>
       </div>
 
