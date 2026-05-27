@@ -166,6 +166,7 @@ body.dark .mesa-opt.selected{background:#085041;color:#9FE1CB;border-color:#0F6E
   th:nth-child(4),td:nth-child(4){display:none}
 }
 </style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 </head>
 <body>
 <div class="header">
@@ -173,6 +174,7 @@ body.dark .mesa-opt.selected{background:#085041;color:#9FE1CB;border-color:#0F6E
   <div class="header-right">
     <button class="dark-btn" id="dark-btn" onclick="toggleDark()">Modo oscuro</button>
     <button class="dark-btn" id="settings-btn" onclick="toggleSettings()" style="display:none">Settings</button>
+    <button class="dark-btn" id="resumen-btn" onclick="generarResumen()" style="background:#3DB58A;color:#fff;border-color:#2a8a67;display:flex;align-items:center;gap:4px"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Resumen</button>
     <div id="settings-dropdown" style="display:none;position:absolute;top:calc(100% + 8px);right:0;background:#fff;border:1px solid #e5e5e0;border-radius:12px;padding:1rem;z-index:50;box-shadow:0 4px 20px rgba(0,0,0,0.12);width:220px;text-align:left">
       <div style="font-size:13px;font-weight:500;margin-bottom:8px;color:#1a1a1a">Configuración del plano</div>
       <button id="btn-mover-mesas" onclick="toggleMoverMesas()" style="width:100%;padding:8px 12px;border:1px solid #e5e5e0;border-radius:8px;background:transparent;color:#666;cursor:pointer;font-size:12px;text-align:left;margin-bottom:6px">Mover mesas: OFF</button>
@@ -1067,6 +1069,117 @@ document.addEventListener('click',function(e){
   }
 });
 
+</script>
+
+<div id="resumen-card" style="position:fixed;left:-9999px;top:0;z-index:-1;background:#fff;padding:20px;width:400px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif">
+  <div style="background:linear-gradient(135deg,#1D9E75,#0F6E56);border-radius:12px;padding:14px 16px;margin-bottom:16px;color:#fff">
+    <div style="font-size:15px;font-weight:500;margin-bottom:2px">Buenos días, equipo OLIVO</div>
+    <div id="resumen-fecha" style="font-size:11px;opacity:0.8"></div>
+  </div>
+  <div style="margin-bottom:14px">
+    <div style="font-size:10px;font-weight:500;color:#0F6E56;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:8px">Ocupación total</div>
+    <div style="display:flex;align-items:center;gap:12px">
+      <div style="position:relative;width:56px;height:56px;flex-shrink:0">
+        <svg id="resumen-svg" width="56" height="56" viewBox="0 0 56 56">
+          <circle cx="28" cy="28" r="22" fill="none" stroke="#f0f0f0" stroke-width="5"/>
+          <circle id="resumen-circle" cx="28" cy="28" r="22" fill="none" stroke="#3DB58A" stroke-width="5" stroke-dasharray="138.2" stroke-dashoffset="138.2" stroke-linecap="round" transform="rotate(-90 28 28)"/>
+        </svg>
+        <div id="resumen-pct" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:13px;font-weight:500;color:#0F6E56">0%</div>
+      </div>
+      <div>
+        <div id="resumen-personas" style="font-size:14px;font-weight:500;color:#1a1a1a"></div>
+        <div id="resumen-total-res" style="font-size:11px;color:#888"></div>
+      </div>
+    </div>
+  </div>
+  <hr style="border:none;border-top:0.5px solid #f0f0f0;margin:12px 0">
+  <div style="margin-bottom:14px">
+    <div style="font-size:10px;font-weight:500;color:#0F6E56;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:8px">Reservas del día</div>
+    <div id="resumen-reservas"></div>
+  </div>
+  <hr style="border:none;border-top:0.5px solid #f0f0f0;margin:12px 0">
+  <div style="margin-bottom:14px">
+    <div style="font-size:10px;font-weight:500;color:#0F6E56;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:8px">Ocupación por área</div>
+    <div id="resumen-areas"></div>
+  </div>
+  <hr style="border:none;border-top:0.5px solid #f0f0f0;margin:12px 0">
+  <div style="margin-bottom:14px">
+    <div style="font-size:10px;font-weight:500;color:#0F6E56;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:6px">Eventos especiales</div>
+    <div id="resumen-eventos"></div>
+  </div>
+  <div style="text-align:center;font-size:10px;color:#aaa;margin-top:12px;padding-top:10px;border-top:0.5px solid #f0f0f0">OLIVO · Restaurante · Guatapé, Antioquia</div>
+</div>
+
+<script>
+function generarResumen(){
+  var btn = document.getElementById('resumen-btn');
+  btn.textContent = 'Generando...';
+  btn.disabled = true;
+
+  // Calcular datos
+  var fechaStr = formatFecha(fechaSeleccionada);
+  var reservasHoy = reservas.filter(function(r){ return parseFecha(r['Fecha'])===fechaStr && getEstadoNombre(r)==='confirmada'; });
+  var totalPersonas = reservasHoy.reduce(function(s,r){ return s+(parseInt(r['Personas'])||0); },0);
+  var capacidad = 70;
+  var pct = Math.round((totalPersonas/capacidad)*100);
+  var offset = Math.round(138.2 - (138.2*pct/100));
+  var colorCircle = pct>=70?'#E24B4A':pct>=40?'#EF9F27':'#3DB58A';
+  var colorPct = pct>=70?'#A32D2D':pct>=40?'#854F0B':'#0F6E56';
+
+  var diasSemana=['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
+  var meses=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+  var d=new Date(fechaSeleccionada);
+  var fechaFormato=diasSemana[d.getDay()+1<7?d.getDay()+1:0]+' '+d.getDate()+' de '+meses[d.getMonth()]+' de '+d.getFullYear();
+
+  // Llenar tarjeta
+  document.getElementById('resumen-fecha').textContent=fechaFormato+' · Resumen del día';
+  document.getElementById('resumen-pct').textContent=pct+'%';
+  document.getElementById('resumen-pct').style.color=colorPct;
+  document.getElementById('resumen-circle').setAttribute('stroke-dashoffset',offset);
+  document.getElementById('resumen-circle').setAttribute('stroke',colorCircle);
+  document.getElementById('resumen-personas').textContent=totalPersonas+' de '+capacidad+' personas';
+  document.getElementById('resumen-total-res').textContent=reservasHoy.length+' reservas confirmadas';
+
+  // Reservas
+  var filasHtml = reservasHoy.length>0 ? reservasHoy.sort(function(a,b){return (a['Hora']||'').localeCompare(b['Hora']||'');}).map(function(r){
+    return '<div style="display:flex;justify-content:space-between;padding:4px 0;font-size:12px;border-bottom:0.5px solid #f5f5f0"><span style="font-weight:500;color:#1a1a1a">'+(r['Hora']||'')+'</span><span style="color:#666;font-size:11px">'+(r['Personas']||'')+' pers. · Mesa '+(r['Mesa']||'-')+'</span></div>';
+  }).join('') : '<div style="font-size:11px;color:#aaa">Sin reservas hoy.</div>';
+  document.getElementById('resumen-reservas').innerHTML=filasHtml;
+
+  // Áreas
+  var pComedor=reservasHoy.filter(function(r){return (r['Mesa']||'').startsWith('C')&&!(r['Mesa']||'').startsWith('CV');}).reduce(function(s,r){return s+(parseInt(r['Personas'])||0);},0);
+  var pPatio=reservasHoy.filter(function(r){return (r['Mesa']||'').startsWith('P');}).reduce(function(s,r){return s+(parseInt(r['Personas'])||0);},0);
+  var pCava=reservasHoy.filter(function(r){return (r['Mesa']||'').startsWith('CV');}).reduce(function(s,r){return s+(parseInt(r['Personas'])||0);},0);
+  
+  document.getElementById('resumen-areas').innerHTML=
+    '<div style="display:flex;align-items:center;gap:8px;padding:3px 0"><span style="font-size:11px;color:#555;width:56px">Comedor</span><div style="flex:1;height:6px;background:#f0f0f0;border-radius:3px;overflow:hidden"><div style="width:'+Math.round((pComedor/45)*100)+'%;height:100%;background:#3DB58A;border-radius:3px"></div></div><span style="font-size:11px;color:#555;width:40px;text-align:right">'+pComedor+' p.</span></div>'+
+    '<div style="display:flex;align-items:center;gap:8px;padding:3px 0"><span style="font-size:11px;color:#555;width:56px">Patio</span><div style="flex:1;height:6px;background:#f0f0f0;border-radius:3px;overflow:hidden"><div style="width:'+Math.round((pPatio/15)*100)+'%;height:100%;background:#3DB58A;border-radius:3px"></div></div><span style="font-size:11px;color:'+(pPatio>0?'#555':'#ccc')+';width:40px;text-align:right">'+pPatio+' p.</span></div>'+
+    '<div style="display:flex;align-items:center;gap:8px;padding:3px 0"><span style="font-size:11px;color:#555;width:56px">Cava</span><div style="flex:1;height:6px;background:#f0f0f0;border-radius:3px;overflow:hidden"><div style="width:'+Math.round((pCava/8)*100)+'%;height:100%;background:#3DB58A;border-radius:3px"></div></div><span style="font-size:11px;color:'+(pCava>0?'#555':'#ccc')+';width:40px;text-align:right">'+pCava+' p.</span></div>';
+
+  // Eventos
+  var eventosHoy=[];
+  document.getElementById('resumen-eventos').innerHTML=eventosHoy.length>0?'con eventos':'<div style="font-size:11px;color:#aaa">Sin eventos hoy.</div>';
+
+  // Mostrar y capturar
+  var card=document.getElementById('resumen-card');
+  card.style.left='0';
+  card.style.zIndex='9999';
+  card.style.position='fixed';
+  card.style.top='0';
+
+  setTimeout(function(){
+    html2canvas(card,{scale:2,backgroundColor:'#ffffff',useCORS:true}).then(function(canvas){
+      card.style.left='-9999px';
+      card.style.zIndex='-1';
+      var link=document.createElement('a');
+      link.download='resumen-olivo-'+fechaStr+'.png';
+      link.href=canvas.toDataURL('image/png');
+      link.click();
+      btn.textContent='Descargar resumen';
+      btn.disabled=false;
+    });
+  },300);
+}
 </script>
 </body>
 </html>
