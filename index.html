@@ -20,7 +20,9 @@ body.dark .date-btn{background:#2a2a2a;color:#888}
 body.dark .date-btn:hover{background:#085041;color:#9FE1CB}
 .dark-btn{font-size:11px;padding:4px 10px;border-radius:6px;border:0.5px solid #e5e5e0;background:#fff;color:#666;cursor:pointer}
 body.dark .dark-btn{border-color:#444;background:#2a2a2a;color:#aaa}
-body.dark #buscar-reserva{background:#3a3a3a;border-color:#555;color:#e5e5e0}
+/* FIX 1: input búsqueda sin fondo gris */
+#buscar-reserva{background:#fff;border-color:#e5e5e0;color:#1a1a1a}
+body.dark #buscar-reserva{background:#2a2a2a;border-color:#555;color:#e5e5e0}
 #resumen-btn{background:#e8f5e9;color:#2e7d32;border-color:#1D9E75}
 body.dark #resumen-btn{background:#1a1a1a !important;color:#aaa !important;border-color:#333 !important}
 body.dark #resumen-btn svg{stroke:#aaa !important}
@@ -55,6 +57,16 @@ body.dark .dia-rapido{background:#2a2a2a;border-color:#444;color:#888}
 .dia-rapido:hover{border-color:#1D9E75;background:#e8f7f2;color:#0F6E56}
 .dia-rapido.active{border-color:#1D9E75;background:#e8f7f2;color:#0F6E56;font-weight:500}
 body.dark .dia-rapido.active{background:#085041;color:#9FE1CB;border-color:#0F6E56}
+/* Indicador de recarga */
+.sync-indicator{display:flex;align-items:center;gap:5px;font-size:11px;color:#aaa;padding:3px 8px;border-radius:6px;background:#f5f5f0;transition:all 0.3s}
+body.dark .sync-indicator{background:#2a2a2a;color:#555}
+.sync-indicator.syncing{color:#1D9E75;background:#e8f7f2}
+body.dark .sync-indicator.syncing{background:#085041;color:#9FE1CB}
+.sync-indicator.error{color:#c62828;background:#ffebee}
+.sync-dot{width:6px;height:6px;border-radius:50%;background:#aaa;transition:background 0.3s}
+.sync-indicator.syncing .sync-dot{background:#1D9E75;animation:pulse 1s infinite}
+.sync-indicator.error .sync-dot{background:#c62828}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
 .metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;padding:1.25rem 1.5rem}
 .metric{background:#fff;border-radius:12px;padding:1rem;border:1px solid #e5e5e0}
 body.dark .metric{background:#1e1e1e;border-color:#333}
@@ -64,10 +76,12 @@ body.dark .metric{background:#1e1e1e;border-color:#333}
 .section{padding:0 1.5rem 1.5rem}
 .tab-bar{display:flex;border-bottom:1px solid #e5e5e0;margin-bottom:1.25rem;flex-wrap:wrap}
 body.dark .tab-bar{border-color:#333}
-.tab{font-size:13px;padding:8px 16px;cursor:pointer;color:#888;border:none;background:none;border-bottom:2px solid transparent}
+.tab{font-size:13px;padding:8px 16px;cursor:pointer;color:#888;border:none;background:none;border-bottom:2px solid transparent;position:relative}
 .tab.active{color:#0F6E56;border-bottom:2px solid #1D9E75;font-weight:500}
 body.dark .tab{color:#666}
 body.dark .tab.active{color:#1D9E75}
+/* Badge pendientes en tab */
+.tab-badge{display:inline-flex;align-items:center;justify-content:center;min-width:17px;height:17px;border-radius:9px;background:#e65100;color:#fff;font-size:10px;font-weight:600;padding:0 4px;margin-left:5px;vertical-align:middle}
 .filter-bar{display:flex;gap:8px;margin-bottom:1rem;flex-wrap:wrap}
 .filter-btn{font-size:12px;padding:5px 12px;border-radius:8px;border:1px solid #e5e5e0;background:#f5f5f0;color:#666;cursor:pointer}
 body.dark .filter-btn{border-color:#444;background:#2a2a2a;color:#888}
@@ -166,6 +180,13 @@ body.dark .mesa-opt.selected{background:#085041;color:#9FE1CB;border-color:#0F6E
 .empty{text-align:center;padding:2rem;color:#aaa;font-size:13px}
 .toast{position:fixed;bottom:1.5rem;right:1.5rem;background:#1a1a1a;color:#fff;padding:10px 16px;border-radius:10px;font-size:13px;z-index:200;opacity:0;transition:opacity 0.3s}
 .toast.show{opacity:1}
+/* Modal de confirmación de cancelación */
+.modal-confirm-bg{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);display:flex;align-items:center;justify-content:center;z-index:150}
+.modal-confirm{background:#fff;border-radius:14px;padding:1.5rem;width:300px;box-shadow:0 8px 32px rgba(0,0,0,0.2)}
+body.dark .modal-confirm{background:#1e1e1e;border:0.5px solid #333}
+.modal-confirm-title{font-size:15px;font-weight:500;margin-bottom:6px}
+.modal-confirm-sub{font-size:13px;color:#888;margin-bottom:1.2rem}
+.modal-confirm-btns{display:flex;gap:8px}
 @media(max-width:600px){
   .metrics{grid-template-columns:repeat(2,1fr)}
   th:nth-child(4),td:nth-child(4){display:none}
@@ -177,6 +198,11 @@ body.dark .mesa-opt.selected{background:#085041;color:#9FE1CB;border-color:#0F6E
 <div class="header">
   <div class="logo">OLIVO <span>·</span> Panel de Reservas</div>
   <div class="header-right">
+    <!-- FIX UX 1: indicador de sincronización -->
+    <div class="sync-indicator" id="sync-indicator">
+      <div class="sync-dot"></div>
+      <span id="sync-label">En vivo</span>
+    </div>
     <button class="dark-btn" id="dark-btn" onclick="toggleDark()">Modo oscuro</button>
     <button class="dark-btn" id="settings-btn" onclick="toggleSettings()" style="display:none">Settings</button>
     <button class="dark-btn" id="resumen-btn" onclick="generarResumen()" style="display:flex;align-items:center;gap:4px"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#2e7d32" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Resumen</button>
@@ -199,15 +225,17 @@ body.dark .mesa-opt.selected{background:#085041;color:#9FE1CB;border-color:#0F6E
 </div>
 <div class="section">
   <div class="tab-bar">
-    <button class="tab active" onclick="showTab('solicitudes',this)">Solicitudes</button>
-    <button class="tab" onclick="showTab('eventos',this)">Reservas y Eventos</button>
+    <!-- FIX UX 5: badge de pendientes en tab Solicitudes -->
+    <button class="tab active" id="tab-btn-solicitudes" onclick="showTab('solicitudes',this)">Solicitudes <span class="tab-badge" id="badge-pendientes" style="display:none">0</span></button>
+    <button class="tab" id="tab-btn-eventos" onclick="showTab('eventos',this)">Reservas y Eventos</button>
     <button class="tab" onclick="showTab('mesas',this)">Mesas por area</button>
     <button class="tab" onclick="showTab('ocupacion',this)">Ocupacion por hora</button>
   </div>
   <div id="tab-solicitudes">
     <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
       <div style="flex:1;position:relative">
-        <input type="text" id="buscar-reserva" placeholder="Buscar por nombre o teléfono..." oninput="filtrarBusqueda()" style="width:100%;padding:8px 12px 8px 36px;border:1px solid #e5e5e0;border-radius:8px;font-size:13px;outline:none;background:#b0b0aa;color:#1a1a1a">
+        <!-- FIX 1: background corregido -->
+        <input type="text" id="buscar-reserva" placeholder="Buscar por nombre o teléfono..." oninput="filtrarBusqueda()" style="width:100%;padding:8px 12px 8px 36px;border:1px solid #e5e5e0;border-radius:8px;font-size:13px;outline:none">
         <svg style="position:absolute;left:10px;top:50%;transform:translateY(-50%);pointer-events:none" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#aaa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
       </div>
       <button onclick="limpiarBusqueda()" style="padding:8px 12px;border:1px solid #e5e5e0;border-radius:8px;font-size:12px;color:#888;background:transparent;cursor:pointer">Limpiar</button>
@@ -280,8 +308,6 @@ body.dark .mesa-opt.selected{background:#085041;color:#9FE1CB;border-color:#0F6E
   </style>
 
   <div class="plano-main">
-
-    <!-- COMEDOR -->
     <div class="plano-zona" style="margin-bottom:0">
       <div class="plano-zona-title">
         <div class="plano-zona-name">Comedor</div>
@@ -301,11 +327,7 @@ body.dark .mesa-opt.selected{background:#085041;color:#9FE1CB;border-color:#0F6E
         <div class="pm circulo" id="pm-C12" style="width:75px;height:75px;left:390px;top:97px" onclick="abrirModal('comedor','C12')"><span>C12</span><small>2 pers.</small></div>
       </div>
     </div>
-
-    <!-- Columna derecha -->
     <div class="plano-col-r">
-
-      <!-- PATIO -->
       <div class="plano-zona" style="margin-bottom:0">
         <div class="plano-zona-title">
           <div class="plano-zona-name">Patio</div>
@@ -318,8 +340,6 @@ body.dark .mesa-opt.selected{background:#085041;color:#9FE1CB;border-color:#0F6E
           <div class="pm circulo" id="pm-P5" style="width:65px;height:65px;left:10px;top:100px" onclick="abrirModal('patio','P5')"><span>P5</span><small>5 pers.</small></div>
         </div>
       </div>
-
-      <!-- CAVA -->
       <div class="plano-zona" style="margin-bottom:0">
         <div class="plano-zona-title">
           <div class="plano-zona-name">Cava</div>
@@ -329,7 +349,6 @@ body.dark .mesa-opt.selected{background:#085041;color:#9FE1CB;border-color:#0F6E
           <div class="pm rect" id="pm-CV1" style="width:130px;height:70px;left:50%;transform:translateX(-50%);top:20px" onclick="abrirModal('cava','CV1')"><span>CV1</span><small>8 pers.</small></div>
         </div>
       </div>
-
     </div>
   </div>
 
@@ -366,7 +385,11 @@ var TABLA_EVENTOS='993201';
 var CAPACIDAD_TOTAL=70;
 var WEBHOOK_CONFIRMAR='https://qwsd-n8n.hi49ib.easypanel.host/webhook/confirmar-reserva';
 var WEBHOOK_CANCELAR='https://qwsd-n8n.hi49ib.easypanel.host/webhook/cancelar-reserva';
+// Estados tabla Reservas
 var ESTADOS={confirmada:6206820,pendiente:6206821,cancelada:6206822};
+// FIX 5: field ID y estados tabla Eventos correctos
+var FIELD_ESTADO_EVENTOS=8586169;
+var ESTADOS_EVENTOS={confirmada:'Confirmada',cancelada:'Cancelada'};
 var FIELD_MESA=8694049;
 var mesasData={
   comedor:[
@@ -415,6 +438,16 @@ function formatFechaLabel(d){
   var dias=['Domingo','Lunes','Martes','Miercoles','Jueves','Viernes','Sabado'];
   var meses=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
   return dias[d.getDay()]+' '+d.getDate()+' de '+meses[d.getMonth()];
+}
+
+// FIX UX 1: funciones del indicador de sync
+function setSyncState(state){
+  var ind=document.getElementById('sync-indicator');
+  var lbl=document.getElementById('sync-label');
+  ind.className='sync-indicator';
+  if(state==='syncing'){ind.classList.add('syncing');lbl.textContent='Actualizando...';}
+  else if(state==='error'){ind.classList.add('error');lbl.textContent='Sin conexión';}
+  else{lbl.textContent='En vivo';}
 }
 
 function toggleCalendario(){
@@ -548,12 +581,22 @@ function getEstadoNombre(r){
   return (val||'').toLowerCase();
 }
 
+// FIX UX 5: actualizar badge de pendientes
+function actualizarBadgePendientes(){
+  var pendientes=reservasSolicitudes.filter(function(r){return getEstadoNombre(r)==='pendiente';}).length;
+  var badge=document.getElementById('badge-pendientes');
+  if(pendientes>0){badge.textContent=pendientes;badge.style.display='inline-flex';}
+  else badge.style.display='none';
+}
+
 function cargarReservas(){
-  var fechaStr=formatFecha(fechaSeleccionada);
+  setSyncState('syncing');
   fetch('https://api.baserow.io/api/database/rows/table/'+TABLA_RESERVAS+'/?user_field_names=true&size=200',
     {headers:{Authorization:'Token '+BASEROW_TOKEN}})
   .then(function(r){return r.json();})
   .then(function(data){
+    setSyncState('ok');
+    var fechaStr=formatFecha(fechaSeleccionada);
     var todasReservas=data.results||[];
     reservas=todasReservas.filter(function(r){return parseFecha(r['Fecha'])===fechaStr;});
     var allMesas=mesasData.comedor.concat(mesasData.patio).concat(mesasData.cava);
@@ -568,20 +611,27 @@ function cargarReservas(){
       }
     });
     reservasSolicitudes=todasReservas;
+    actualizarBadgePendientes();
     renderTabla();renderMetrics();renderHoras();renderMesas();
     renderTablaEventos();
   })
   .catch(function(){
+    setSyncState('error');
     document.getElementById('tabla-body').innerHTML='<tr><td colspan="8" class="empty">Error al cargar reservas</td></tr>';
   });
 }
 
+// FIX 4: cargarEventos filtra por fecha seleccionada
 function cargarEventos(){
+  var fechaStr=formatFecha(fechaSeleccionada);
   fetch('https://api.baserow.io/api/database/rows/table/'+TABLA_EVENTOS+'/?user_field_names=true&size=200',
     {headers:{Authorization:'Token '+BASEROW_TOKEN}})
   .then(function(r){return r.json();})
   .then(function(data){
-    eventos=data.results||[];
+    // FIX 4: filtrar por fecha seleccionada
+    eventos=(data.results||[]).filter(function(e){
+      return parseFecha(e['Fecha'])===fechaStr;
+    });
     renderTablaEventos();
   })
   .catch(function(e){console.error('Error eventos',e);});
@@ -620,10 +670,11 @@ function renderTablaEventos(){
     var fecha=parseFecha(r['Fecha'])||'--';
     var tel=r['Telefono']||r['Tel\u00e9fono']||'--';
     var tipoBadge=esEvento?'<span class="badge badge-evento"><span class="dot-evento"></span>Evento</span>':'<span style="font-size:11px;color:#aaa">Reserva</span>';
+    // FIX UX 3: confirmación antes de cancelar
     var acciones=estado==='pendiente'?
       (esEvento?
-        '<button class="btn-confirm" onclick="confirmarEvento('+r.id+',\''+tel+'\')">Confirmar</button><button class="btn-cancel" onclick="cancelarEvento('+r.id+',\''+tel+'\')">Cancelar</button>':
-        '<button class="btn-confirm" onclick="abrirModalConfirmar('+r.id+',\''+tel+'\',\''+r['Nombre']+'\',\''+r['Hora']+'\','+r['Personas']+')">Confirmar</button><button class="btn-cancel" onclick="accionReserva('+r.id+',\'cancelar\',\''+tel+'\')">Cancelar</button>'
+        '<button class="btn-confirm" onclick="confirmarEvento('+r.id+',\''+tel+'\')">Confirmar</button><button class="btn-cancel" onclick="pedirConfirmacionCancelar(\'evento\','+r.id+',\''+tel+'\',\''+r['Nombre']+'\')">Cancelar</button>':
+        '<button class="btn-confirm" onclick="abrirModalConfirmar('+r.id+',\''+tel+'\',\''+r['Nombre']+'\',\''+r['Hora']+'\','+r['Personas']+')">Confirmar</button><button class="btn-cancel" onclick="pedirConfirmacionCancelar(\'reserva\','+r.id+',\''+tel+'\',\''+r['Nombre']+'\')">Cancelar</button>'
       ):
       '<span style="font-size:12px;color:#aaa">'+(estado==='confirmada'?'Confirmada':'Cancelada')+'</span>';
     return '<tr><td style="font-weight:500">'+(r['Nombre']||'--')+'</td><td>'+tipoBadge+'</td><td>'+fecha+'</td><td>'+(r['Hora']||'--')+'</td><td>'+(r['Personas']||'--')+'</td><td style="font-size:12px;color:#888">'+tel+'</td><td><span class="badge badge-'+estado+'">'+estado+'</span></td><td>'+acciones+'</td></tr>';
@@ -637,10 +688,42 @@ function filtrarEventos(filtro,btn){
   renderTablaEventos();
 }
 
+// FIX UX 3: modal de confirmación de cancelación
+function pedirConfirmacionCancelar(tipo,id,telefono,nombre){
+  var mc=document.getElementById('modal-container');
+  var prev=mc.innerHTML;
+  var overlay=document.createElement('div');
+  overlay.className='modal-confirm-bg';
+  overlay.id='confirm-cancel-overlay';
+  overlay.innerHTML=
+    '<div class="modal-confirm" onclick="event.stopPropagation()">'+
+    '<div class="modal-confirm-title">¿Cancelar esta reserva?</div>'+
+    '<div class="modal-confirm-sub">Se cancelará la reserva de <strong>'+nombre+'</strong> y se notificará al cliente por WhatsApp.</div>'+
+    '<div class="modal-confirm-btns">'+
+    '<button style="flex:1;padding:10px;border-radius:8px;border:1px solid #e53935;color:#c62828;background:#ffebee;cursor:pointer;font-size:13px;font-weight:500" onclick="ejecutarCancelacion(\''+tipo+'\','+id+',\''+telefono+'\')">Sí, cancelar</button>'+
+    '<button style="flex:1;padding:10px;border-radius:8px;border:1px solid #e5e5e0;color:#888;background:transparent;cursor:pointer;font-size:13px" onclick="cerrarConfirmCancelar()">Volver</button>'+
+    '</div></div>';
+  document.body.appendChild(overlay);
+}
+
+function cerrarConfirmCancelar(){
+  var el=document.getElementById('confirm-cancel-overlay');
+  if(el) el.remove();
+}
+
+function ejecutarCancelacion(tipo,id,telefono){
+  cerrarConfirmCancelar();
+  if(tipo==='evento') cancelarEvento(id,telefono);
+  else accionReserva(id,'cancelar',telefono);
+}
+
+// FIX 5: confirmarEvento usa field ID correcto (8586169) y valor limpio
 function confirmarEvento(id,telefono){
+  var body={};
+  body['field_'+FIELD_ESTADO_EVENTOS]=ESTADOS_EVENTOS.confirmada;
   fetch('https://api.baserow.io/api/database/rows/table/'+TABLA_EVENTOS+'/'+id+'/?user_field_names=false',{
     method:'PATCH',headers:{Authorization:'Token '+BASEROW_TOKEN,'Content-Type':'application/json'},
-    body:JSON.stringify({'field_8694936':'Confirmada'})
+    body:JSON.stringify(body)
   })
   .then(function(){
     return fetch(WEBHOOK_CONFIRMAR+'?reserva_id='+id+'&telefono='+telefono);
@@ -652,10 +735,13 @@ function confirmarEvento(id,telefono){
   .catch(function(){showToast('Error al confirmar evento','#c62828');});
 }
 
+// FIX 5: cancelarEvento usa field ID correcto
 function cancelarEvento(id,telefono){
+  var body={};
+  body['field_'+FIELD_ESTADO_EVENTOS]=ESTADOS_EVENTOS.cancelada;
   fetch('https://api.baserow.io/api/database/rows/table/'+TABLA_EVENTOS+'/'+id+'/?user_field_names=false',{
     method:'PATCH',headers:{Authorization:'Token '+BASEROW_TOKEN,'Content-Type':'application/json'},
-    body:JSON.stringify({'field_8694936':'Cancelada'})
+    body:JSON.stringify(body)
   })
   .then(function(){
     return fetch(WEBHOOK_CANCELAR+'?reserva_id='+id+'&telefono='+telefono);
@@ -683,8 +769,9 @@ function renderTabla(){
     var fecha=parseFecha(r['Fecha'])||'--';
     var tel=r['Telefono']||r['Tel\u00e9fono']||'--';
     var mesa=r['Mesa']||'--';
+    // FIX UX 3: botón cancelar con confirmación
     var acciones=estado==='pendiente'?
-      '<button class="btn-confirm" onclick="abrirModalConfirmar('+r.id+',\''+tel+'\',\''+r['Nombre']+'\',\''+r['Hora']+'\','+r['Personas']+')">Confirmar</button><button class="btn-cancel" onclick="accionReserva('+r.id+',\'cancelar\',\''+tel+'\')">Cancelar</button>':
+      '<button class="btn-confirm" onclick="abrirModalConfirmar('+r.id+',\''+tel+'\',\''+r['Nombre']+'\',\''+r['Hora']+'\','+r['Personas']+')">Confirmar</button><button class="btn-cancel" onclick="pedirConfirmacionCancelar(\'reserva\','+r.id+',\''+tel+'\',\''+r['Nombre']+'\')">Cancelar</button>':
       '<span style="font-size:12px;color:#aaa">'+(estado==='confirmada'?'Confirmada':'Cancelada')+'</span>';
     return '<tr><td style="font-weight:500">'+(r['Nombre']||'--')+'</td><td>'+fecha+'</td><td>'+(r['Hora']||'--')+'</td><td>'+(r['Personas']||'--')+'</td><td style="font-size:12px;color:#888">'+tel+'</td><td><span class="badge badge-'+estado+'">'+estado+'</span></td><td style="font-size:12px;color:#888">'+mesa+'</td><td>'+acciones+'</td></tr>';
   }).join('');
@@ -757,6 +844,7 @@ function renderMetrics(){
   var pend=reservas.filter(function(r){return getEstadoNombre(r)==='pendiente';}).length;
   var persReserva=reservas.filter(function(r){return getEstadoNombre(r)==='confirmada';}).reduce(function(a,r){return a+(parseInt(r['Personas'])||0);},0);
   var allMesas=mesasData.comedor.concat(mesasData.patio).concat(mesasData.cava);
+  // FIX UX 4: incluir walk-ins en ocupación
   var persWalkin=allMesas.reduce(function(a,m){return a+(parseInt(m.walkin)||0);},0);
   var total=persReserva+persWalkin;
   var pct=Math.round(total/CAPACIDAD_TOTAL*100);
@@ -816,16 +904,8 @@ function abrirModal(area,mesaNum){
           '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#3DB58A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.8a19.79 19.79 0 01-3.07-8.63A2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14.92z"/></svg>'+
           '<span style="font-size:13px;color:var(--color-text-primary)">'+tel+'</span>'+
         '</div>'+
-        (tipoEvento?
-          '<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">'+
-            '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#3DB58A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1010 10A10 10 0 0012 2z"/><path d="M8.56 2.75c4.37 6.03 6.02 9.42 8.03 17.72m2.54-15.38c-3.72 4.35-8.94 5.66-16.88 5.85m19.5 1.9c-3.5-.93-6.63-.82-8.94 0-2.58.92-5.01 2.86-7.44 6.32"/></svg>'+
-            '<span style="display:inline-block;padding:2px 10px;border-radius:20px;font-size:11px;font-weight:500;background:#E1F5EE;color:#0F6E56">'+tipoEvento+'</span>'+
-          '</div>':'')+
-        (restricciones?
-          '<div style="background:#FCEBEB;border-radius:8px;padding:8px 10px;display:flex;align-items:flex-start;gap:8px;margin-top:6px">'+
-            '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#A32D2D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-top:1px;flex-shrink:0"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>'+
-            '<div><div style="font-size:11px;font-weight:500;color:#A32D2D;margin-bottom:2px">Restriccion alimenticia</div><div style="font-size:12px;color:#A32D2D">'+restricciones+'</div></div>'+
-          '</div>':'')+
+        (tipoEvento?'<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#3DB58A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1010 10A10 10 0 0012 2z"/><path d="M8.56 2.75c4.37 6.03 6.02 9.42 8.03 17.72m2.54-15.38c-3.72 4.35-8.94 5.66-16.88 5.85m19.5 1.9c-3.5-.93-6.63-.82-8.94 0-2.58.92-5.01 2.86-7.44 6.32"/></svg><span style="display:inline-block;padding:2px 10px;border-radius:20px;font-size:11px;font-weight:500;background:#E1F5EE;color:#0F6E56">'+tipoEvento+'</span></div>':'')+
+        (restricciones?'<div style="background:#FCEBEB;border-radius:8px;padding:8px 10px;display:flex;align-items:flex-start;gap:8px;margin-top:6px"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#A32D2D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-top:1px;flex-shrink:0"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg><div><div style="font-size:11px;font-weight:500;color:#A32D2D;margin-bottom:2px">Restriccion alimenticia</div><div style="font-size:12px;color:#A32D2D">'+restricciones+'</div></div></div>':'')+
       '</div>'+
       '<div style="border-top:0.5px solid var(--color-border-tertiary)"></div>'+
       '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:12px 16px">'+
@@ -928,7 +1008,6 @@ cargarWalkins();
 cargarEventos();
 setInterval(function(){cargarReservas();cargarWalkins();cargarEventos();},5000);
 
-// Búsqueda de reservas
 var textoBusqueda='';
 
 function filtrarBusqueda(){
@@ -942,110 +1021,94 @@ function limpiarBusqueda(){
   renderTabla();
 }
 
-// Drag & Drop para mesas del plano
-var dragEl=null, dragOffX=0, dragOffY=0, moverActivo=false;
+// FIX UX 5: Drag & Drop mejorado - re-inicializa tras cada render
+var dragEl=null,dragOffX=0,dragOffY=0,moverActivo=false;
 
 function toggleMoverMesas(){
   moverActivo=!moverActivo;
   var btn=document.getElementById('btn-mover-mesas');
   if(moverActivo){
     btn.textContent='Mover mesas: ON';
-    btn.style.background='#E1F5EE';
-    btn.style.color='#0F6E56';
-    btn.style.borderColor='#1D9E75';
-    document.querySelectorAll('.pm').forEach(function(el){el.style.cursor='grab';});
+    btn.style.background='#E1F5EE';btn.style.color='#0F6E56';btn.style.borderColor='#1D9E75';
   } else {
     btn.textContent='Mover mesas: OFF';
-    btn.style.background='transparent';
-    btn.style.color='#666';
-    btn.style.borderColor='#e5e5e0';
-    document.querySelectorAll('.pm').forEach(function(el){el.style.cursor='pointer';});
+    btn.style.background='transparent';btn.style.color='#666';btn.style.borderColor='#e5e5e0';
   }
+  initDrag();
 }
 
 function initDrag(){
   document.querySelectorAll('.pm').forEach(function(el){
-    // Restaurar posición guardada
     var key='mesa-pos-'+el.id;
     var saved=localStorage.getItem(key);
-    if(saved){
-      var pos=JSON.parse(saved);
-      el.style.left=pos.left;
-      el.style.top=pos.top;
-    }
+    if(saved){var pos=JSON.parse(saved);el.style.left=pos.left;el.style.top=pos.top;}
+    el.style.cursor=moverActivo?'grab':'pointer';
+    // Clonar para eliminar listeners anteriores y evitar duplicados
+    var newEl=el.cloneNode(true);
+    el.parentNode.replaceChild(newEl,el);
+    var fresh=document.getElementById(newEl.id);
+    if(!fresh) return;
+    // Restaurar onclick
+    var mesaId=newEl.id.replace('pm-','');
+    var area=mesaId.startsWith('C')?'comedor':mesaId.startsWith('P')?'patio':'cava';
+    fresh.onclick=function(){if(!moverActivo) abrirModal(area,mesaId);};
+    fresh.style.cursor=moverActivo?'grab':'pointer';
 
-    el.addEventListener('mousedown',function(e){
+    fresh.addEventListener('mousedown',function(e){
       if(e.button!==0||!moverActivo) return;
-      dragEl=el;
-      var rect=el.getBoundingClientRect();
-      dragOffX=e.clientX-rect.left;
-      dragOffY=e.clientY-rect.top;
-      el.style.zIndex=100;
-      el.style.opacity='0.85';
+      dragEl=fresh;
+      var rect=fresh.getBoundingClientRect();
+      dragOffX=e.clientX-rect.left;dragOffY=e.clientY-rect.top;
+      fresh.style.zIndex=100;fresh.style.opacity='0.85';
       e.preventDefault();
     });
-
-    // Touch
-    el.addEventListener('touchstart',function(e){
+    fresh.addEventListener('touchstart',function(e){
       if(!moverActivo) return;
-      dragEl=el;
+      dragEl=fresh;
       var touch=e.touches[0];
-      var rect=el.getBoundingClientRect();
-      dragOffX=touch.clientX-rect.left;
-      dragOffY=touch.clientY-rect.top;
-      el.style.zIndex=100;
-      el.style.opacity='0.85';
+      var rect=fresh.getBoundingClientRect();
+      dragOffX=touch.clientX-rect.left;dragOffY=touch.clientY-rect.top;
+      fresh.style.zIndex=100;fresh.style.opacity='0.85';
       e.preventDefault();
     },{passive:false});
   });
-
-  document.addEventListener('mousemove',function(e){
-    if(!dragEl) return;
-    var parentRect=dragEl.parentElement.getBoundingClientRect();
-    var x=e.clientX-parentRect.left-dragOffX;
-    var y=e.clientY-parentRect.top-dragOffY;
-    x=Math.max(0,Math.min(x,parentRect.width-dragEl.offsetWidth));
-    y=Math.max(0,Math.min(y,parentRect.height-dragEl.offsetHeight));
-    dragEl.style.left=x+'px';
-    dragEl.style.top=y+'px';
-  });
-
-  document.addEventListener('touchmove',function(e){
-    if(!dragEl) return;
-    var touch=e.touches[0];
-    var parentRect=dragEl.parentElement.getBoundingClientRect();
-    var x=touch.clientX-parentRect.left-dragOffX;
-    var y=touch.clientY-parentRect.top-dragOffY;
-    x=Math.max(0,Math.min(x,parentRect.width-dragEl.offsetWidth));
-    y=Math.max(0,Math.min(y,parentRect.height-dragEl.offsetHeight));
-    dragEl.style.left=x+'px';
-    dragEl.style.top=y+'px';
-    e.preventDefault();
-  },{passive:false});
-
-  function stopDrag(){
-    if(!dragEl) return;
-    dragEl.style.zIndex='';
-    dragEl.style.opacity='1';
-    // Guardar posición
-    var key='mesa-pos-'+dragEl.id;
-    localStorage.setItem(key,JSON.stringify({left:dragEl.style.left,top:dragEl.style.top}));
-    dragEl=null;
-  }
-
-  document.addEventListener('mouseup',stopDrag);
-  document.addEventListener('touchend',stopDrag);
 }
 
-// Botón para resetear posiciones
+document.addEventListener('mousemove',function(e){
+  if(!dragEl) return;
+  var parentRect=dragEl.parentElement.getBoundingClientRect();
+  var x=e.clientX-parentRect.left-dragOffX;
+  var y=e.clientY-parentRect.top-dragOffY;
+  x=Math.max(0,Math.min(x,parentRect.width-dragEl.offsetWidth));
+  y=Math.max(0,Math.min(y,parentRect.height-dragEl.offsetHeight));
+  dragEl.style.left=x+'px';dragEl.style.top=y+'px';
+});
+document.addEventListener('touchmove',function(e){
+  if(!dragEl) return;
+  var touch=e.touches[0];
+  var parentRect=dragEl.parentElement.getBoundingClientRect();
+  var x=touch.clientX-parentRect.left-dragOffX;
+  var y=touch.clientY-parentRect.top-dragOffY;
+  x=Math.max(0,Math.min(x,parentRect.width-dragEl.offsetWidth));
+  y=Math.max(0,Math.min(y,parentRect.height-dragEl.offsetHeight));
+  dragEl.style.left=x+'px';dragEl.style.top=y+'px';
+  e.preventDefault();
+},{passive:false});
+
+function stopDrag(){
+  if(!dragEl) return;
+  dragEl.style.zIndex='';dragEl.style.opacity='1';
+  localStorage.setItem('mesa-pos-'+dragEl.id,JSON.stringify({left:dragEl.style.left,top:dragEl.style.top}));
+  dragEl=null;
+}
+document.addEventListener('mouseup',stopDrag);
+document.addEventListener('touchend',stopDrag);
+
 function resetMesasPos(){
-  document.querySelectorAll('.pm').forEach(function(el){
-    localStorage.removeItem('mesa-pos-'+el.id);
-  });
+  document.querySelectorAll('.pm').forEach(function(el){localStorage.removeItem('mesa-pos-'+el.id);});
   location.reload();
 }
 
-// Inicializar drag cuando se muestra la pestaña de mesas
 var origShowTab=showTab;
 showTab=function(tab,btn){
   origShowTab(tab,btn);
@@ -1065,17 +1128,14 @@ function toggleSettings(){
   var dd=document.getElementById('settings-dropdown');
   dd.style.display=dd.style.display==='none'?'block':'none';
 }
-
 document.addEventListener('click',function(e){
   var dd=document.getElementById('settings-dropdown');
   var btn=document.getElementById('settings-btn');
-  if(dd&&dd.style.display==='block'&&!dd.contains(e.target)&&!btn.contains(e.target)){
-    dd.style.display='none';
-  }
+  if(dd&&dd.style.display==='block'&&!dd.contains(e.target)&&!btn.contains(e.target)) dd.style.display='none';
 });
-
 </script>
 
+<!-- Tarjeta resumen descargable -->
 <div id="resumen-card" style="position:fixed;left:-9999px;top:0;z-index:-1;background:#fff;padding:20px;width:400px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif">
   <div style="background:linear-gradient(135deg,#1D9E75,#0F6E56);border-radius:12px;padding:14px 16px;margin-bottom:16px;color:#fff">
     <div style="font-size:15px;font-weight:500;margin-bottom:2px">Buenos días, equipo OLIVO</div>
@@ -1085,7 +1145,7 @@ document.addEventListener('click',function(e){
     <div style="font-size:10px;font-weight:500;color:#0F6E56;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:8px">Ocupación total</div>
     <div style="display:flex;align-items:center;gap:12px">
       <div style="position:relative;width:56px;height:56px;flex-shrink:0">
-        <svg id="resumen-svg" width="56" height="56" viewBox="0 0 56 56">
+        <svg width="56" height="56" viewBox="0 0 56 56">
           <circle cx="28" cy="28" r="22" fill="none" stroke="#f0f0f0" stroke-width="5"/>
           <circle id="resumen-circle" cx="28" cy="28" r="22" fill="none" stroke="#3DB58A" stroke-width="5" stroke-dasharray="138.2" stroke-dashoffset="138.2" stroke-linecap="round" transform="rotate(-90 28 28)"/>
         </svg>
@@ -1117,65 +1177,70 @@ document.addEventListener('click',function(e){
 
 <script>
 function generarResumen(){
-  var btn = document.getElementById('resumen-btn');
-  btn.innerHTML = 'Generando...';
-  btn.disabled = true;
+  var btn=document.getElementById('resumen-btn');
+  btn.innerHTML='Generando...';
+  btn.disabled=true;
 
-  // Calcular datos
-  var fechaStr = formatFecha(fechaSeleccionada);
-  var reservasHoy = reservas.filter(function(r){ return parseFecha(r['Fecha'])===fechaStr && getEstadoNombre(r)==='confirmada'; });
-  var totalPersonas = reservasHoy.reduce(function(s,r){ return s+(parseInt(r['Personas'])||0); },0);
-  var capacidad = 70;
-  var pct = Math.round((totalPersonas/capacidad)*100);
-  var offset = Math.round(138.2 - (138.2*pct/100));
-  var colorCircle = pct>=70?'#E24B4A':pct>=40?'#EF9F27':'#3DB58A';
-  var colorPct = pct>=70?'#A32D2D':pct>=40?'#854F0B':'#0F6E56';
+  var fechaStr=formatFecha(fechaSeleccionada);
+  var reservasHoy=reservas.filter(function(r){return parseFecha(r['Fecha'])===fechaStr&&getEstadoNombre(r)==='confirmada';});
 
-  var diasSemana=['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
+  // FIX UX 4: incluir walk-ins en el resumen
+  var allMesas=mesasData.comedor.concat(mesasData.patio).concat(mesasData.cava);
+  var persWalkin=allMesas.reduce(function(a,m){return a+(parseInt(m.walkin)||0);},0);
+  var persReserva=reservasHoy.reduce(function(s,r){return s+(parseInt(r['Personas'])||0);},0);
+  var totalPersonas=persReserva+persWalkin;
+
+  var capacidad=70;
+  var pct=Math.round((totalPersonas/capacidad)*100);
+  var offset=Math.round(138.2-(138.2*pct/100));
+  var colorCircle=pct>=70?'#E24B4A':pct>=40?'#EF9F27':'#3DB58A';
+  var colorPct=pct>=70?'#A32D2D':pct>=40?'#854F0B':'#0F6E56';
+
+  // FIX 2: fecha correcta sin desplazar el día de la semana
+  var dias=['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
   var meses=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
   var d=new Date(fechaSeleccionada);
-  var fechaFormato=diasSemana[d.getDay()+1<7?d.getDay()+1:0]+' '+d.getDate()+' de '+meses[d.getMonth()]+' de '+d.getFullYear();
+  var fechaFormato=dias[d.getDay()]+' '+d.getDate()+' de '+meses[d.getMonth()]+' de '+d.getFullYear();
 
-  // Llenar tarjeta
   document.getElementById('resumen-fecha').textContent=fechaFormato+' · Resumen del día';
   document.getElementById('resumen-pct').textContent=pct+'%';
   document.getElementById('resumen-pct').style.color=colorPct;
   document.getElementById('resumen-circle').setAttribute('stroke-dashoffset',offset);
   document.getElementById('resumen-circle').setAttribute('stroke',colorCircle);
   document.getElementById('resumen-personas').textContent=totalPersonas+' de '+capacidad+' personas';
-  document.getElementById('resumen-total-res').textContent=reservasHoy.length+' reservas confirmadas';
+  document.getElementById('resumen-total-res').textContent=reservasHoy.length+' reservas · '+(persWalkin>0?persWalkin+' walk-in':'sin walk-ins');
 
-  // Reservas
-  var filasHtml = reservasHoy.length>0 ? reservasHoy.sort(function(a,b){return (a['Hora']||'').localeCompare(b['Hora']||'');}).map(function(r){
+  var filasHtml=reservasHoy.length>0?reservasHoy.sort(function(a,b){return (a['Hora']||'').localeCompare(b['Hora']||'');}).map(function(r){
     return '<div style="display:flex;justify-content:space-between;padding:4px 0;font-size:12px;border-bottom:0.5px solid #f5f5f0"><span style="font-weight:500;color:#1a1a1a">'+(r['Hora']||'')+'</span><span style="color:#666;font-size:11px">'+(r['Personas']||'')+' pers. · Mesa '+(r['Mesa']||'-')+'</span></div>';
-  }).join('') : '<div style="font-size:11px;color:#aaa">Sin reservas hoy.</div>';
+  }).join(''):'<div style="font-size:11px;color:#aaa">Sin reservas confirmadas hoy.</div>';
   document.getElementById('resumen-reservas').innerHTML=filasHtml;
 
-  // Áreas
   var pComedor=reservasHoy.filter(function(r){return (r['Mesa']||'').startsWith('C')&&!(r['Mesa']||'').startsWith('CV');}).reduce(function(s,r){return s+(parseInt(r['Personas'])||0);},0);
   var pPatio=reservasHoy.filter(function(r){return (r['Mesa']||'').startsWith('P');}).reduce(function(s,r){return s+(parseInt(r['Personas'])||0);},0);
   var pCava=reservasHoy.filter(function(r){return (r['Mesa']||'').startsWith('CV');}).reduce(function(s,r){return s+(parseInt(r['Personas'])||0);},0);
-  
+
   document.getElementById('resumen-areas').innerHTML=
     '<div style="display:flex;align-items:center;gap:8px;padding:3px 0"><span style="font-size:11px;color:#555;width:56px">Comedor</span><div style="flex:1;height:6px;background:#f0f0f0;border-radius:3px;overflow:hidden"><div style="width:'+Math.round((pComedor/45)*100)+'%;height:100%;background:#3DB58A;border-radius:3px"></div></div><span style="font-size:11px;color:#555;width:40px;text-align:right">'+pComedor+' p.</span></div>'+
     '<div style="display:flex;align-items:center;gap:8px;padding:3px 0"><span style="font-size:11px;color:#555;width:56px">Patio</span><div style="flex:1;height:6px;background:#f0f0f0;border-radius:3px;overflow:hidden"><div style="width:'+Math.round((pPatio/15)*100)+'%;height:100%;background:#3DB58A;border-radius:3px"></div></div><span style="font-size:11px;color:'+(pPatio>0?'#555':'#ccc')+';width:40px;text-align:right">'+pPatio+' p.</span></div>'+
     '<div style="display:flex;align-items:center;gap:8px;padding:3px 0"><span style="font-size:11px;color:#555;width:56px">Cava</span><div style="flex:1;height:6px;background:#f0f0f0;border-radius:3px;overflow:hidden"><div style="width:'+Math.round((pCava/8)*100)+'%;height:100%;background:#3DB58A;border-radius:3px"></div></div><span style="font-size:11px;color:'+(pCava>0?'#555':'#ccc')+';width:40px;text-align:right">'+pCava+' p.</span></div>';
 
-  // Eventos
-  var eventosHoy=[];
-  document.getElementById('resumen-eventos').innerHTML=eventosHoy.length>0?'con eventos':'<div style="font-size:11px;color:#aaa">Sin eventos hoy.</div>';
+  // FIX 3: mostrar eventos reales del día
+  var eventosHoy=eventos.filter(function(e){return parseFecha(e['Fecha'])===fechaStr;});
+  document.getElementById('resumen-eventos').innerHTML=eventosHoy.length>0?
+    eventosHoy.map(function(e){
+      return '<div style="display:flex;justify-content:space-between;padding:4px 0;font-size:12px;border-bottom:0.5px solid #f5f5f0">'+
+        '<span style="font-weight:500;color:#3C3489">'+(e['Nombre']||'--')+'</span>'+
+        '<span style="font-size:11px;color:#7F77DD">'+(e['Hora']||'')+(e['Personas']?' · '+(e['Personas'])+' pers.':'')+'</span>'+
+        '</div>';
+    }).join(''):
+    '<div style="font-size:11px;color:#aaa">Sin eventos hoy.</div>';
 
-  // Mostrar y capturar
   var card=document.getElementById('resumen-card');
-  card.style.left='0';
-  card.style.zIndex='9999';
-  card.style.position='fixed';
-  card.style.top='0';
+  card.style.left='0';card.style.zIndex='9999';card.style.position='fixed';card.style.top='0';
 
   setTimeout(function(){
     html2canvas(card,{scale:2,backgroundColor:'#ffffff',useCORS:true}).then(function(canvas){
-      card.style.left='-9999px';
-      card.style.zIndex='-1';
+      card.style.left='-9999px';card.style.zIndex='-1';
       var link=document.createElement('a');
       link.download='resumen-olivo-'+fechaStr+'.png';
       link.href=canvas.toDataURL('image/png');
