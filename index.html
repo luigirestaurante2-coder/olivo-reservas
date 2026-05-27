@@ -21,6 +21,11 @@ body.dark .date-btn:hover{background:#085041;color:#9FE1CB}
 .dark-btn{font-size:11px;padding:4px 10px;border-radius:6px;border:0.5px solid #e5e5e0;background:#fff;color:#666;cursor:pointer}
 body.dark .dark-btn{border-color:#444;background:#2a2a2a;color:#aaa}
 body.dark #buscar-reserva{background:#3a3a3a;border-color:#555;color:#e5e5e0}
+#resumen-btn{background:#e8f5e9;color:#2e7d32;border-color:#1D9E75}
+body.dark #resumen-btn{background:#1a1a1a !important;color:#aaa !important;border-color:#333 !important}
+body.dark #resumen-btn svg{stroke:#aaa !important}
+body.dark #resumen-btn:hover{background:#6DBF87 !important;color:#555 !important;border-color:#6DBF87 !important}
+body.dark #resumen-btn:hover svg{stroke:#555 !important}
 #settings-dropdown{background:#fff;color:#1a1a1a}
 body.dark #settings-dropdown{background:#1e1e1e !important;border-color:#333 !important;color:#e5e5e0}
 body.dark #settings-dropdown>div{color:#e5e5e0 !important}
@@ -174,7 +179,7 @@ body.dark .mesa-opt.selected{background:#085041;color:#9FE1CB;border-color:#0F6E
   <div class="header-right">
     <button class="dark-btn" id="dark-btn" onclick="toggleDark()">Modo oscuro</button>
     <button class="dark-btn" id="settings-btn" onclick="toggleSettings()" style="display:none">Settings</button>
-    <button class="dark-btn" id="resumen-btn" onclick="generarResumen()" style="background:#3DB58A;color:#fff;border-color:#2a8a67;display:flex;align-items:center;gap:4px"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Resumen</button>
+    <button class="dark-btn" id="resumen-btn" onclick="generarResumen()" style="display:flex;align-items:center;gap:4px"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#2e7d32" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Resumen</button>
     <div id="settings-dropdown" style="display:none;position:absolute;top:calc(100% + 8px);right:0;background:#fff;border:1px solid #e5e5e0;border-radius:12px;padding:1rem;z-index:50;box-shadow:0 4px 20px rgba(0,0,0,0.12);width:220px;text-align:left">
       <div style="font-size:13px;font-weight:500;margin-bottom:8px;color:#1a1a1a">Configuración del plano</div>
       <button id="btn-mover-mesas" onclick="toggleMoverMesas()" style="width:100%;padding:8px 12px;border:1px solid #e5e5e0;border-radius:8px;background:transparent;color:#666;cursor:pointer;font-size:12px;text-align:left;margin-bottom:6px">Mover mesas: OFF</button>
@@ -1175,7 +1180,7 @@ function generarResumen(){
       link.download='resumen-olivo-'+fechaStr+'.png';
       link.href=canvas.toDataURL('image/png');
       link.click();
-      btn.innerHTML='<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Resumen';
+      btn.innerHTML='<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#2e7d32" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Resumen';
       btn.disabled=false;
     });
   },300);
