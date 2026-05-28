@@ -76,8 +76,8 @@ body.dark .tab-bar{border-color:#333}
 .tab.active{color:#0F6E56;border-bottom:2px solid #1D9E75;font-weight:500}
 body.dark .tab{color:#666}
 body.dark .tab.active{color:#1D9E75}
-/* Badge pendientes en tab */
-.tab-badge{display:inline-flex;align-items:center;justify-content:center;min-width:17px;height:17px;border-radius:9px;background:#e65100;color:#fff;font-size:10px;font-weight:600;padding:0 4px;margin-left:5px;vertical-align:middle}
+/* Badge campana */
+body.dark #bell-icon{color:#fff !important}
 .filter-bar{display:flex;gap:8px;margin-bottom:1rem;flex-wrap:wrap}
 .filter-btn{font-size:12px;padding:5px 12px;border-radius:8px;border:1px solid #e5e5e0;background:#f5f5f0;color:#666;cursor:pointer}
 body.dark .filter-btn{border-color:#444;background:#2a2a2a;color:#888}
@@ -257,7 +257,7 @@ body.dark .modal-confirm{background:#1e1e1e;border:0.5px solid #333}
 <div class="section">
   <div class="tab-bar">
     <!-- FIX UX 5: badge de pendientes en tab Solicitudes -->
-    <button class="tab active" id="tab-btn-solicitudes" onclick="showTab('solicitudes',this)">Solicitudes <span class="tab-badge" id="badge-pendientes" style="display:none">0</span></button>
+    <button class="tab active" id="tab-btn-solicitudes" onclick="showTab('solicitudes',this)">Solicitudes <span id="badge-pendientes" style="display:none;position:relative;display:inline-flex;align-items:center;margin-left:4px"><i class="ti ti-bell" id="bell-icon" style="font-size:15px;color:#1a1a1a" aria-hidden="true"></i><span id="badge-num" style="position:absolute;top:-5px;right:-7px;min-width:14px;height:14px;border-radius:7px;background:#E24B4A;color:#fff;font-size:9px;font-weight:500;display:flex;align-items:center;justify-content:center;padding:0 3px">0</span></span></button>
     <button class="tab" id="tab-btn-eventos" onclick="showTab('eventos',this)">Solo Reservas</button>
     <button class="tab" onclick="showTab('mesas',this)">Mesas por area</button>
     <button class="tab" onclick="showTab('ocupacion',this)">Ocupacion por hora</button>
@@ -621,8 +621,13 @@ function actualizarBadgePendientes(){
   var pendientesEventos=eventosTodos.filter(function(e){return getEstadoNombre(e)==='pendiente';}).length;
   var pendientes=pendientesReservas+pendientesEventos;
   var badge=document.getElementById('badge-pendientes');
-  if(pendientes>0){badge.textContent=pendientes;badge.style.display='inline-flex';}
-  else badge.style.display='none';
+  var num=document.getElementById('badge-num');
+  if(pendientes>0){
+    badge.style.display='inline-flex';
+    num.textContent=pendientes;
+  } else {
+    badge.style.display='none';
+  }
 }
 
 function cargarReservas(){
@@ -704,7 +709,7 @@ function renderTablaEventos(){
     var tel=r['Telefono']||r['Teléfono']||'--';
     var mesa=r['Mesa']||'--';
     var acciones=estado==='pendiente'?
-      '<button class="btn-confirm" onclick="abrirModalConfirmar('+r.id+',\''+tel+'\',\''+r['Nombre']+'\',\''+r['Hora']+'\','+r['Personas']+')">Confirmar</button><button class="btn-cancel" onclick="pedirConfirmacionCancelar(\'reserva\','+r.id+',\''+tel+'\',\''+r['Nombre']+'\')">Cancelar</button>':
+      '<button class="btn-confirm" onclick="abrirModalConfirmar('+r.id+',\''+tel+'\',\''+r['Nombre']+'\',\''+(r['Hora']||'')+'\','+(parseInt(r['Personas'])||0)+')">Confirmar</button><button class="btn-cancel" onclick="pedirConfirmacionCancelar(\'reserva\','+r.id+',\''+tel+'\',\''+r['Nombre']+'\')">Cancelar</button>':
       '<span style="font-size:12px;color:#aaa">'+(estado==='confirmada'?'Confirmada':'Cancelada')+'</span>';
     return '<tr><td style="font-weight:500">'+(r['Nombre']||'--')+'</td><td><span style="font-size:11px;color:#aaa">Reserva</span></td><td>'+fecha+'</td><td>'+(r['Hora']||'--')+'</td><td>'+(r['Personas']||'--')+'</td><td style="font-size:12px;color:#888">'+tel+'</td><td><span class="badge badge-'+estado+'">'+estado+'</span></td><td>'+acciones+'</td></tr>';
   }).join('');
@@ -815,7 +820,7 @@ function renderTabla(){
     var acciones=estado==='pendiente'?
       (esEvento?
         '<button class="btn-confirm" onclick="confirmarEvento('+r.id+',\''+tel+'\')">Confirmar</button><button class="btn-cancel" onclick="pedirConfirmacionCancelar(\'evento\','+r.id+',\''+tel+'\',\''+r['Nombre']+'\')">Cancelar</button>':
-        '<button class="btn-confirm" onclick="abrirModalConfirmar('+r.id+',\''+tel+'\',\''+r['Nombre']+'\',\''+r['Hora']+'\','+r['Personas']+')">Confirmar</button><button class="btn-cancel" onclick="pedirConfirmacionCancelar(\'reserva\','+r.id+',\''+tel+'\',\''+r['Nombre']+'\')">Cancelar</button>'
+        '<button class="btn-confirm" onclick="abrirModalConfirmar('+r.id+',\''+tel+'\',\''+r['Nombre']+'\',\''+(r['Hora']||'')+'\','+(parseInt(r['Personas'])||0)+')">Confirmar</button><button class="btn-cancel" onclick="pedirConfirmacionCancelar(\'reserva\','+r.id+',\''+tel+'\',\''+r['Nombre']+'\')">Cancelar</button>'
       ):
       '<span style="font-size:12px;color:#aaa">'+(estado==='confirmada'?'Confirmada':'Cancelada')+'</span>';
     return '<tr><td style="font-weight:500">'+(r['Nombre']||'--')+'</td><td>'+tipoBadge+'</td><td>'+fecha+'</td><td>'+(r['Hora']||'--')+'</td><td>'+(r['Personas']||'--')+'</td><td style="font-size:12px;color:#888">'+tel+'</td><td><span class="badge badge-'+estado+'">'+estado+'</span></td><td style="font-size:12px;color:#888">'+(esEvento?'--':mesa)+'</td><td>'+acciones+'</td></tr>';
@@ -823,7 +828,7 @@ function renderTabla(){
 }
 
 function abrirModalConfirmar(id,telefono,nombre,hora,personas){
-  reservaActual={id:id,telefono:telefono,nombre:nombre,hora:hora,personas:personas};
+  reservaActual={id:id,telefono:telefono,nombre:nombre,hora:hora,personas:parseInt(personas)||0};
   mesaSeleccionada=null;
   var ocupadas=getMesasOcupadas();
   var allMesas=mesasData.comedor.concat(mesasData.patio).concat(mesasData.cava);
