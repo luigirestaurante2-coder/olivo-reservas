@@ -789,7 +789,6 @@ function cancelarEvento(id,telefono){
 
 function renderTabla(){
   var tb=document.getElementById('tabla-body');
-  // Mezclar reservas + eventos para solicitudes
   var listaReservas=reservasSolicitudes.map(function(r){return {tipo:'reserva',data:r};});
   var listaEventosTodos=eventosTodos.map(function(e){return {tipo:'evento',data:e};});
   var lista;
@@ -817,14 +816,35 @@ function renderTabla(){
     var tel=r['Telefono']||r['Teléfono']||'--';
     var mesa=r['Mesa']||'--';
     var tipoBadge=esEvento?'<span class="badge badge-evento"><span class="dot-evento"></span>Evento</span>':'<span style="font-size:11px;color:#aaa">Reserva</span>';
-    var acciones=estado==='pendiente'?
-      (esEvento?
-        '<button class="btn-confirm" onclick="confirmarEvento('+r.id+',\''+tel+'\')">Confirmar</button><button class="btn-cancel" onclick="pedirConfirmacionCancelar(\'evento\','+r.id+',\''+tel+'\',\''+r['Nombre']+'\')">Cancelar</button>':
-        '<button class="btn-confirm" onclick="abrirModalConfirmar('+r.id+',\''+tel+'\',\''+r['Nombre']+'\',\''+(r['Hora']||'')+'\','+(parseInt(r['Personas'])||0)+')">Confirmar</button><button class="btn-cancel" onclick="pedirConfirmacionCancelar(\'reserva\','+r.id+',\''+tel+'\',\''+r['Nombre']+'\')">Cancelar</button>'
-      ):
-      '<span style="font-size:12px;color:#aaa">'+(estado==='confirmada'?'Confirmada':'Cancelada')+'</span>';
+    var acciones='';
+    if(estado==='pendiente'){
+      if(esEvento){
+        acciones='<button class="btn-confirm" onclick="confirmarEvento('+r.id+',\''+tel+'\')">Confirmar</button>'+
+          '<button class="btn-cancel" onclick="pedirConfirmacionCancelarId(\'evento\','+r.id+')">Cancelar</button>';
+      } else {
+        acciones='<button class="btn-confirm" onclick="prepararConfirmar('+r.id+')">Confirmar</button>'+
+          '<button class="btn-cancel" onclick="pedirConfirmacionCancelarId(\'reserva\','+r.id+')">Cancelar</button>';
+      }
+    } else {
+      acciones='<span style="font-size:12px;color:#aaa">'+(estado==='confirmada'?'Confirmada':'Cancelada')+'</span>';
+    }
     return '<tr><td style="font-weight:500">'+(r['Nombre']||'--')+'</td><td>'+tipoBadge+'</td><td>'+fecha+'</td><td>'+(r['Hora']||'--')+'</td><td>'+(r['Personas']||'--')+'</td><td style="font-size:12px;color:#888">'+tel+'</td><td><span class="badge badge-'+estado+'">'+estado+'</span></td><td style="font-size:12px;color:#888">'+(esEvento?'--':mesa)+'</td><td>'+acciones+'</td></tr>';
   }).join('');
+}
+
+function prepararConfirmar(id){
+  var r=reservasSolicitudes.filter(function(x){return x.id===id;})[0];
+  if(!r) return;
+  var tel=r['Telefono']||r['Teléfono']||'';
+  abrirModalConfirmar(r.id,tel,r['Nombre']||'',r['Hora']||'',parseInt(r['Personas'])||0);
+}
+
+function pedirConfirmacionCancelarId(tipo,id){
+  var lista=tipo==='evento'?eventosTodos:reservasSolicitudes;
+  var r=lista.filter(function(x){return x.id===id;})[0];
+  if(!r) return;
+  var tel=r['Telefono']||r['Teléfono']||'';
+  pedirConfirmacionCancelar(tipo,id,tel,r['Nombre']||'');
 }
 
 function abrirModalConfirmar(id,telefono,nombre,hora,personas){
