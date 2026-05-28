@@ -153,7 +153,7 @@ body.dark .horas-wrap{background:#1e1e1e;border-color:#333}
 .hora-label{font-size:11px;color:#aaa}
 body.dark .hora-label{color:#555}
 .modal-bg{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);display:flex;align-items:center;justify-content:center;z-index:100}
-.modal{background:#fff;border-radius:16px;padding:1.5rem;width:320px;box-shadow:0 8px 32px rgba(0,0,0,0.15);max-height:80vh;overflow-y:auto}
+.modal{background:#fff;border-radius:16px;padding:1.5rem;width:320px;max-width:calc(100vw - 32px);box-shadow:0 8px 32px rgba(0,0,0,0.15);max-height:80vh;overflow-y:auto}
 body.dark .modal{background:#1e1e1e;border:0.5px solid #333}
 .modal-title{font-size:16px;font-weight:500;margin-bottom:4px}
 .modal-sub{font-size:13px;color:#888;margin-bottom:1rem}
@@ -184,8 +184,43 @@ body.dark .modal-confirm{background:#1e1e1e;border:0.5px solid #333}
 .modal-confirm-sub{font-size:13px;color:#888;margin-bottom:1.2rem}
 .modal-confirm-btns{display:flex;gap:8px}
 @media(max-width:600px){
-  .metrics{grid-template-columns:repeat(2,1fr)}
-  th:nth-child(4),td:nth-child(4){display:none}
+  /* Header */
+  .header{padding:0.75rem 1rem;gap:8px;flex-wrap:nowrap}
+  .logo{font-size:15px;white-space:nowrap}
+  .header-right{gap:6px}
+  .dark-btn{font-size:10px;padding:3px 7px}
+  #resumen-btn{font-size:10px;padding:3px 7px}
+  #resumen-btn svg{display:none}
+  /* Métricas */
+  .metrics{grid-template-columns:repeat(2,1fr);gap:8px;padding:1rem}
+  .metric{padding:0.75rem}
+  .metric-value{font-size:22px}
+  /* Section */
+  .section{padding:0 1rem 1rem}
+  /* Tabs */
+  .tab-bar{gap:0}
+  .tab{font-size:12px;padding:7px 10px;white-space:nowrap}
+  /* Tabla - scroll horizontal */
+  .tabla-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  table{min-width:520px;font-size:12px}
+  th,td{padding:8px 10px}
+  /* Plano de mesas - una columna, escala proporcional */
+  .plano-main{grid-template-columns:1fr;gap:10px}
+  .plano-col-r{flex-direction:row;flex-wrap:wrap;gap:10px}
+  .plano-col-r .plano-zona{flex:1;min-width:140px}
+  /* Escalar el plano para que quepa en pantalla */
+  .plano-scaler{overflow:hidden;width:100%;border-radius:8px}
+  .plano-area{transform-origin:top left}
+  /* Modal */
+  .modal{width:calc(100vw - 32px);max-width:320px;padding:1.25rem}
+  .modal-confirm{width:calc(100vw - 48px);max-width:300px}
+  /* Filter bar */
+  .filter-bar{gap:6px}
+  .filter-btn{font-size:11px;padding:4px 9px}
+  /* Calendar dropdown */
+  .calendar-dropdown{width:calc(100vw - 32px);right:-10px}
+  /* Leyenda */
+  .leyenda{gap:8px;font-size:11px}
 }
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
@@ -309,7 +344,8 @@ body.dark .modal-confirm{background:#1e1e1e;border:0.5px solid #333}
         <div class="plano-zona-name">Comedor</div>
         <div class="plano-zona-cap">45 pers. · 11 mesas</div>
       </div>
-      <div class="plano-area" style="height:380px">
+      <div class="plano-scaler" id="comedor-scaler">
+      <div class="plano-area" id="comedor-area" style="height:380px">
         <div class="pm circulo" id="pm-C1" style="width:75px;height:75px;left:12px;top:12px" onclick="abrirModal('comedor','C1')"><span>C1</span><small>4 pers.</small></div>
         <div class="pm circulo" id="pm-C2" style="width:75px;height:75px;left:12px;top:97px" onclick="abrirModal('comedor','C2')"><span>C2</span><small>4 pers.</small></div>
         <div class="pm circulo" id="pm-C3" style="width:75px;height:75px;left:12px;top:182px" onclick="abrirModal('comedor','C3')"><span>C3</span><small>4 pers.</small></div>
@@ -322,6 +358,7 @@ body.dark .modal-confirm{background:#1e1e1e;border:0.5px solid #333}
         <div class="pm circulo" id="pm-C11" style="width:75px;height:75px;left:390px;top:12px" onclick="abrirModal('comedor','C11')"><span>C11</span><small>2 pers.</small></div>
         <div class="pm circulo" id="pm-C12" style="width:75px;height:75px;left:390px;top:97px" onclick="abrirModal('comedor','C12')"><span>C12</span><small>2 pers.</small></div>
       </div>
+      </div><!-- fin scaler -->
     </div>
     <div class="plano-col-r">
       <div class="plano-zona" style="margin-bottom:0">
@@ -1046,7 +1083,7 @@ function initDrag(){
     if(!fresh) return;
     // Restaurar onclick
     var mesaId=newEl.id.replace('pm-','');
-    var area=mesaId.startsWith('C')?'comedor':mesaId.startsWith('P')?'patio':'cava';
+    var area=mesaId.startsWith('CV')?'cava':mesaId.startsWith('C')?'comedor':mesaId.startsWith('P')?'patio':'cava';
     fresh.onclick=function(){if(!moverActivo) abrirModal(area,mesaId);};
     fresh.style.cursor=moverActivo?'grab':'pointer';
 
@@ -1104,6 +1141,30 @@ function resetMesasPos(){
   document.querySelectorAll('.pm').forEach(function(el){localStorage.removeItem('mesa-pos-'+el.id);});
   location.reload();
 }
+
+function escalarPlano(){
+  var scaler=document.getElementById('comedor-scaler');
+  var area=document.getElementById('comedor-area');
+  if(!scaler||!area) return;
+  var anchoReal=480; // ancho original del plano (390px mesa + 75px + margen)
+  var anchoDisp=scaler.parentElement.offsetWidth-28;
+  if(anchoDisp<anchoReal){
+    var escala=anchoDisp/anchoReal;
+    area.style.transform='scale('+escala+')';
+    area.style.transformOrigin='top left';
+    scaler.style.height=Math.round(380*escala)+'px';
+  }else{
+    area.style.transform='';
+    scaler.style.height='';
+  }
+}
+window.addEventListener('resize',escalarPlano);
+var origShowTabPlano=showTab;
+showTab=function(tab,btn){
+  origShowTabPlano(tab,btn);
+  if(tab==='mesas') setTimeout(escalarPlano,120);
+};
+setTimeout(escalarPlano,300);
 
 var origShowTab=showTab;
 showTab=function(tab,btn){
