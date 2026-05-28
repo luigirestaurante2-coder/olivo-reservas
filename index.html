@@ -61,10 +61,8 @@ body.dark .dia-rapido.active{background:#085041;color:#9FE1CB;border-color:#0F6E
 .sync-indicator{display:flex;align-items:center;padding:0;background:transparent;border:none;user-select:none}
 .sync-icon{font-size:15px;color:#ccc;display:inline-block}
 body.dark .sync-icon{color:#444}
-.sync-indicator.syncing .sync-icon{animation:rotate-icon 0.8s linear infinite}
 .sync-indicator.error .sync-icon{color:#E24B4A}
 body.dark .sync-indicator.error .sync-icon{color:#f28b82}
-@keyframes rotate-icon{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
 .metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;padding:1.25rem 1.5rem}
 .metric{background:#fff;border-radius:12px;padding:1rem;border:1px solid #e5e5e0}
 body.dark .metric{background:#1e1e1e;border-color:#333}
@@ -199,7 +197,7 @@ body.dark .modal-confirm{background:#1e1e1e;border:0.5px solid #333}
   <div class="header-right">
     <!-- FIX UX 1: indicador de sincronización -->
     <div class="sync-indicator" id="sync-indicator">
-      <i class="ti ti-refresh sync-icon" aria-hidden="true"></i>
+      <i class="ti ti-wifi sync-icon" aria-hidden="true"></i>
     </div>
     <button class="dark-btn" id="dark-btn" onclick="toggleDark()">Modo oscuro</button>
     <button class="dark-btn" id="settings-btn" onclick="toggleSettings()" style="display:none">Settings</button>
@@ -443,9 +441,9 @@ function setSyncState(state){
   var ind=document.getElementById('sync-indicator');
   var ico=ind.querySelector('.sync-icon');
   ind.className='sync-indicator';
-  if(state==='syncing'){ind.classList.add('syncing');ico.className='ti ti-refresh sync-icon';}
+  if(state==='syncing'){ind.classList.add('syncing');ico.className='ti ti-wifi sync-icon';}
   else if(state==='error'){ind.classList.add('error');ico.className='ti ti-wifi-off sync-icon';}
-  else{ico.className='ti ti-refresh sync-icon';}
+  else{ico.className='ti ti-wifi sync-icon';}
 }
 
 function toggleCalendario(){
@@ -1004,7 +1002,7 @@ document.getElementById('fecha-hoy').textContent=formatFechaLabel(fechaSeleccion
 cargarReservas();
 cargarWalkins();
 cargarEventos();
-setInterval(function(){cargarReservas();cargarWalkins();cargarEventos();},5000);
+setInterval(function(){cargarReservas();cargarWalkins();cargarEventos();},3000);
 
 var textoBusqueda='';
 
