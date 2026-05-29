@@ -375,7 +375,7 @@ var WEBHOOK_CANCELAR='https://qwsd-n8n.hi49ib.easypanel.host/webhook/cancelar-re
 var ESTADOS={confirmada:6206820,pendiente:6206821,cancelada:6206822};
 var FIELD_MESA=8694049;
 var FIELD_TIPO_EVENTO=8710010;
-var TIPOS_EVENTO=['Reserva','Cumpleanos','Empresarial','Aniversario','Otro','Evento'];
+var TIPOS_EVENTO=['Reserva','Cumpleaños','Empresarial','Aniversario','Otro','Evento'];
 var TIPO_COLORES={'Reserva':'','Cumpleanos':'background:#FBEAF0;color:#72243E','Empresarial':'background:#E6F1FB;color:#0C447C','Aniversario':'background:#EEEDFE;color:#3C3489','Otro':'background:#f5f5f0;color:#555','Evento':'background:#EEEDFE;color:#3C3489'};
 var mesasData={
   comedor:[
@@ -463,6 +463,13 @@ function pedirConfirmacionCancelar(tipo,id,telefono,nombre){
 function cerrarConfirmCancelar(){var el=document.getElementById('confirm-cancel-overlay');if(el) el.remove();}
 function ejecutarCancelacion(tipo,id,telefono){cerrarConfirmCancelar();accionReserva(id,'cancelar',telefono);}
 
+function tipoToKey(t){
+  if(!t) return 'reserva';
+  return t.toLowerCase()
+    .replace(/ñ/g,'n')
+    .replace(/á/g,'a').replace(/é/g,'e').replace(/í/g,'i').replace(/ó/g,'o').replace(/ú/g,'u')
+    .replace(/[^a-z]/g,'');
+}
 /* === renderTabla usa data-attributes para evitar problemas de escapes === */
 function renderTabla(){
   var tb=document.getElementById('tabla-body');
@@ -478,8 +485,8 @@ function renderTabla(){
     var nombre=r['Nombre']||'--';
     var hora=r['Hora']||'';
     var personas=parseInt(r['Personas'])||0;
-    var tipoActual=(r['Tipo_Evento']&&typeof r['Tipo_Evento']==='object'?r['Tipo_Evento'].value:(r['Tipo_Evento']||''))||'Reserva';
-    var tipoKey=tipoActual.toLowerCase().replace(/[^a-z]/g,'');
+    var tipoActual=(r['Tipo_Evento']&&typeof r['Tipo_Evento']==='object'?r['Tipo_Evento'].value:(r['Tipo_Evento']||'Reserva'))||'Reserva';
+    var tipoKey=tipoToKey(tipoActual);
     var tipoBadge='<span class="tipo-pill tipo-pill-'+tipoKey+' tipo-pill-btn" data-rid="'+r.id+'" data-tipo="'+tipoActual+'"><span class="tipo-pill-dot tipo-pill-dot-'+tipoKey+'"></span>'+tipoActual+'<span class="tipo-pill-chevron">▾</span></span>';
     var acciones='';
     if(estado==='pendiente'){
@@ -554,7 +561,7 @@ function updateTipoPill(id,valor,pillEl){
   })
   .then(function(){
     pillEl.style.opacity='1';
-    var tipoKey=valor.toLowerCase().replace(/[^a-z]/g,'');
+    var tipoKey=tipoToKey(valor);
     pillEl.className='tipo-pill tipo-pill-'+tipoKey+' tipo-pill-btn';
     pillEl.setAttribute('data-tipo',valor);
     pillEl.innerHTML='<span class="tipo-pill-dot tipo-pill-dot-'+tipoKey+'"></span>'+valor+'<span class="tipo-pill-chevron">▾</span>';
@@ -612,9 +619,10 @@ function bindBotones(tbodyId){
     var tipoActual=pill.getAttribute('data-tipo')||'Reserva';
     var pop=document.createElement('div');
     pop.className='tipo-popover';
-    var DOTS={Reserva:'#888780',Cumpleanos:'#D4537E',Empresarial:'#378ADD',Aniversario:'#7F77DD',Otro:'#B4B2A9',Evento:'#534AB7'};
+    var DOTS={Reserva:'#888780','Cumpleaños':'#D4537E',Empresarial:'#378ADD',Aniversario:'#7F77DD',Otro:'#B4B2A9',Evento:'#534AB7'};
     TIPOS_EVENTO.forEach(function(t){
       var opt=document.createElement('button');
+      var tKey=tipoToKey(t);
       opt.className='tipo-popover-opt'+(t===tipoActual?' activo':'');
       opt.innerHTML='<span class="tipo-popover-dot" style="background:'+( DOTS[t]||'#888')+';"></span><span>'+t+'</span>'+(t===tipoActual?'<i class="ti ti-check tipo-popover-check" style="color:'+(DOTS[t]||'#888')+'" aria-hidden="true"></i>':'');
       opt.addEventListener('click',function(ev){
@@ -627,6 +635,12 @@ function bindBotones(tbodyId){
     });
     pill.style.position='relative';
     pill.appendChild(pop);
+    var rect=pill.getBoundingClientRect();
+    var spaceBelow=window.innerHeight-rect.bottom;
+    if(spaceBelow<180){
+      pop.style.top='auto';
+      pop.style.bottom='calc(100% + 6px)';
+    }
   });
 }
 if(localStorage.getItem('dark')==='1'){document.body.classList.add('dark');document.getElementById('dark-btn').textContent='Modo claro';}
