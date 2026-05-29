@@ -178,7 +178,7 @@ body.dark .modal-confirm{background:#1e1e1e;border:0.5px solid #333}
   .leyenda{gap:8px;font-size:11px}
 }
 </style>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"><\/script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
 </head>
 <body>
@@ -608,7 +608,7 @@ function escalarPlano(){var scaler=document.getElementById('comedor-scaler');var
 window.addEventListener('resize',escalarPlano);setTimeout(escalarPlano,300);
 function toggleSettings(){var dd=document.getElementById('settings-dropdown');dd.style.display=dd.style.display==='none'?'block':'none';}
 document.addEventListener('click',function(e){var dd=document.getElementById('settings-dropdown');var btn=document.getElementById('settings-btn');if(dd&&dd.style.display==='block'&&!dd.contains(e.target)&&!btn.contains(e.target)) dd.style.display='none';});
-<\/script>
+</script>
 
 <div id="resumen-card" style="position:fixed;left:-9999px;top:0;z-index:-1;background:#fff;padding:20px;width:400px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif">
   <div style="background:linear-gradient(135deg,#1D9E75,#0F6E56);border-radius:12px;padding:14px 16px;margin-bottom:16px;color:#fff">
@@ -677,6 +677,6 @@ function generarResumen(){
     });
   },300);
 }
-<\/script>
+</script>
 </body>
 </html>
