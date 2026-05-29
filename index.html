@@ -149,6 +149,8 @@ body.dark .modal-confirm{background:#1e1e1e;border:0.5px solid #333}
 .modal-confirm-title{font-size:15px;font-weight:500;margin-bottom:6px}
 .modal-confirm-sub{font-size:13px;color:#888;margin-bottom:1.2rem}
 .modal-confirm-btns{display:flex;gap:8px}
+.tipo-select{background:#fff;color:#1a1a1a;max-width:110px}
+body.dark .tipo-select{background:#2a2a2a;border-color:#444 !important;color:#e5e5e0}
 @media(max-width:600px){
   .header{padding:0.75rem 1rem;gap:8px;flex-wrap:nowrap}
   .logo{font-size:15px;white-space:nowrap}
@@ -359,6 +361,9 @@ var ESTADOS={confirmada:6206820,pendiente:6206821,cancelada:6206822};
 var FIELD_ESTADO_EVENTOS=8694936;
 var ESTADOS_EVENTOS={confirmada:'Confirmada',cancelada:'Cancelada'};
 var FIELD_MESA=8694049;
+var FIELD_TIPO_EVENTO=8710010;
+var TIPOS_EVENTO=['Reserva','Cumpleanos','Empresarial','Aniversario','Otro','Evento'];
+var TIPO_COLORES={'Reserva':'','Cumpleanos':'background:#FBEAF0;color:#72243E','Empresarial':'background:#E6F1FB;color:#0C447C','Aniversario':'background:#EEEDFE;color:#3C3489','Otro':'background:#f5f5f0;color:#555','Evento':'background:#EEEDFE;color:#3C3489'};
 var mesasData={
   comedor:[
     {num:'C1',cap:4,walkin:0,walkinId:null,reserva:null},{num:'C2',cap:4,walkin:0,walkinId:null,reserva:null},
@@ -493,7 +498,12 @@ function renderTabla(){
     var nombre=r['Nombre']||'--';
     var hora=r['Hora']||'';
     var personas=parseInt(r['Personas'])||0;
-    var tipoBadge=esEvento?'<span class="badge badge-evento"><span class="dot-evento"></span>Evento</span>':'<span style="font-size:11px;color:#aaa">Reserva</span>';
+    var tipoActual=(r['Tipo_Evento']&&typeof r['Tipo_Evento']==='object'?r['Tipo_Evento'].value:(r['Tipo_Evento']||''))||'Reserva';
+    var estiloTipo=TIPO_COLORES[tipoActual]||'';
+    var opcionesTipo=TIPOS_EVENTO.map(function(t){return '<option value="'+t+'"'+(t===tipoActual?' selected':'')+'>'+t+'</option>';}).join('');
+    var tipoBadge=esEvento
+      ?'<span class="badge badge-evento"><span class="dot-evento"></span>Evento</span>'
+      :'<select class="tipo-select" data-rid="'+r.id+'" style="font-size:11px;border-radius:6px;border:1px solid #e5e5e0;padding:3px 6px;cursor:pointer;outline:none;'+estiloTipo+'">'+opcionesTipo+'</select>';
     var acciones='';
     if(estado==='pendiente'){
       if(esEvento){
@@ -566,6 +576,22 @@ function cerrarModal(){document.getElementById('modal-container').innerHTML='';m
 function renderHoras(){var c=document.getElementById('horas-chart');var porHora={};horasData.forEach(function(h){porHora[h.h]=0;});reservas.filter(function(r){return getEstadoNombre(r)==='confirmada';}).forEach(function(r){var hora=(r['Hora']||'').trim();var clave=null;Object.keys(porHora).forEach(function(h){if(hora.indexOf(h)===0) clave=h;});if(clave) porHora[clave]+=(parseInt(r['Personas'])||0);});c.innerHTML=horasData.map(function(h){var personas=porHora[h.h]||0;var pct=Math.round(personas/CAPACIDAD_TOTAL*100);var altura=Math.max(8,Math.round(pct*0.8));return '<div class="hora-col"><div class="hora-barra" style="height:'+altura+'px;background:'+getColorBarra(pct)+'"></div><div class="hora-label">'+h.h+'</div></div>';}).join('');}
 function filtrarArea(area,btn){document.querySelectorAll('#tab-ocupacion .filter-btn').forEach(function(b){b.classList.remove('active');});btn.classList.add('active');renderHoras();}
 
+function updateTipo(id,valor,selectEl){
+  selectEl.disabled=true;
+  var body={};
+  body['field_'+FIELD_TIPO_EVENTO]=valor;
+  fetch('https://api.baserow.io/api/database/rows/table/'+TABLA_RESERVAS+'/'+id+'/?user_field_names=false',{
+    method:'PATCH',headers:{Authorization:'Token '+BASEROW_TOKEN,'Content-Type':'application/json'},
+    body:JSON.stringify(body)
+  })
+  .then(function(){
+    selectEl.disabled=false;
+    var estilos=TIPO_COLORES[valor]||'';
+    selectEl.setAttribute('style','font-size:11px;border-radius:6px;border:1px solid #e5e5e0;padding:3px 6px;cursor:pointer;outline:none;'+estilos);
+    showToast('Tipo: '+valor,'#1D9E75');
+  })
+  .catch(function(){selectEl.disabled=false;showToast('Error al actualizar tipo','#c62828');});
+}
 /* === FIX 2: showTab definido UNA SOLA VEZ, consolida todo === */
 function showTab(tab,btn){
   tabActual=tab;
@@ -603,6 +629,11 @@ function bindBotones(tbodyId){
     else if(accion==='confirmar-evento') abrirModalConfirmar(id,tel,nombre,hora,personas,'evento');
     else if(accion==='cancelar') pedirConfirmacionCancelar(tipo,id,tel,nombre);
   };
+  tb.addEventListener('change',function(e){
+    var sel=e.target;
+    if(!sel.classList.contains('tipo-select')) return;
+    updateTipo(parseInt(sel.getAttribute('data-rid')),sel.value,sel);
+  });
 }
 if(localStorage.getItem('dark')==='1'){document.body.classList.add('dark');document.getElementById('dark-btn').textContent='Modo claro';}
 document.getElementById('fecha-hoy').textContent=formatFechaLabel(fechaSeleccionada)+', '+fechaSeleccionada.getFullYear();
