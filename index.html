@@ -25,8 +25,6 @@ body.dark #buscar-reserva{background:#2a2a2a;border-color:#555;color:#e5e5e0}
 #resumen-btn{background:#e8f5e9;color:#2e7d32;border-color:#1D9E75}
 body.dark #resumen-btn{background:#1a1a1a !important;color:#aaa !important;border-color:#333 !important}
 body.dark #resumen-btn svg{stroke:#aaa !important}
-body.dark #resumen-btn:hover{background:#6DBF87 !important;color:#555 !important;border-color:#6DBF87 !important}
-body.dark #resumen-btn:hover svg{stroke:#555 !important}
 #settings-dropdown{background:#fff;color:#1a1a1a}
 body.dark #settings-dropdown{background:#1e1e1e !important;border-color:#333 !important;color:#e5e5e0}
 body.dark #settings-dropdown>div{color:#e5e5e0 !important}
@@ -58,9 +56,7 @@ body.dark .dia-rapido{background:#2a2a2a;border-color:#444;color:#888}
 body.dark .dia-rapido.active{background:#085041;color:#9FE1CB;border-color:#0F6E56}
 .sync-indicator{display:flex;align-items:center;padding:0;background:transparent;border:none;user-select:none}
 .sync-icon{font-size:15px;color:#5DCAA5;display:inline-block}
-body.dark .sync-icon{color:#5DCAA5}
 .sync-indicator.error .sync-icon{color:#E24B4A}
-body.dark .sync-indicator.error .sync-icon{color:#f28b82}
 .metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;padding:1.25rem 1.5rem}
 .metric{background:#fff;border-radius:12px;padding:1rem;border:1px solid #e5e5e0}
 body.dark .metric{background:#1e1e1e;border-color:#333}
@@ -80,8 +76,6 @@ body.dark #bell-icon{color:#fff !important}
 body.dark .filter-btn{border-color:#444;background:#2a2a2a;color:#888}
 .filter-btn.active{border-color:#1D9E75;color:#0F6E56;background:#e8f7f2}
 body.dark .filter-btn.active{background:#085041;color:#9FE1CB;border-color:#0F6E56}
-.filter-btn.evento-btn.active{border-color:#7F77DD;color:#3C3489;background:#EEEDFE}
-body.dark .filter-btn.evento-btn.active{background:#26215C;color:#CECBF6;border-color:#534AB7}
 .tabla-wrap{border:1px solid #e5e5e0;border-radius:12px;overflow:hidden;background:#fff}
 body.dark .tabla-wrap{background:#1e1e1e;border-color:#333}
 table{width:100%;border-collapse:collapse;font-size:13px}
@@ -98,12 +92,9 @@ body.dark tr:hover td{background:#242424}
 .badge-pendiente{background:#fff3e0;color:#e65100}
 .badge-confirmada{background:#e8f5e9;color:#2e7d32}
 .badge-cancelada{background:#ffebee;color:#c62828}
-.badge-evento{background:#EEEDFE;color:#3C3489}
 body.dark .badge-pendiente{background:#412402;color:#FAC775}
 body.dark .badge-confirmada{background:#173404;color:#C0DD97}
 body.dark .badge-cancelada{background:#501313;color:#F7C1C1}
-body.dark .badge-evento{background:#26215C;color:#CECBF6}
-.dot-evento{width:6px;height:6px;border-radius:50%;background:#7F77DD;display:inline-block}
 .btn-confirm{font-size:12px;padding:5px 10px;border-radius:8px;border:1px solid #1D9E75;color:#0F6E56;background:transparent;cursor:pointer;margin-right:4px}
 .btn-confirm:hover{background:#e8f7f2}
 body.dark .btn-confirm{color:#1D9E75;border-color:#0F6E56}
@@ -327,8 +318,6 @@ body.dark .drawer-cancel-btn{border-color:#444}
   .pm.reservada small{color:#c8ede3 !important}
   .pm.reservada .pm-cliente{color:#fff !important}
   body.dark .pm.reservada{background:#3DB58A;border-color:#2a8a67}
-  body.dark .pm.reservada span{color:#fff !important}
-  body.dark .pm.reservada small{color:#c8ede3 !important}
   .pm.walk-in{background:#e3f2fd;border-color:#64b5f6}
   .pm.walk-in span{color:#1565c0}
   .pm.walk-in small{color:#1976d2}
@@ -389,9 +378,9 @@ body.dark .drawer-cancel-btn{border-color:#444}
     <span><span class="dot" style="background:#ffb74d;border:1px solid #ff9800"></span>Pendiente</span>
     <span><span class="dot" style="background:#e5e5e0;border:1px solid #ccc"></span>Libre</span>
   </div>
-  <p style="font-size:12px;color:#aaa;margin-top:12px">Arrastra las mesas para reorganizarlas. Toca una mesa libre para marcarla como walk-in.</p>
+  <p style="font-size:12px;color:#aaa;margin-top:12px">Arrastra las mesas para reorganizarlas.</p>
 </div>
-<div id="tab-ocupacion" style="display:none">
+  <div id="tab-ocupacion" style="display:none">
     <div class="filter-bar">
       <button class="filter-btn active" onclick="filtrarArea('todas',this)">Todas las areas</button>
       <button class="filter-btn" onclick="filtrarArea('comedor',this)">Comedor</button>
@@ -409,6 +398,7 @@ body.dark .drawer-cancel-btn{border-color:#444}
 <div id="modal-container"></div>
 <div class="toast" id="toast"></div>
 <script>
+
 var BASEROW_TOKEN='H8sBhz0TS1T870ghr5qVmie7CPC3MSey';
 var TABLA_RESERVAS='981190';
 var TABLA_WALKINS='990728';
@@ -576,18 +566,110 @@ function abrirModal(area,mesaNum){
     var r=reservas.filter(function(r){return r['Mesa']===mesaNum&&getEstadoNombre(r)==='confirmada';})[0];
     var tel=r?(r['Telefono']||r['Teléfono']||'--'):'--';
     var rid=mesa.reserva.id;
-    var tipoEvento=r?(r['Tipo_Evento']&&typeof r['Tipo_Evento']==='object'?r['Tipo_Evento'].value:(r['Tipo_Evento']||'')):'';
+    var tipo=r?(r['Tipo_Evento']&&typeof r['Tipo_Evento']==='object'?r['Tipo_Evento'].value:(r['Tipo_Evento']||'Reserva')):'Reserva';
+    if(!tipo||tipo==='') tipo='Reserva';
+    var tipoKey=tipoToKey(tipo);
     var restricciones=r?(r['Restricciones']||''):'';
-    mc.innerHTML='<div class="modal-bg" onclick="cerrarModal()"><div class="modal" style="padding:0;overflow:hidden" onclick="event.stopPropagation()"><div style="background:#3DB58A;padding:14px 16px;display:flex;align-items:center;gap:10px"><div style="width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;font-weight:500;font-size:16px;color:#fff;flex-shrink:0">'+mesa.reserva.nombre.charAt(0).toUpperCase()+'</div><div><div style="font-size:15px;font-weight:500;color:#fff">'+mesa.reserva.nombre+'</div><div style="font-size:11px;color:#c8ede3">Mesa '+mesaNum+' · '+mesa.reserva.personas+' personas</div></div></div><div style="padding:14px 16px"><div style="display:flex;align-items:center;gap:8px;margin-bottom:8px"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#3DB58A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><span style="font-size:13px">'+mesa.reserva.hora+'</span></div><div style="display:flex;align-items:center;gap:8px;margin-bottom:8px"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#3DB58A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.8a19.79 19.79 0 01-3.07-8.63A2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14.92z"/></svg><span style="font-size:13px">'+tel+'</span></div>'+(tipoEvento?'<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#3DB58A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1010 10A10 10 0 0012 2z"/><path d="M8.56 2.75c4.37 6.03 6.02 9.42 8.03 17.72m2.54-15.38c-3.72 4.35-8.94 5.66-16.88 5.85m19.5 1.9c-3.5-.93-6.63-.82-8.94 0-2.58.92-5.01 2.86-7.44 6.32"/></svg><span style="display:inline-block;padding:2px 10px;border-radius:20px;font-size:11px;font-weight:500;background:#E1F5EE;color:#0F6E56">'+tipoEvento+'</span></div>':'')+(restricciones?'<div style="background:#FCEBEB;border-radius:8px;padding:8px 10px;display:flex;align-items:flex-start;gap:8px;margin-top:6px"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#A32D2D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-top:1px;flex-shrink:0"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg><div><div style="font-size:11px;font-weight:500;color:#A32D2D;margin-bottom:2px">Restriccion alimenticia</div><div style="font-size:12px;color:#A32D2D">'+restricciones+'</div></div></div>':'')+'</div><div style="border-top:0.5px solid #e5e5e0"></div><div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:12px 16px"><button class="btn-liberar" onclick="liberarReserva(\''+area+'\',\''+mesaNum+'\','+rid+')">Liberar mesa</button><button class="btn-cerrar" onclick="cerrarModal()">Cerrar</button></div></div></div>';
+    var notas=r?(r['Notas']||''):'';
+    var adultos=r?parseInt(r['Adultos'])||0:0;
+    var ninos=r?parseInt(r['Ninos'])||0:0;
+    if(!adultos&&!ninos&&mesa.reserva.personas) adultos=mesa.reserva.personas;
+    var init=mesa.reserva.nombre.split(' ').slice(0,2).map(function(w){return w[0]||'';}).join('').toUpperCase();
+    var DOTS={Reserva:'#888780','Cumpleaños':'#D4537E',Empresarial:'#378ADD',Aniversario:'#7F77DD',Otro:'#B4B2A9',Evento:'#534AB7'};
+    var dotColor=DOTS[tipo]||'#888780';
+    var now=new Date();
+    var timerHtml='';
+    if(mesa.reserva.hora){
+      var parts=mesa.reserva.hora.split(':');
+      if(parts.length>=2){
+        var resDate=new Date();resDate.setHours(parseInt(parts[0]),parseInt(parts[1]),0,0);
+        var diffMin=Math.round((now-resDate)/60000);
+        if(diffMin>0&&diffMin<480) timerHtml='<span style="display:inline-flex;align-items:center;gap:4px;font-size:11px;color:#EF9F27;background:#FAEEDA;padding:2px 8px;border-radius:20px;font-weight:500"><i class=\"ti ti-clock\" style=\"font-size:11px\" aria-hidden=\"true\"></i>'+diffMin+' min</span>';
+      }
+    }
+    var pillHtml='<span style=\"display:inline-flex;align-items:center;gap:5px;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:500;background:'+({'Reserva':'#F1EFE8','Cumpleaños':'#FBEAF0','Empresarial':'#E6F1FB','Aniversario':'#EEEDFE','Otro':'#F1EFE8','Evento':'#EEEDFE'}[tipo]||'#F1EFE8')+';color:'+({'Reserva':'#5F5E5A','Cumpleaños':'#72243E','Empresarial':'#0C447C','Aniversario':'#3C3489','Otro':'#5F5E5A','Evento':'#3C3489'}[tipo]||'#5F5E5A')+'\"><span style=\"width:6px;height:6px;border-radius:50%;background:'+dotColor+'\"></span>'+tipo+'</span>';
+    mc.innerHTML='<div class="modal-bg" onclick="cerrarModal()"><div class="modal" style="padding:0;overflow:hidden;width:300px" onclick="event.stopPropagation()">'+
+      '<div style="background:#1D9E75;padding:14px 16px;display:flex;align-items:center;gap:10px">'+
+        '<div style="width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;font-weight:500;font-size:15px;color:#fff;flex-shrink:0">'+init+'</div>'+
+        '<div>'+
+          '<div style="font-size:15px;font-weight:500;color:#fff">'+mesa.reserva.nombre+'</div>'+
+          '<div style="font-size:11px;color:#c8ede3;display:flex;align-items:center;gap:6px">Mesa '+mesaNum+' · '+mesa.reserva.personas+' personas '+timerHtml+'</div>'+
+        '</div>'+
+      '</div>'+
+      '<div style="padding:14px 16px">'+
+        '<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">'+
+          '<i class="ti ti-clock" style="font-size:15px;color:#1D9E75;flex-shrink:0" aria-hidden="true"></i>'+
+          '<span style="font-size:13px">'+mesa.reserva.hora+'</span>'+
+          '<span style="margin-left:4px">'+pillHtml+'</span>'+
+        '</div>'+
+        '<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">'+
+          '<i class="ti ti-phone" style="font-size:15px;color:#1D9E75;flex-shrink:0" aria-hidden="true"></i>'+
+          '<a href="tel:'+tel+'" style="color:#1D9E75;font-size:13px;text-decoration:none">'+tel+'</a>'+
+        '</div>'+
+        '<div style="display:flex;gap:8px;margin-bottom:8px">'+
+          '<div style="flex:1;background:#f5f5f0;border-radius:8px;padding:8px 10px;text-align:center"><div style="font-size:20px;font-weight:500;color:#1a1a1a">'+adultos+'</div><div style="font-size:10px;color:#aaa;margin-top:1px">Adultos</div></div>'+
+          '<div style="flex:1;background:#f5f5f0;border-radius:8px;padding:8px 10px;text-align:center"><div style="font-size:20px;font-weight:500;color:#1a1a1a">'+ninos+'</div><div style="font-size:10px;color:#aaa;margin-top:1px">Niños</div></div>'+
+        '</div>'+
+        (notas?'<div style="background:#f5f5f0;border-left:3px solid #1D9E75;border-radius:0 8px 8px 0;padding:8px 10px;font-size:12px;color:#555;line-height:1.4;margin-bottom:8px">'+notas+'</div>':'')+
+        (restricciones?'<div style="background:#FCEBEB;border-radius:8px;padding:8px 10px;display:flex;align-items:flex-start;gap:7px;margin-bottom:8px"><i class="ti ti-alert-triangle" style="font-size:14px;color:#A32D2D;flex-shrink:0;margin-top:1px" aria-hidden="true"></i><div><div style="font-size:11px;font-weight:500;color:#A32D2D;margin-bottom:2px">Restricción alimenticia</div><div style="font-size:12px;color:#A32D2D;line-height:1.4">'+restricciones+'</div></div></div>':'')+
+      '</div>'+
+      '<div style="padding:6px 16px 10px;display:flex;flex-direction:column;gap:6px;border-top:0.5px solid #e5e5e0">'+
+        '<button onclick="abrirDrawerDesdeMesa('+rid+')" style="width:100%;padding:9px;border-radius:8px;border:1px solid #1D9E75;color:#0F6E56;background:#e8f7f2;cursor:pointer;font-size:12px;font-weight:500;display:flex;align-items:center;justify-content:center;gap:6px"><i class="ti ti-layout-sidebar-right" style="font-size:14px" aria-hidden="true"></i>Ver detalle completo</button>'+
+        '<div style="display:flex;gap:6px">'+
+          '<button class="btn-liberar" onclick="confirmarLiberarMesa(&apos;'+area+'&apos;,&apos;'+mesaNum+'&apos;,'+rid+',&apos;'+encodeURIComponent(mesa.reserva.nombre)+'&apos;)">Liberar mesa</button>'+
+          '<button class="btn-cerrar" onclick="cerrarModal()">Cerrar</button>'+
+        '</div>'+
+      '</div>'+
+    '</div></div>';
     return;
   }
-  if(mesa.walkin>0){mc.innerHTML='<div class="modal-bg" onclick="cerrarModal()"><div class="modal" onclick="event.stopPropagation()"><div class="modal-title">Mesa '+mesaNum+'</div><div class="modal-sub">'+mesa.walkin+' personas sin reserva.</div><div class="modal-btns"><button class="btn-liberar" onclick="liberarMesa(\''+area+'\',\''+mesaNum+'\')">Liberar mesa</button><button class="btn-cerrar" onclick="cerrarModal()">Cancelar</button></div></div></div>';}
-  else{mc.innerHTML='<div class="modal-bg" onclick="cerrarModal()"><div class="modal" onclick="event.stopPropagation()"><div class="modal-title">Ocupar mesa '+mesaNum+'</div><div class="modal-sub">Capacidad: '+mesa.cap+' personas.</div><input type="number" id="personas-input" min="1" max="'+mesa.cap+'" placeholder="Numero de personas"><div class="modal-btns"><button class="btn-ocupar" onclick="ocuparMesa(\''+area+'\',\''+mesaNum+'\')">Ocupar</button><button class="btn-cerrar" onclick="cerrarModal()">Cancelar</button></div></div></div>';}
+  if(mesa.walkin>0){
+    mc.innerHTML='<div class="modal-bg" onclick="cerrarModal()"><div class="modal" onclick="event.stopPropagation()"><div class="modal-title">Mesa '+mesaNum+'</div><div class="modal-sub">'+mesa.walkin+' personas sin reserva.</div><div class="modal-btns"><button class="btn-liberar" onclick="confirmarLiberarWalkin(&apos;'+area+'&apos;,&apos;'+mesaNum+'&apos;)">Liberar mesa</button><button class="btn-cerrar" onclick="cerrarModal()">Cancelar</button></div></div></div>';
+  }else{
+    mc.innerHTML='<div class="modal-bg" onclick="cerrarModal()"><div class="modal" onclick="event.stopPropagation()"><div class="modal-title">Ocupar mesa '+mesaNum+'</div><div class="modal-sub">Capacidad: '+mesa.cap+' personas.</div><input type="number" id="personas-input" min="1" max="'+mesa.cap+'" placeholder="Numero de personas"><div class="modal-btns"><button class="btn-ocupar" onclick=\"ocuparMesa(&apos;'+area+'&apos;,&apos;'+mesaNum+'&apos;)">Ocupar</button><button class="btn-cerrar" onclick="cerrarModal()">Cancelar</button></div></div></div>';
+  }
 }
 function liberarReserva(area,mesaNum,reservaId){var mesa=mesasData[area].filter(function(m){return m.num===mesaNum;})[0];if(!mesa) return;var body={};body['field_'+FIELD_MESA]='';fetch('https://api.baserow.io/api/database/rows/table/'+TABLA_RESERVAS+'/'+reservaId+'/?user_field_names=false',{method:'PATCH',headers:{Authorization:'Token '+BASEROW_TOKEN,'Content-Type':'application/json'},body:JSON.stringify(body)}).then(function(){mesa.reserva=null;renderMesas();renderMetrics();cerrarModal();showToast('Mesa liberada');}).catch(function(){showToast('Error al liberar','#c62828');});}
 function ocuparMesa(area,mesaNum){var input=document.getElementById('personas-input');var personas=parseInt(input.value);if(!personas||personas<1){showToast('Ingresa el numero de personas','#e65100');return;}var mesa=mesasData[area].filter(function(m){return m.num===mesaNum;})[0];if(!mesa) return;var body={};body['field_8672780']=mesaNum;body['field_8672781']=personas;body['field_8672782']=formatFecha(fechaSeleccionada);body['field_8672787']=area;body['field_8672820']=true;fetch('https://api.baserow.io/api/database/rows/table/'+TABLA_WALKINS+'/?user_field_names=false',{method:'POST',headers:{Authorization:'Token '+BASEROW_TOKEN,'Content-Type':'application/json'},body:JSON.stringify(body)}).then(function(r){return r.json();}).then(function(data){mesa.walkin=personas;mesa.walkinId=data.id;renderMesas();renderMetrics();cerrarModal();showToast('Mesa ocupada');}).catch(function(){showToast('Error al ocupar mesa','#c62828');});}
 function liberarMesa(area,mesaNum){var mesa=mesasData[area].filter(function(m){return m.num===mesaNum;})[0];if(!mesa||!mesa.walkinId) return;var body={};body['field_8672820']=false;fetch('https://api.baserow.io/api/database/rows/table/'+TABLA_WALKINS+'/'+mesa.walkinId+'/?user_field_names=false',{method:'PATCH',headers:{Authorization:'Token '+BASEROW_TOKEN,'Content-Type':'application/json'},body:JSON.stringify(body)}).then(function(){mesa.walkin=0;mesa.walkinId=null;renderMesas();renderMetrics();cerrarModal();showToast('Mesa liberada');}).catch(function(){showToast('Error al liberar mesa','#c62828');});}
 function cerrarModal(){document.getElementById('modal-container').innerHTML='';mesaSeleccionada=null;reservaActual=null;}
+function confirmarLiberarMesa(area,mesaNum,reservaId,nombre){
+  cerrarModal();
+  var overlay=document.createElement('div');
+  overlay.className='modal-confirm-bg';overlay.id='confirm-liberar-overlay';
+  overlay.innerHTML='<div class="modal-confirm" onclick="event.stopPropagation()"><div class="modal-confirm-title">\u00bfLiberar mesa '+mesaNum+'?</div><div class="modal-confirm-sub">Se liberar\u00e1 la mesa de <strong>'+decodeURIComponent(nombre)+'</strong>. La reserva seguir\u00e1 en el sistema como confirmada.</div><div class="modal-confirm-btns"><button style="flex:1;padding:10px;border-radius:8px;border:1px solid #e53935;color:#c62828;background:#ffebee;cursor:pointer;font-size:13px;font-weight:500" onclick="ejecutarLiberarMesa(&apos;'+area+'&apos;,&apos;'+mesaNum+'&apos;,'+reservaId+')">S\u00ed, liberar</button><button style="flex:1;padding:10px;border-radius:8px;border:1px solid #e5e5e0;color:#888;background:transparent;cursor:pointer;font-size:13px" onclick="cerrarConfirmLiberar()">Cancelar</button></div></div>';
+  document.body.appendChild(overlay);
+}
+function confirmarLiberarWalkin(area,mesaNum){
+  cerrarModal();
+  var mesa=mesasData[area].filter(function(m){return m.num===mesaNum;})[0];
+  if(!mesa) return;
+  var overlay=document.createElement('div');
+  overlay.className='modal-confirm-bg';overlay.id='confirm-liberar-overlay';
+  overlay.innerHTML='<div class="modal-confirm" onclick="event.stopPropagation()"><div class="modal-confirm-title">\u00bfLiberar mesa '+mesaNum+'?</div><div class="modal-confirm-sub">Se marcar\u00e1 la mesa como libre.</div><div class="modal-confirm-btns"><button style="flex:1;padding:10px;border-radius:8px;border:1px solid #e53935;color:#c62828;background:#ffebee;cursor:pointer;font-size:13px;font-weight:500" onclick="ejecutarLiberarWalkin(&apos;'+area+'&apos;,&apos;'+mesaNum+'&apos;)">S\u00ed, liberar</button><button style="flex:1;padding:10px;border-radius:8px;border:1px solid #e5e5e0;color:#888;background:transparent;cursor:pointer;font-size:13px" onclick="cerrarConfirmLiberar()">Cancelar</button></div></div>';
+  document.body.appendChild(overlay);
+}
+function cerrarConfirmLiberar(){var el=document.getElementById('confirm-liberar-overlay');if(el) el.remove();}
+function ejecutarLiberarMesa(area,mesaNum,reservaId){
+  cerrarConfirmLiberar();
+  var mesa=mesasData[area].filter(function(m){return m.num===mesaNum;})[0];
+  if(!mesa) return;
+  var body={};body['field_'+FIELD_MESA]='';
+  fetch('https://api.baserow.io/api/database/rows/table/'+TABLA_RESERVAS+'/'+reservaId+'/?user_field_names=false',{
+    method:'PATCH',headers:{Authorization:'Token '+BASEROW_TOKEN,'Content-Type':'application/json'},body:JSON.stringify(body)
+  })
+  .then(function(){mesa.reserva=null;renderMesas();renderMetrics();showToast('Mesa liberada');})
+  .catch(function(){showToast('Error al liberar','#c62828');});
+}
+function ejecutarLiberarWalkin(area,mesaNum){
+  cerrarConfirmLiberar();
+  liberarMesa(area,mesaNum);
+}
+function abrirDrawerDesdeMesa(reservaId){
+  cerrarModal();
+  var rv=reservasSolicitudes.filter(function(x){return x.id===reservaId;})[0];
+  if(rv) abrirDrawer(rv);
+}
 function renderHoras(){var c=document.getElementById('horas-chart');var porHora={};horasData.forEach(function(h){porHora[h.h]=0;});reservas.filter(function(r){return getEstadoNombre(r)==='confirmada';}).forEach(function(r){var hora=(r['Hora']||'').trim();var clave=null;Object.keys(porHora).forEach(function(h){if(hora.indexOf(h)===0) clave=h;});if(clave) porHora[clave]+=(parseInt(r['Personas'])||0);});c.innerHTML=horasData.map(function(h){var personas=porHora[h.h]||0;var pct=Math.round(personas/CAPACIDAD_TOTAL*100);var altura=Math.max(8,Math.round(pct*0.8));return '<div class="hora-col"><div class="hora-barra" style="height:'+altura+'px;background:'+getColorBarra(pct)+'"></div><div class="hora-label">'+h.h+'</div></div>';}).join('');}
 function filtrarArea(area,btn){document.querySelectorAll('#tab-ocupacion .filter-btn').forEach(function(b){b.classList.remove('active');});btn.classList.add('active');renderHoras();}
 
@@ -848,8 +930,8 @@ function escalarPlano(){var scaler=document.getElementById('comedor-scaler');var
 window.addEventListener('resize',escalarPlano);setTimeout(escalarPlano,300);
 function toggleSettings(){var dd=document.getElementById('settings-dropdown');dd.style.display=dd.style.display==='none'?'block':'none';}
 document.addEventListener('click',function(e){var dd=document.getElementById('settings-dropdown');var btn=document.getElementById('settings-btn');if(dd&&dd.style.display==='block'&&!dd.contains(e.target)&&!btn.contains(e.target)) dd.style.display='none';});
-</script>
 
+</script>
 <div id="resumen-card" style="position:fixed;left:-9999px;top:0;z-index:-1;background:#fff;padding:20px;width:400px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif">
   <div style="background:linear-gradient(135deg,#1D9E75,#0F6E56);border-radius:12px;padding:14px 16px;margin-bottom:16px;color:#fff">
     <div style="font-size:15px;font-weight:500;margin-bottom:2px">Buenos días, equipo OLIVO</div>
@@ -873,8 +955,8 @@ document.addEventListener('click',function(e){var dd=document.getElementById('se
   <div style="margin-bottom:14px"><div style="font-size:10px;font-weight:500;color:#0F6E56;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:6px">Eventos especiales</div><div id="resumen-eventos"></div></div>
   <div style="text-align:center;font-size:10px;color:#aaa;margin-top:12px;padding-top:10px;border-top:0.5px solid #f0f0f0">OLIVO · Restaurante · Guatapé, Antioquia</div>
 </div>
-
 <script>
+
 function generarResumen(){
   var btn=document.getElementById('resumen-btn');btn.innerHTML='Generando...';btn.disabled=true;
   var fechaStr=formatFecha(fechaSeleccionada);
@@ -917,8 +999,8 @@ function generarResumen(){
     });
   },300);
 }
-</script>
 
+</script>
 <div class="drawer-backdrop" id="drawer-backdrop" onclick="cerrarDrawer()"></div>
 <div class="drawer-overlay" id="drawer-overlay">
   <div class="drawer-hdr" id="drawer-hdr"></div>
