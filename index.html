@@ -182,6 +182,49 @@ body.dark .tipo-popover-opt:hover{background:#2a2a2a}
 body.dark .tipo-popover-opt.activo{background:#2a2a2a}
 .tipo-popover-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
 .tipo-popover-check{margin-left:auto;font-size:13px}
+.drawer-overlay{position:fixed;top:0;right:0;width:340px;max-width:100vw;height:100%;background:#fff;border-left:0.5px solid #e5e5e0;z-index:500;display:flex;flex-direction:column;box-shadow:-4px 0 24px rgba(0,0,0,0.10);transform:translateX(100%);transition:transform 0.25s ease}
+body.dark .drawer-overlay{background:#1e1e1e;border-color:#333}
+.drawer-overlay.open{transform:translateX(0)}
+.drawer-backdrop{position:fixed;top:0;left:0;width:100%;height:100%;z-index:499;background:rgba(0,0,0,0.25);opacity:0;transition:opacity 0.25s;pointer-events:none}
+.drawer-backdrop.open{opacity:1;pointer-events:auto}
+.drawer-hdr{background:#1D9E75;padding:14px 16px;display:flex;align-items:center;gap:10px;flex-shrink:0}
+.drawer-avatar{width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:500;color:#fff;flex-shrink:0}
+.drawer-body{padding:14px 16px;flex:1;overflow-y:auto}
+.drawer-section{font-size:10px;font-weight:500;color:#aaa;text-transform:uppercase;letter-spacing:0.6px;margin-bottom:8px;margin-top:14px}
+.drawer-section:first-child{margin-top:0}
+.drawer-info-row{display:flex;align-items:center;gap:8px;margin-bottom:7px;font-size:13px;color:#1a1a1a}
+body.dark .drawer-info-row{color:#ccc}
+.drawer-info-icon{font-size:15px;color:#1D9E75;flex-shrink:0}
+.drawer-pax{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:4px}
+.drawer-pax-card{background:#f5f5f0;border-radius:8px;padding:10px 12px;text-align:center}
+body.dark .drawer-pax-card{background:#2a2a2a}
+.drawer-pax-num{font-size:22px;font-weight:500;color:#1a1a1a}
+body.dark .drawer-pax-num{color:#e5e5e0}
+.drawer-pax-label{font-size:11px;color:#aaa;margin-top:2px}
+.drawer-nota{background:#f5f5f0;border-radius:0 8px 8px 0;padding:10px 12px;font-size:12px;color:#555;line-height:1.5;border-left:3px solid #1D9E75}
+body.dark .drawer-nota{background:#2a2a2a;color:#aaa}
+.drawer-alerg{font-size:11px;padding:3px 8px;border-radius:6px;background:#FCEBEB;color:#791F1F;font-weight:500;display:inline-block;margin:2px}
+.drawer-hist{display:flex;align-items:flex-start;gap:10px;margin-bottom:10px;position:relative}
+.drawer-hist-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-top:4px}
+.drawer-hist-line{position:absolute;left:3.5px;top:12px;bottom:-10px;width:1px;background:#e5e5e0}
+body.dark .drawer-hist-line{background:#333}
+.drawer-hist-txt{font-size:12px;color:#1a1a1a}
+body.dark .drawer-hist-txt{color:#ccc}
+.drawer-hist-time{font-size:11px;color:#aaa;margin-top:1px}
+.drawer-footer{padding:10px 16px;border-top:0.5px solid #e5e5e0;display:flex;gap:8px;flex-shrink:0}
+body.dark .drawer-footer{border-color:#333}
+.drawer-btn-cancel{flex:1;padding:8px;border-radius:8px;border:1px solid #e53935;color:#c62828;background:transparent;cursor:pointer;font-size:12px;font-weight:500}
+.drawer-btn-close{padding:8px 14px;border-radius:8px;border:1px solid #e5e5e0;color:#888;background:transparent;cursor:pointer;font-size:12px}
+body.dark .drawer-btn-close{border-color:#444}
+.drawer-edit-btn{display:inline-flex;align-items:center;gap:4px;font-size:11px;padding:3px 8px;border-radius:6px;border:0.5px solid #e5e5e0;background:transparent;color:#888;cursor:pointer;margin-left:6px;vertical-align:middle}
+body.dark .drawer-edit-btn{border-color:#444;color:#666}
+.drawer-edit-btn:hover{border-color:#1D9E75;color:#0F6E56;background:#e8f7f2}
+.drawer-edit-field{width:100%;padding:7px 10px;border-radius:8px;border:1px solid #1D9E75;font-size:13px;outline:none;background:#fff;color:#1a1a1a;margin-top:4px}
+body.dark .drawer-edit-field{background:#2a2a2a;color:#e5e5e0}
+.drawer-edit-actions{display:flex;gap:6px;margin-top:6px}
+.drawer-save-btn{padding:6px 12px;border-radius:7px;border:1px solid #1D9E75;color:#0F6E56;background:#e8f7f2;cursor:pointer;font-size:12px;font-weight:500}
+.drawer-cancel-btn{padding:6px 10px;border-radius:7px;border:1px solid #e5e5e0;color:#888;background:transparent;cursor:pointer;font-size:12px}
+body.dark .drawer-cancel-btn{border-color:#444}
 @media(max-width:600px){
   .header{padding:0.75rem 1rem;gap:8px;flex-wrap:nowrap}
   .logo{font-size:15px;white-space:nowrap}
@@ -375,6 +418,9 @@ var WEBHOOK_CANCELAR='https://qwsd-n8n.hi49ib.easypanel.host/webhook/cancelar-re
 var ESTADOS={confirmada:6206820,pendiente:6206821,cancelada:6206822};
 var FIELD_MESA=8694049;
 var FIELD_TIPO_EVENTO=8710010;
+var FIELD_NOTAS=8762617;
+var FIELD_ADULTOS=8762618;
+var FIELD_NINOS=8762622;
 var TIPOS_EVENTO=['Reserva','Cumpleaños','Empresarial','Aniversario','Otro','Evento'];
 var TIPO_COLORES={'Reserva':'','Cumpleanos':'background:#FBEAF0;color:#72243E','Empresarial':'background:#E6F1FB;color:#0C447C','Aniversario':'background:#EEEDFE;color:#3C3489','Otro':'background:#f5f5f0;color:#555','Evento':'background:#EEEDFE;color:#3C3489'};
 var mesasData={
@@ -495,7 +541,7 @@ function renderTabla(){
     } else {
       acciones='<span style="font-size:12px;color:#aaa">'+(estado==='confirmada'?'Confirmada':'Cancelada')+'</span>';
     }
-    return '<tr><td style="font-weight:500">'+nombre+'</td><td>'+tipoBadge+'</td><td>'+fecha+'</td><td>'+(hora||'--')+'</td><td>'+personas+'</td><td style="font-size:12px;color:#888">'+tel+'</td><td><span class="badge badge-'+estado+'">'+estado+'</span></td><td style="font-size:12px;color:#888">'+mesa+'</td><td>'+acciones+'</td></tr>';
+    return '<tr><td style="font-weight:500;color:#0F6E56;cursor:pointer;text-decoration:underline;text-underline-offset:2px" class="btn-accion" data-accion="abrir-drawer" data-id="'+r.id+'">'+nombre+'</td><td>'+tipoBadge+'</td><td>'+fecha+'</td><td>'+(hora||'--')+'</td><td>'+personas+'</td><td style="font-size:12px;color:#888">'+tel+'</td><td><span class="badge badge-'+estado+'">'+estado+'</span></td><td style="font-size:12px;color:#888">'+mesa+'</td><td>'+acciones+'</td></tr>';
   }).join('');
   bindBotones('tabla-body');
 }
@@ -570,6 +616,126 @@ function updateTipoPill(id,valor,pillEl){
   .catch(function(){pillEl.style.opacity='1';showToast('Error al actualizar tipo','#c62828');});
 }
 /* === FIX 2: showTab definido UNA SOLA VEZ, consolida todo === */
+function abrirDrawer(r){
+  var _r=r;
+  function renderDrawer(){
+    var nombre=_r['Nombre']||'--';
+    var init=nombre.split(' ').slice(0,2).map(function(w){return w[0]||'';}).join('').toUpperCase();
+    var tel=_r['Telefono']||_r['Teléfono']||'--';
+    var hora=_r['Hora']||'--';
+    var fecha=parseFecha(_r['Fecha'])||'--';
+    var mesa=_r['Mesa']||'--';
+    var estado=getEstadoNombre(_r);
+    var tipo=(_r['Tipo_Evento']&&typeof _r['Tipo_Evento']==='object'?_r['Tipo_Evento'].value:(_r['Tipo_Evento']||'Reserva'))||'Reserva';
+    var notas=_r['Notas']||'';
+    var adultos=parseInt(_r['Adultos'])||0;
+    var ninos=parseInt(_r['Ninos'])||0;
+    var totalPers=parseInt(_r['Personas'])||0;
+    if(!adultos&&!ninos&&totalPers) adultos=totalPers;
+    var restricciones=_r['Restricciones']||'';
+    var createdOn=_r['created_on']||_r['Created']||'';
+    var hdr=document.getElementById('drawer-hdr');
+    var body=document.getElementById('drawer-body');
+    var btnCancel=document.getElementById('drawer-btn-cancel');
+    hdr.innerHTML='<div class="drawer-avatar">'+init+'</div><div><div style="font-size:15px;font-weight:500;color:#fff">'+nombre+'</div><div style="font-size:11px;color:#c8ede3">'+tipo+' · '+(mesa==='--'?'Sin mesa':'Mesa '+mesa)+'</div></div>';
+    var alergHtml=restricciones?restricciones.split(',').map(function(a){return '<span class="drawer-alerg">'+a.trim()+'</span>';}).join(''):'<span style="font-size:12px;color:#aaa">Sin restricciones</span>';
+    var histHtml='';
+    if(createdOn){var d=new Date(createdOn);var fmtD=d.getDate()+'/'+(d.getMonth()+1)+'/'+d.getFullYear()+' '+d.getHours()+':'+(d.getMinutes()<10?'0':'')+d.getMinutes();histHtml+='<div class="drawer-hist"><div><div class="drawer-hist-dot" style="background:#1D9E75"></div><div class="drawer-hist-line"></div></div><div><div class="drawer-hist-txt">Reserva recibida</div><div class="drawer-hist-time">'+fmtD+' · vía formulario</div></div></div>';}
+    if(estado==='confirmada'){histHtml+='<div class="drawer-hist"><div><div class="drawer-hist-dot" style="background:#1D9E75"></div></div><div><div class="drawer-hist-txt">Confirmada'+(mesa!=='--'?' — mesa '+mesa:'')+' asignada</div><div class="drawer-hist-time">Por encargado</div></div></div>';}
+    else if(estado==='cancelada'){histHtml+='<div class="drawer-hist"><div><div class="drawer-hist-dot" style="background:#E24B4A"></div></div><div><div class="drawer-hist-txt">Cancelada</div><div class="drawer-hist-time">Por encargado</div></div></div>';}
+    else{histHtml+='<div class="drawer-hist"><div><div class="drawer-hist-dot" style="background:#EF9F27"></div></div><div><div class="drawer-hist-txt">Pendiente de confirmación</div><div class="drawer-hist-time">En espera</div></div></div>';}
+    body.innerHTML=
+      '<div class="drawer-section">Detalles</div>'+
+      '<div class="drawer-info-row"><i class="ti ti-clock drawer-info-icon" aria-hidden="true"></i>'+fecha+' · <span id="dw-hora-val">'+hora+'</span><button class="drawer-edit-btn" onclick="editDrawerField('hora')"><i class="ti ti-pencil" aria-hidden="true"></i></button></div>'+
+      '<div id="dw-hora-edit" style="display:none"><input class="drawer-edit-field" id="dw-hora-input" type="text" value="'+hora+'" placeholder="ej. 20:00"><div class="drawer-edit-actions"><button class="drawer-save-btn" onclick="saveDrawerField('hora')">Guardar</button><button class="drawer-cancel-btn" onclick="cancelDrawerField('hora')">Cancelar</button></div></div>'+
+      '<div class="drawer-info-row"><i class="ti ti-phone drawer-info-icon" aria-hidden="true"></i>'+tel+'</div>'+
+      '<div class="drawer-info-row"><i class="ti ti-armchair drawer-info-icon" aria-hidden="true"></i><span id="dw-mesa-val">'+(mesa==='--'?'Sin mesa asignada':'Mesa '+mesa)+'</span><button class="drawer-edit-btn" onclick="editDrawerMesa()"><i class="ti ti-pencil" aria-hidden="true"></i></button></div>'+
+      '<div class="drawer-section">Personas</div>'+
+      '<div class="drawer-pax">'+
+        '<div class="drawer-pax-card"><div class="drawer-pax-num" id="dw-adultos-val">'+adultos+'</div><div class="drawer-pax-label">Adultos <button class="drawer-edit-btn" onclick="editDrawerField('adultos')" style="font-size:10px;padding:2px 5px"><i class="ti ti-pencil" aria-hidden="true"></i></button></div></div>'+
+        '<div class="drawer-pax-card"><div class="drawer-pax-num" id="dw-ninos-val">'+ninos+'</div><div class="drawer-pax-label">Niños <button class="drawer-edit-btn" onclick="editDrawerField('ninos')" style="font-size:10px;padding:2px 5px"><i class="ti ti-pencil" aria-hidden="true"></i></button></div></div>'+
+      '</div>'+
+      '<div id="dw-adultos-edit" style="display:none"><input class="drawer-edit-field" id="dw-adultos-input" type="number" min="0" value="'+adultos+'" placeholder="Adultos"><div class="drawer-edit-actions"><button class="drawer-save-btn" onclick="saveDrawerField('adultos')">Guardar</button><button class="drawer-cancel-btn" onclick="cancelDrawerField('adultos')">Cancelar</button></div></div>'+
+      '<div id="dw-ninos-edit" style="display:none"><input class="drawer-edit-field" id="dw-ninos-input" type="number" min="0" value="'+ninos+'" placeholder="Niños"><div class="drawer-edit-actions"><button class="drawer-save-btn" onclick="saveDrawerField('ninos')">Guardar</button><button class="drawer-cancel-btn" onclick="cancelDrawerField('ninos')">Cancelar</button></div></div>'+
+      '<div class="drawer-section">Notas <button class="drawer-edit-btn" onclick="editDrawerField('notas')"><i class="ti ti-pencil" aria-hidden="true"></i></button></div>'+
+      '<div id="dw-notas-val">'+(notas?'<div class="drawer-nota">'+notas+'</div>':'<div style="font-size:12px;color:#aaa;padding:4px 0">Sin notas</div>')+'</div>'+
+      '<div id="dw-notas-edit" style="display:none"><textarea class="drawer-edit-field" id="dw-notas-input" rows="3" placeholder="Escribe una nota...">'+notas+'</textarea><div class="drawer-edit-actions"><button class="drawer-save-btn" onclick="saveDrawerField('notas')">Guardar</button><button class="drawer-cancel-btn" onclick="cancelDrawerField('notas')">Cancelar</button></div></div>'+
+      '<div class="drawer-section">Restricciones alimenticias</div>'+
+      '<div style="margin-bottom:4px">'+alergHtml+'</div>'+
+      '<div class="drawer-section">Historial</div>'+histHtml;
+    btnCancel.onclick=function(){cerrarDrawer();pedirConfirmacionCancelar('reserva',_r.id,tel,nombre);};
+    document.getElementById('drawer-overlay').classList.add('open');
+    document.getElementById('drawer-backdrop').classList.add('open');
+  }
+  renderDrawer();
+  window._drawerR=_r;
+  window._drawerRenderFn=renderDrawer;
+}
+function editDrawerField(campo){
+  document.getElementById('dw-'+campo+'-val').style.display='none';
+  document.getElementById('dw-'+campo+'-edit').style.display='block';
+  var inp=document.getElementById('dw-'+campo+'-input');
+  if(inp) inp.focus();
+}
+function cancelDrawerField(campo){
+  document.getElementById('dw-'+campo+'-val').style.display='';
+  document.getElementById('dw-'+campo+'-edit').style.display='none';
+}
+function saveDrawerField(campo){
+  var r=window._drawerR;
+  if(!r) return;
+  var inp=document.getElementById('dw-'+campo+'-input');
+  var valor=inp.value.trim();
+  var body={};
+  var fieldMap={hora:'field_8586164',notas:'field_'+FIELD_NOTAS,adultos:'field_'+FIELD_ADULTOS,ninos:'field_'+FIELD_NINOS};
+  if(!fieldMap[campo]) return;
+  body[fieldMap[campo]]=(campo==='adultos'||campo==='ninos')?parseInt(valor)||0:valor;
+  inp.disabled=true;
+  fetch('https://api.baserow.io/api/database/rows/table/'+TABLA_RESERVAS+'/'+r.id+'/?user_field_names=false',{
+    method:'PATCH',headers:{Authorization:'Token '+BASEROW_TOKEN,'Content-Type':'application/json'},body:JSON.stringify(body)
+  })
+  .then(function(){
+    inp.disabled=false;
+    if(campo==='hora') r['Hora']=valor;
+    else if(campo==='notas') r['Notas']=valor;
+    else if(campo==='adultos') r['Adultos']=parseInt(valor)||0;
+    else if(campo==='ninos') r['Ninos']=parseInt(valor)||0;
+    window._drawerR=r;
+    window._drawerRenderFn();
+    showToast('Guardado','#1D9E75');
+    cargarReservas();
+  })
+  .catch(function(){inp.disabled=false;showToast('Error al guardar','#c62828');});
+}
+function editDrawerMesa(){
+  var r=window._drawerR;
+  if(!r) return;
+  cerrarDrawer();
+  reservaActual={id:r.id,telefono:r['Telefono']||r['Teléfono']||'',nombre:r['Nombre']||'',hora:r['Hora']||'',personas:parseInt(r['Personas'])||0,tipo:'reserva'};
+  mesaSeleccionada=null;
+  var ocupadas=getMesasOcupadas();
+  var allMesas=mesasData.comedor.concat(mesasData.patio).concat(mesasData.cava);
+  var opcionesMesas=allMesas.map(function(m){var estaOcupada=ocupadas.indexOf(m.num)>-1&&m.num!==r['Mesa'];return '<div class="mesa-opt'+(estaOcupada?' ocupada':'')+'" onclick="seleccionarMesa(''+m.num+'')" id="opt-'+m.num.replace('/','_')+'">'+m.num+'<br><span style="font-size:10px;color:inherit">'+m.cap+' pers.</span></div>';}).join('');
+  var mc=document.getElementById('modal-container');
+  mc.innerHTML='<div class="modal-bg" onclick="cerrarModal()"><div class="modal" onclick="event.stopPropagation()"><div class="modal-title">Cambiar mesa</div><div class="modal-sub">'+(r['Nombre']||'')+' · '+(r['Hora']||'')+' · '+(r['Personas']||0)+' personas</div><div style="font-size:12px;color:#888;margin-bottom:8px">Selecciona la nueva mesa:</div><div class="mesas-selector">'+opcionesMesas+'</div><div class="modal-btns"><button class="btn-ocupar" id="btn-confirmar-final" onclick="guardarNuevaMesa()" style="opacity:0.5;pointer-events:none">Asignar mesa</button><button class="btn-cerrar" onclick="cerrarModal()">Cancelar</button></div></div></div>';
+}
+function guardarNuevaMesa(){
+  if(!mesaSeleccionada||!reservaActual) return;
+  var body={};body['field_'+FIELD_MESA]=mesaSeleccionada;
+  fetch('https://api.baserow.io/api/database/rows/table/'+TABLA_RESERVAS+'/'+reservaActual.id+'/?user_field_names=false',{
+    method:'PATCH',headers:{Authorization:'Token '+BASEROW_TOKEN,'Content-Type':'application/json'},body:JSON.stringify(body)
+  })
+  .then(function(){
+    showToast('Mesa actualizada: '+mesaSeleccionada,'#1D9E75');
+    cerrarModal();
+    cargarReservas();
+  })
+  .catch(function(){showToast('Error al guardar mesa','#c62828');});
+}
+function cerrarDrawer(){
+  document.getElementById('drawer-overlay').classList.remove('open');
+  document.getElementById('drawer-backdrop').classList.remove('open');
+}
 function showTab(tab,btn){
   tabActual=tab;
   ['solicitudes','mesas','ocupacion'].forEach(function(t){var el=document.getElementById('tab-'+t);if(el) el.style.display=t===tab?'block':'none';});
@@ -601,6 +767,7 @@ function bindBotones(tbodyId){
     var hora=decodeURIComponent(btn.getAttribute('data-hora')||'');
     var personas=parseInt(btn.getAttribute('data-personas'))||0;
     var tipo=btn.getAttribute('data-tipo')||'reserva';
+    if(accion==='abrir-drawer'){var rv=reservasSolicitudes.filter(function(x){return x.id===parseInt(btn.getAttribute('data-id'));})[0];if(rv) abrirDrawer(rv);return;}
     if(accion==='confirmar-reserva') abrirModalConfirmar(id,tel,nombre,hora,personas);
     else if(accion==='confirmar-evento') abrirModalConfirmar(id,tel,nombre,hora,personas,'evento');
     else if(accion==='cancelar') pedirConfirmacionCancelar(tipo,id,tel,nombre);
