@@ -918,5 +918,15 @@ function generarResumen(){
   },300);
 }
 </script>
+
+<div class="drawer-backdrop" id="drawer-backdrop" onclick="cerrarDrawer()"></div>
+<div class="drawer-overlay" id="drawer-overlay">
+  <div class="drawer-hdr" id="drawer-hdr"></div>
+  <div class="drawer-body" id="drawer-body" style="padding:14px 16px;flex:1;overflow-y:auto"></div>
+  <div class="drawer-footer">
+    <button class="drawer-btn-cancel" id="drawer-btn-cancel">Cancelar reserva</button>
+    <button class="drawer-btn-close" onclick="cerrarDrawer()">Cerrar</button>
+  </div>
+</div>
 </body>
 </html>
