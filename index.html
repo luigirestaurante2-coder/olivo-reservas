@@ -20,7 +20,6 @@ body.dark .date-btn{background:#2a2a2a;color:#888}
 body.dark .date-btn:hover{background:#085041;color:#9FE1CB}
 .dark-btn{font-size:11px;padding:4px 10px;border-radius:6px;border:0.5px solid #e5e5e0;background:#fff;color:#666;cursor:pointer}
 body.dark .dark-btn{border-color:#444;background:#2a2a2a;color:#aaa}
-/* FIX 1: input búsqueda sin fondo gris */
 #buscar-reserva{background:#fff;border-color:#e5e5e0;color:#1a1a1a}
 body.dark #buscar-reserva{background:#2a2a2a;border-color:#555;color:#e5e5e0}
 #resumen-btn{background:#e8f5e9;color:#2e7d32;border-color:#1D9E75}
@@ -57,7 +56,6 @@ body.dark .dia-rapido{background:#2a2a2a;border-color:#444;color:#888}
 .dia-rapido:hover{border-color:#1D9E75;background:#e8f7f2;color:#0F6E56}
 .dia-rapido.active{border-color:#1D9E75;background:#e8f7f2;color:#0F6E56;font-weight:500}
 body.dark .dia-rapido.active{background:#085041;color:#9FE1CB;border-color:#0F6E56}
-/* Indicador de recarga - solo ícono */
 .sync-indicator{display:flex;align-items:center;padding:0;background:transparent;border:none;user-select:none}
 .sync-icon{font-size:15px;color:#5DCAA5;display:inline-block}
 body.dark .sync-icon{color:#5DCAA5}
@@ -76,7 +74,6 @@ body.dark .tab-bar{border-color:#333}
 .tab.active{color:#0F6E56;border-bottom:2px solid #1D9E75;font-weight:500}
 body.dark .tab{color:#666}
 body.dark .tab.active{color:#1D9E75}
-/* Badge campana */
 body.dark #bell-icon{color:#fff !important}
 .filter-bar{display:flex;gap:8px;margin-bottom:1rem;flex-wrap:wrap}
 .filter-btn{font-size:12px;padding:5px 12px;border-radius:8px;border:1px solid #e5e5e0;background:#f5f5f0;color:#666;cursor:pointer}
@@ -112,36 +109,6 @@ body.dark .badge-evento{background:#26215C;color:#CECBF6}
 body.dark .btn-confirm{color:#1D9E75;border-color:#0F6E56}
 .btn-cancel{font-size:12px;padding:5px 10px;border-radius:8px;border:1px solid #e53935;color:#c62828;background:transparent;cursor:pointer}
 body.dark .btn-cancel{color:#E24B4A;border-color:#A32D2D}
-.area-block{background:#fff;border:1px solid #e5e5e0;border-radius:12px;padding:1rem;margin-bottom:12px}
-body.dark .area-block{background:#1e1e1e;border-color:#333}
-.area-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
-.area-name{font-size:14px;font-weight:500}
-.area-cap{font-size:12px;color:#888;background:#f5f5f0;padding:3px 10px;border-radius:6px}
-body.dark .area-cap{background:#2a2a2a;color:#666}
-.mesas-grid{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:8px}
-.mesa{border-radius:10px;border:1px solid #e5e5e0;padding:10px 8px;text-align:center;background:#fff;min-width:80px;cursor:pointer;transition:all 0.15s}
-body.dark .mesa{background:#2a2a2a;border-color:#444}
-.mesa:hover{transform:translateY(-1px);box-shadow:0 2px 8px rgba(0,0,0,0.08)}
-.mesa-num{font-size:12px;font-weight:500;color:#555}
-body.dark .mesa-num{color:#aaa}
-.mesa-estado{font-size:10px;margin-top:4px;color:#aaa}
-body.dark .mesa-estado{color:#555}
-.mesa-cliente{font-size:10px;margin-top:2px;font-weight:500;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:76px}
-.mesa.reservada{background:#3DB58A;border-color:#2a8a67}
-.mesa.reservada .mesa-num{color:#fff}
-.mesa.reservada .mesa-estado{color:#c8ede3}
-body.dark .mesa.reservada{background:#2a8a67;border-color:#1a6650}
-body.dark .mesa.reservada .mesa-num{color:#fff}
-.mesa.pendiente-m{background:#fff3e0;border-color:#ffb74d}
-.mesa.pendiente-m .mesa-num{color:#e65100}
-body.dark .mesa.pendiente-m{background:#412402;border-color:#854F0B}
-body.dark .mesa.pendiente-m .mesa-num{color:#FAC775}
-.mesa.walk-in{background:#e3f2fd;border-color:#64b5f6}
-.mesa.walk-in .mesa-num{color:#1565c0}
-.mesa.walk-in .mesa-estado{color:#1976d2}
-body.dark .mesa.walk-in{background:#0C447C;border-color:#185FA5}
-body.dark .mesa.walk-in .mesa-num{color:#B5D4F4}
-body.dark .mesa.walk-in .mesa-estado{color:#85B7EB}
 .leyenda{display:flex;gap:12px;font-size:12px;color:#888;flex-wrap:wrap;margin-top:8px}
 .leyenda span{display:flex;align-items:center;gap:4px}
 .dot{width:10px;height:10px;border-radius:3px;display:inline-block}
@@ -176,7 +143,6 @@ body.dark .mesa-opt.selected{background:#085041;color:#9FE1CB;border-color:#0F6E
 .empty{text-align:center;padding:2rem;color:#aaa;font-size:13px}
 .toast{position:fixed;bottom:1.5rem;right:1.5rem;background:#1a1a1a;color:#fff;padding:10px 16px;border-radius:10px;font-size:13px;z-index:200;opacity:0;transition:opacity 0.3s}
 .toast.show{opacity:1}
-/* Modal de confirmación de cancelación */
 .modal-confirm-bg{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);display:flex;align-items:center;justify-content:center;z-index:150}
 .modal-confirm{background:#fff;border-radius:14px;padding:1.5rem;width:300px;box-shadow:0 8px 32px rgba(0,0,0,0.2)}
 body.dark .modal-confirm{background:#1e1e1e;border:0.5px solid #333}
@@ -184,56 +150,42 @@ body.dark .modal-confirm{background:#1e1e1e;border:0.5px solid #333}
 .modal-confirm-sub{font-size:13px;color:#888;margin-bottom:1.2rem}
 .modal-confirm-btns{display:flex;gap:8px}
 @media(max-width:600px){
-  /* Header */
   .header{padding:0.75rem 1rem;gap:8px;flex-wrap:nowrap}
   .logo{font-size:15px;white-space:nowrap}
   .header-right{gap:6px}
   .dark-btn{font-size:10px;padding:3px 7px}
   #resumen-btn{font-size:10px;padding:3px 7px}
   #resumen-btn svg{display:none}
-  /* Métricas */
   .metrics{grid-template-columns:repeat(2,1fr);gap:8px;padding:1rem}
   .metric{padding:0.75rem}
   .metric-value{font-size:22px}
-  /* Section */
   .section{padding:0 1rem 1rem}
-  /* Tabs */
   .tab-bar{gap:0}
   .tab{font-size:12px;padding:7px 10px;white-space:nowrap}
-  /* Tabla - scroll horizontal */
   .tabla-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
   table{min-width:520px;font-size:12px}
   th,td{padding:8px 10px}
-  /* Plano de mesas - una columna, escala proporcional */
   .plano-main{grid-template-columns:1fr;gap:10px}
   .plano-col-r{flex-direction:row;flex-wrap:wrap;gap:10px}
   .plano-col-r .plano-zona{flex:1;min-width:140px}
-  /* Escalar el plano para que quepa en pantalla */
   .plano-scaler{overflow:hidden;width:100%;border-radius:8px}
   .plano-area{transform-origin:top left}
-  /* Modal */
   .modal{width:calc(100vw - 32px);max-width:320px;padding:1.25rem}
   .modal-confirm{width:calc(100vw - 48px);max-width:300px}
-  /* Filter bar */
   .filter-bar{gap:6px}
   .filter-btn{font-size:11px;padding:4px 9px}
-  /* Calendar dropdown */
   .calendar-dropdown{width:calc(100vw - 32px);right:-10px}
-  /* Leyenda */
   .leyenda{gap:8px;font-size:11px}
 }
 </style>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"><\/script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
 </head>
 <body>
 <div class="header">
   <div class="logo">OLIVO <span>·</span> Panel de Reservas</div>
   <div class="header-right">
-    <!-- FIX UX 1: indicador de sincronización -->
-    <div class="sync-indicator" id="sync-indicator">
-      <i class="ti ti-wifi sync-icon" aria-hidden="true"></i>
-    </div>
+    <div class="sync-indicator" id="sync-indicator"><i class="ti ti-wifi sync-icon" aria-hidden="true"></i></div>
     <button class="dark-btn" id="dark-btn" onclick="toggleDark()">Modo oscuro</button>
     <button class="dark-btn" id="settings-btn" onclick="toggleSettings()" style="display:none">Settings</button>
     <button class="dark-btn" id="resumen-btn" onclick="generarResumen()" style="display:flex;align-items:center;gap:4px"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#2e7d32" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Resumen</button>
@@ -242,9 +194,7 @@ body.dark .modal-confirm{background:#1e1e1e;border:0.5px solid #333}
       <button id="btn-mover-mesas" onclick="toggleMoverMesas()" style="width:100%;padding:8px 12px;border:1px solid #e5e5e0;border-radius:8px;background:transparent;color:#666;cursor:pointer;font-size:12px;text-align:left;margin-bottom:6px">Mover mesas: OFF</button>
       <button onclick="resetMesasPos()" style="width:100%;padding:8px 12px;border:1px solid #e5e5e0;border-radius:8px;background:transparent;color:#666;cursor:pointer;font-size:12px;text-align:left">Restablecer posiciones originales</button>
     </div>
-    <button class="date-btn" id="date-btn" onclick="toggleCalendario()">
-      <span id="fecha-hoy"></span>
-    </button>
+    <button class="date-btn" id="date-btn" onclick="toggleCalendario()"><span id="fecha-hoy"></span></button>
     <div class="calendar-dropdown" id="calendar-dropdown" style="display:none"></div>
   </div>
 </div>
@@ -256,7 +206,6 @@ body.dark .modal-confirm{background:#1e1e1e;border:0.5px solid #333}
 </div>
 <div class="section">
   <div class="tab-bar">
-    <!-- FIX UX 5: badge de pendientes en tab Solicitudes -->
     <button class="tab active" id="tab-btn-solicitudes" onclick="showTab('solicitudes',this)">Solicitudes <span id="badge-pendientes" style="display:none;position:relative;display:inline-flex;align-items:center;margin-left:4px"><i class="ti ti-bell" id="bell-icon" style="font-size:15px;color:#1a1a1a" aria-hidden="true"></i><span id="badge-num" style="position:absolute;top:-5px;right:-7px;min-width:14px;height:14px;border-radius:7px;background:#E24B4A;color:#fff;font-size:9px;font-weight:500;display:flex;align-items:center;justify-content:center;padding:0 3px">0</span></span></button>
     <button class="tab" id="tab-btn-eventos" onclick="showTab('eventos',this)">Solo Reservas</button>
     <button class="tab" onclick="showTab('mesas',this)">Mesas por area</button>
@@ -265,7 +214,6 @@ body.dark .modal-confirm{background:#1e1e1e;border:0.5px solid #333}
   <div id="tab-solicitudes">
     <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
       <div style="flex:1;position:relative">
-        <!-- FIX 1: background corregido -->
         <input type="text" id="buscar-reserva" placeholder="Buscar por nombre o teléfono..." oninput="filtrarBusqueda()" style="width:100%;padding:8px 12px 8px 36px;border:1px solid #e5e5e0;border-radius:8px;font-size:13px;outline:none">
         <svg style="position:absolute;left:10px;top:50%;transform:translateY(-50%);pointer-events:none" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#aaa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
       </div>
@@ -281,7 +229,7 @@ body.dark .modal-confirm{background:#1e1e1e;border:0.5px solid #333}
     <div class="tabla-wrap">
       <table>
         <thead><tr><th>Nombre</th><th>Tipo</th><th>Fecha</th><th>Hora</th><th>Pers.</th><th>Telefono</th><th>Estado</th><th>Mesa</th><th>Acciones</th></tr></thead>
-        <tbody id="tabla-body"><tr><td colspan="8" class="loading">Cargando reservas...</td></tr></tbody>
+        <tbody id="tabla-body"><tr><td colspan="9" class="loading">Cargando reservas...</td></tr></tbody>
       </table>
     </div>
   </div>
@@ -337,13 +285,9 @@ body.dark .modal-confirm{background:#1e1e1e;border:0.5px solid #333}
   .plano-main{display:grid;grid-template-columns:2fr 1fr;gap:12px;margin-bottom:12px}
   .plano-col-r{display:flex;flex-direction:column;gap:12px}
   </style>
-
   <div class="plano-main">
     <div class="plano-zona" style="margin-bottom:0">
-      <div class="plano-zona-title">
-        <div class="plano-zona-name">Comedor</div>
-        <div class="plano-zona-cap">45 pers. · 11 mesas</div>
-      </div>
+      <div class="plano-zona-title"><div class="plano-zona-name">Comedor</div><div class="plano-zona-cap">45 pers. · 11 mesas</div></div>
       <div class="plano-scaler" id="comedor-scaler">
       <div class="plano-area" id="comedor-area" style="height:380px">
         <div class="pm circulo" id="pm-C1" style="width:75px;height:75px;left:12px;top:12px" onclick="abrirModal('comedor','C1')"><span>C1</span><small>4 pers.</small></div>
@@ -358,14 +302,11 @@ body.dark .modal-confirm{background:#1e1e1e;border:0.5px solid #333}
         <div class="pm circulo" id="pm-C11" style="width:75px;height:75px;left:390px;top:12px" onclick="abrirModal('comedor','C11')"><span>C11</span><small>2 pers.</small></div>
         <div class="pm circulo" id="pm-C12" style="width:75px;height:75px;left:390px;top:97px" onclick="abrirModal('comedor','C12')"><span>C12</span><small>2 pers.</small></div>
       </div>
-      </div><!-- fin scaler -->
+      </div>
     </div>
     <div class="plano-col-r">
       <div class="plano-zona" style="margin-bottom:0">
-        <div class="plano-zona-title">
-          <div class="plano-zona-name">Patio</div>
-          <div class="plano-zona-cap">15 pers. · 4 mesas</div>
-        </div>
+        <div class="plano-zona-title"><div class="plano-zona-name">Patio</div><div class="plano-zona-cap">15 pers. · 4 mesas</div></div>
         <div class="plano-area" style="height:220px">
           <div class="pm rect" id="pm-P2/3/4" style="width:90px;height:65px;left:10px;top:14px" onclick="abrirModal('patio','P2/3/4')"><span>3/4</span><small>8 pers.</small></div>
           <div class="pm circulo" id="pm-P2" style="width:65px;height:65px;left:112px;top:14px" onclick="abrirModal('patio','P2')"><span>P2</span><small>2 pers.</small></div>
@@ -374,17 +315,13 @@ body.dark .modal-confirm{background:#1e1e1e;border:0.5px solid #333}
         </div>
       </div>
       <div class="plano-zona" style="margin-bottom:0">
-        <div class="plano-zona-title">
-          <div class="plano-zona-name">Cava</div>
-          <div class="plano-zona-cap">8 pers. · 2do piso</div>
-        </div>
+        <div class="plano-zona-title"><div class="plano-zona-name">Cava</div><div class="plano-zona-cap">8 pers. · 2do piso</div></div>
         <div class="plano-area" style="height:110px">
           <div class="pm rect" id="pm-CV1" style="width:130px;height:70px;left:50%;transform:translateX(-50%);top:20px" onclick="abrirModal('cava','CV1')"><span>CV1</span><small>8 pers.</small></div>
         </div>
       </div>
     </div>
   </div>
-
   <div class="leyenda">
     <span><span class="dot" style="background:#3DB58A;border:1px solid #2a8a67"></span>Con reserva</span>
     <span><span class="dot" style="background:#64b5f6;border:1px solid #2196f3"></span>Walk-in</span>
@@ -418,222 +355,67 @@ var TABLA_EVENTOS='993201';
 var CAPACIDAD_TOTAL=70;
 var WEBHOOK_CONFIRMAR='https://qwsd-n8n.hi49ib.easypanel.host/webhook/confirmar-reserva';
 var WEBHOOK_CANCELAR='https://qwsd-n8n.hi49ib.easypanel.host/webhook/cancelar-reserva';
-// Estados tabla Reservas
 var ESTADOS={confirmada:6206820,pendiente:6206821,cancelada:6206822};
-// FIX 5: field ID y estados tabla Eventos correctos
 var FIELD_ESTADO_EVENTOS=8694936;
 var ESTADOS_EVENTOS={confirmada:'Confirmada',cancelada:'Cancelada'};
 var FIELD_MESA=8694049;
 var mesasData={
   comedor:[
-    {num:'C1',cap:4,walkin:0,walkinId:null,reserva:null},
-    {num:'C2',cap:4,walkin:0,walkinId:null,reserva:null},
-    {num:'C3',cap:4,walkin:0,walkinId:null,reserva:null},
-    {num:'C4',cap:4,walkin:0,walkinId:null,reserva:null},
-    {num:'C5',cap:4,walkin:0,walkinId:null,reserva:null},
-    {num:'C6',cap:5,walkin:0,walkinId:null,reserva:null},
-    {num:'C7',cap:4,walkin:0,walkinId:null,reserva:null},
-    {num:'C8',cap:6,walkin:0,walkinId:null,reserva:null},
-    {num:'C9/10',cap:8,walkin:0,walkinId:null,reserva:null},
-    {num:'C11',cap:2,walkin:0,walkinId:null,reserva:null},
+    {num:'C1',cap:4,walkin:0,walkinId:null,reserva:null},{num:'C2',cap:4,walkin:0,walkinId:null,reserva:null},
+    {num:'C3',cap:4,walkin:0,walkinId:null,reserva:null},{num:'C4',cap:4,walkin:0,walkinId:null,reserva:null},
+    {num:'C5',cap:4,walkin:0,walkinId:null,reserva:null},{num:'C6',cap:5,walkin:0,walkinId:null,reserva:null},
+    {num:'C7',cap:4,walkin:0,walkinId:null,reserva:null},{num:'C8',cap:6,walkin:0,walkinId:null,reserva:null},
+    {num:'C9/10',cap:8,walkin:0,walkinId:null,reserva:null},{num:'C11',cap:2,walkin:0,walkinId:null,reserva:null},
     {num:'C12',cap:2,walkin:0,walkinId:null,reserva:null}
   ],
   patio:[
-    {num:'P1',cap:2,walkin:0,walkinId:null,reserva:null},
-    {num:'P2/3/4',cap:8,walkin:0,walkinId:null,reserva:null},
+    {num:'P1',cap:2,walkin:0,walkinId:null,reserva:null},{num:'P2/3/4',cap:8,walkin:0,walkinId:null,reserva:null},
     {num:'P5',cap:5,walkin:0,walkinId:null,reserva:null}
   ],
   cava:[{num:'CV1',cap:8,walkin:0,walkinId:null,reserva:null}]
 };
 var horasData=[{h:'12:00'},{h:'12:30'},{h:'13:00'},{h:'13:30'},{h:'14:00'},{h:'19:00'},{h:'19:30'},{h:'20:00'},{h:'20:30'}];
-var reservas=[];
-var reservasSolicitudes=[];
-var eventosTodos=[];
-var eventos=[];
-var filtroEstado='todas';
-var filtroEventos='todas';
-var mesaSeleccionada=null;
-var reservaActual=null;
-var fechaSeleccionada=new Date();
-fechaSeleccionada.setHours(0,0,0,0);
-var calMes=new Date();
-calMes.setDate(1);
-calMes.setHours(0,0,0,0);
-var calAbierto=false;
-var tabActual='solicitudes';
+var reservas=[],reservasSolicitudes=[],eventosTodos=[],eventos=[];
+var filtroEstado='todas',filtroEventos='todas';
+var mesaSeleccionada=null,reservaActual=null;
+var fechaSeleccionada=new Date();fechaSeleccionada.setHours(0,0,0,0);
+var calMes=new Date();calMes.setDate(1);calMes.setHours(0,0,0,0);
+var calAbierto=false,tabActual='solicitudes';
 
-function formatFecha(d){
-  var mes=d.getMonth()+1;
-  var dia=d.getDate();
-  return d.getFullYear()+'-'+(mes<10?'0':'')+mes+'-'+(dia<10?'0':'')+dia;
-}
-
-function formatFechaLabel(d){
-  var dias=['Domingo','Lunes','Martes','Miercoles','Jueves','Viernes','Sabado'];
-  var meses=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
-  return dias[d.getDay()]+' '+d.getDate()+' de '+meses[d.getMonth()];
-}
-
-// FIX UX 1: funciones del indicador de sync
-function setSyncState(state){
-  var ind=document.getElementById('sync-indicator');
-  var ico=ind.querySelector('.sync-icon');
-  ind.className='sync-indicator';
-  if(state==='syncing'){ind.classList.add('syncing');ico.className='ti ti-wifi sync-icon';}
-  else if(state==='error'){ind.classList.add('error');ico.className='ti ti-wifi-off sync-icon';}
-  else{ico.className='ti ti-wifi sync-icon';}
-}
-
-function toggleCalendario(){
-  calAbierto=!calAbierto;
-  var cal=document.getElementById('calendar-dropdown');
-  if(calAbierto){cal.style.display='block';renderCalendario();}
-  else cal.style.display='none';
-}
-
-function cerrarCalendario(){
-  calAbierto=false;
-  document.getElementById('calendar-dropdown').style.display='none';
-}
-
+function formatFecha(d){var mes=d.getMonth()+1;var dia=d.getDate();return d.getFullYear()+'-'+(mes<10?'0':'')+mes+'-'+(dia<10?'0':'')+dia;}
+function formatFechaLabel(d){var dias=['Domingo','Lunes','Martes','Miercoles','Jueves','Viernes','Sabado'];var meses=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];return dias[d.getDay()]+' '+d.getDate()+' de '+meses[d.getMonth()];}
+function setSyncState(state){var ind=document.getElementById('sync-indicator');var ico=ind.querySelector('.sync-icon');ind.className='sync-indicator';if(state==='error'){ind.classList.add('error');ico.className='ti ti-wifi-off sync-icon';}else{ico.className='ti ti-wifi sync-icon';}}
+function toggleCalendario(){calAbierto=!calAbierto;var cal=document.getElementById('calendar-dropdown');if(calAbierto){cal.style.display='block';renderCalendario();}else cal.style.display='none';}
+function cerrarCalendario(){calAbierto=false;document.getElementById('calendar-dropdown').style.display='none';}
 function renderCalendario(){
   var hoy=new Date();hoy.setHours(0,0,0,0);
-  var diasMax=tabActual==='eventos'?60:6;
-  var maxFecha=new Date(hoy);maxFecha.setDate(hoy.getDate()+diasMax);
+  var maxFecha=new Date(hoy);maxFecha.setDate(hoy.getDate()+60);
   var meses=['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
   var diasNom=['Do','Lu','Ma','Mi','Ju','Vi','Sa'];
-  var anio=calMes.getFullYear();
-  var mes=calMes.getMonth();
+  var anio=calMes.getFullYear(),mes=calMes.getMonth();
   var primerDiaSemana=new Date(anio,mes,1).getDay();
   var totalDias=new Date(anio,mes+1,0).getDate();
   var diasRapidos='';
-  var limite=7;
-  for(var i=0;i<limite;i++){
-    var d=new Date(hoy);d.setDate(hoy.getDate()+i);
-    var activo=formatFecha(d)===formatFecha(fechaSeleccionada);
-    var lbl=i===0?'Hoy':i===1?'Manana':diasNom[d.getDay()]+' '+d.getDate();
-    diasRapidos+='<button class="dia-rapido'+(activo?' active':'')+'" onclick="seleccionarFecha(\''+formatFecha(d)+'\')">'+lbl+'</button>';
-  }
+  for(var i=0;i<7;i++){var d=new Date(hoy);d.setDate(hoy.getDate()+i);var activo=formatFecha(d)===formatFecha(fechaSeleccionada);var lbl=i===0?'Hoy':i===1?'Manana':diasNom[d.getDay()]+' '+d.getDate();diasRapidos+='<button class="dia-rapido'+(activo?' active':'')+'" onclick="seleccionarFecha(\''+formatFecha(d)+'\')">'+lbl+'</button>';}
   var cabecera=diasNom.map(function(n){return '<div class="cal-day-name">'+n+'</div>';}).join('');
   var celdas='';
   for(var b=0;b<primerDiaSemana;b++) celdas+='<div class="cal-day empty"></div>';
-  for(var dia=1;dia<=totalDias;dia++){
-    var fecha=new Date(anio,mes,dia);
-    fecha.setHours(0,0,0,0);
-    var fechaStr=formatFecha(fecha);
-    var cls='cal-day';
-    if(fechaStr===formatFecha(hoy)) cls+=' today';
-    if(fechaStr===formatFecha(fechaSeleccionada)) cls+=' selected';
-    if(fecha<hoy||fecha>maxFecha) cls+=' disabled';
-    celdas+='<div class="'+cls+'" onclick="seleccionarFecha(\''+fechaStr+'\')">'+dia+'</div>';
-  }
-  document.getElementById('calendar-dropdown').innerHTML=
-    '<div class="dias-rapidos">'+diasRapidos+'</div>'+
-    '<div class="cal-header">'+
-    '<button class="cal-nav" onclick="cambiarMes(-1)">&#8249;</button>'+
-    '<div class="cal-title">'+meses[mes]+' '+anio+'</div>'+
-    '<button class="cal-nav" onclick="cambiarMes(1)">&#8250;</button>'+
-    '</div>'+
-    '<div class="cal-days-header">'+cabecera+'</div>'+
-    '<div class="cal-days">'+celdas+'</div>';
+  for(var dia=1;dia<=totalDias;dia++){var fecha=new Date(anio,mes,dia);fecha.setHours(0,0,0,0);var fechaStr=formatFecha(fecha);var cls='cal-day';if(fechaStr===formatFecha(hoy)) cls+=' today';if(fechaStr===formatFecha(fechaSeleccionada)) cls+=' selected';if(fecha<hoy||fecha>maxFecha) cls+=' disabled';celdas+='<div class="'+cls+'" onclick="seleccionarFecha(\''+fechaStr+'\')">'+dia+'</div>';}
+  document.getElementById('calendar-dropdown').innerHTML='<div class="dias-rapidos">'+diasRapidos+'</div><div class="cal-header"><button class="cal-nav" onclick="cambiarMes(-1)">&#8249;</button><div class="cal-title">'+meses[mes]+' '+anio+'</div><button class="cal-nav" onclick="cambiarMes(1)">&#8250;</button></div><div class="cal-days-header">'+cabecera+'</div><div class="cal-days">'+celdas+'</div>';
 }
-
-function cambiarMes(dir){
-  calMes=new Date(calMes.getFullYear(),calMes.getMonth()+dir,1);
-  renderCalendario();
-}
-
-function seleccionarFecha(fechaStr){
-  var p=fechaStr.split('-');
-  fechaSeleccionada=new Date(parseInt(p[0]),parseInt(p[1])-1,parseInt(p[2]));
-  fechaSeleccionada.setHours(0,0,0,0);
-  document.getElementById('fecha-hoy').textContent=formatFechaLabel(fechaSeleccionada)+', '+fechaSeleccionada.getFullYear();
-  cerrarCalendario();
-  var allMesas=mesasData.comedor.concat(mesasData.patio).concat(mesasData.cava);
-  allMesas.forEach(function(m){m.walkin=0;m.walkinId=null;m.reserva=null;});
-  cargarReservas();
-  cargarEventos();
-  renderMesas();renderMetrics();
-}
-
-document.addEventListener('click',function(e){
-  if(calAbierto){
-    var cal=document.getElementById('calendar-dropdown');
-    var btn=document.getElementById('date-btn');
-    if(!cal.contains(e.target)&&!btn.contains(e.target)) cerrarCalendario();
-  }
-});
-
-function toggleDark(){
-  var btn=document.getElementById('dark-btn');
-  if(document.body.classList.contains('dark')){
-    document.body.classList.remove('dark');
-    btn.textContent='Modo oscuro';
-    localStorage.setItem('dark','0');
-  }else{
-    document.body.classList.add('dark');
-    btn.textContent='Modo claro';
-    localStorage.setItem('dark','1');
-  }
-}
-
-function showToast(msg,color){
-  if(!color) color='#1a1a1a';
-  var t=document.getElementById('toast');
-  t.textContent=msg;t.style.background=color;
-  t.classList.add('show');setTimeout(function(){t.classList.remove('show');},3000);
-}
-
-function getColorBarra(pct){
-  if(pct>=70) return '#1D9E75';
-  if(pct>=30) return '#EF9F27';
-  return '#e0e0e0';
-}
-
-function parseFecha(f){
-  if(!f) return '';
-  if(f.indexOf('T')>-1) return f.split('T')[0];
-  if(f.indexOf('/')>-1){
-    var p=f.split('/');
-    if(p[0].length===4) return f;
-    return p[2]+'-'+p[1]+'-'+p[0];
-  }
-  return f;
-}
-
-function getMesasOcupadas(){
-  var ocupadas=[];
-  var allMesas=mesasData.comedor.concat(mesasData.patio).concat(mesasData.cava);
-  allMesas.forEach(function(m){if(m.walkin>0||m.reserva) ocupadas.push(m.num);});
-  return ocupadas;
-}
-
-function getEstadoNombre(r){
-  var v=r['Estado'];
-  if(!v) return 'pendiente';
-  var val=typeof v==='object'?v.value:v;
-  return (val||'').toLowerCase();
-}
-
-// FIX UX 5: actualizar badge de pendientes
-function actualizarBadgePendientes(){
-  var pendientesReservas=reservasSolicitudes.filter(function(r){return getEstadoNombre(r)==='pendiente';}).length;
-  var pendientesEventos=eventosTodos.filter(function(e){return getEstadoNombre(e)==='pendiente';}).length;
-  var pendientes=pendientesReservas+pendientesEventos;
-  var badge=document.getElementById('badge-pendientes');
-  var num=document.getElementById('badge-num');
-  if(pendientes>0){
-    badge.style.display='inline-flex';
-    num.textContent=pendientes;
-  } else {
-    badge.style.display='none';
-  }
-}
-
+function cambiarMes(dir){calMes=new Date(calMes.getFullYear(),calMes.getMonth()+dir,1);renderCalendario();}
+function seleccionarFecha(fechaStr){var p=fechaStr.split('-');fechaSeleccionada=new Date(parseInt(p[0]),parseInt(p[1])-1,parseInt(p[2]));fechaSeleccionada.setHours(0,0,0,0);document.getElementById('fecha-hoy').textContent=formatFechaLabel(fechaSeleccionada)+', '+fechaSeleccionada.getFullYear();cerrarCalendario();var allMesas=mesasData.comedor.concat(mesasData.patio).concat(mesasData.cava);allMesas.forEach(function(m){m.walkin=0;m.walkinId=null;m.reserva=null;});cargarReservas();cargarEventos();renderMesas();renderMetrics();}
+document.addEventListener('click',function(e){if(calAbierto){var cal=document.getElementById('calendar-dropdown');var btn=document.getElementById('date-btn');if(!cal.contains(e.target)&&!btn.contains(e.target)) cerrarCalendario();}});
+function toggleDark(){var btn=document.getElementById('dark-btn');if(document.body.classList.contains('dark')){document.body.classList.remove('dark');btn.textContent='Modo oscuro';localStorage.setItem('dark','0');}else{document.body.classList.add('dark');btn.textContent='Modo claro';localStorage.setItem('dark','1');}}
+function showToast(msg,color){if(!color) color='#1a1a1a';var t=document.getElementById('toast');t.textContent=msg;t.style.background=color;t.classList.add('show');setTimeout(function(){t.classList.remove('show');},3000);}
+function getColorBarra(pct){if(pct>=70) return '#1D9E75';if(pct>=30) return '#EF9F27';return '#e0e0e0';}
+function parseFecha(f){if(!f) return '';if(f.indexOf('T')>-1) return f.split('T')[0];if(f.indexOf('/')>-1){var p=f.split('/');if(p[0].length===4) return f;return p[2]+'-'+p[1]+'-'+p[0];}return f;}
+function getMesasOcupadas(){var ocupadas=[];var allMesas=mesasData.comedor.concat(mesasData.patio).concat(mesasData.cava);allMesas.forEach(function(m){if(m.walkin>0||m.reserva) ocupadas.push(m.num);});return ocupadas;}
+function getEstadoNombre(r){var v=r['Estado'];if(!v) return 'pendiente';var val=typeof v==='object'?v.value:v;return (val||'').toLowerCase();}
+function actualizarBadgePendientes(){var p1=reservasSolicitudes.filter(function(r){return getEstadoNombre(r)==='pendiente';}).length;var p2=eventosTodos.filter(function(e){return getEstadoNombre(e)==='pendiente';}).length;var total=p1+p2;var badge=document.getElementById('badge-pendientes');var num=document.getElementById('badge-num');if(total>0){badge.style.display='inline-flex';num.textContent=total;}else{badge.style.display='none';}}
 function cargarReservas(){
   setSyncState('syncing');
-  fetch('https://api.baserow.io/api/database/rows/table/'+TABLA_RESERVAS+'/?user_field_names=true&size=200',
-    {headers:{Authorization:'Token '+BASEROW_TOKEN}})
+  fetch('https://api.baserow.io/api/database/rows/table/'+TABLA_RESERVAS+'/?user_field_names=true&size=200',{headers:{Authorization:'Token '+BASEROW_TOKEN}})
   .then(function(r){return r.json();})
   .then(function(data){
     setSyncState('ok');
@@ -642,60 +424,26 @@ function cargarReservas(){
     reservas=todasReservas.filter(function(r){return parseFecha(r['Fecha'])===fechaStr;});
     var allMesas=mesasData.comedor.concat(mesasData.patio).concat(mesasData.cava);
     allMesas.forEach(function(m){m.reserva=null;});
-    reservas.forEach(function(r){
-      var mesaNom=r['Mesa']||'';
-      if(mesaNom){
-        var mesa=allMesas.filter(function(m){return m.num===mesaNom;})[0];
-        if(mesa&&getEstadoNombre(r)==='confirmada'){
-          mesa.reserva={nombre:r['Nombre']||'',hora:r['Hora']||'',personas:parseInt(r['Personas'])||0,id:r.id};
-        }
-      }
-    });
+    reservas.forEach(function(r){var mesaNom=r['Mesa']||'';if(mesaNom){var mesa=allMesas.filter(function(m){return m.num===mesaNom;})[0];if(mesa&&getEstadoNombre(r)==='confirmada'){mesa.reserva={nombre:r['Nombre']||'',hora:r['Hora']||'',personas:parseInt(r['Personas'])||0,id:r.id};}}});
     reservasSolicitudes=todasReservas;
     actualizarBadgePendientes();
-    renderTabla();renderMetrics();renderHoras();renderMesas();
-    renderTablaEventos();
+    renderTabla();renderMetrics();renderHoras();renderMesas();renderTablaEventos();
   })
-  .catch(function(){
-    setSyncState('error');
-    document.getElementById('tabla-body').innerHTML='<tr><td colspan="8" class="empty">Error al cargar reservas</td></tr>';
-  });
+  .catch(function(){setSyncState('error');document.getElementById('tabla-body').innerHTML='<tr><td colspan="9" class="empty">Error al cargar reservas</td></tr>';});
 }
-
-// FIX 4: cargarEventos filtra por fecha seleccionada para "Solo Reservas", guarda todos en eventosTodos para "Solicitudes"
 function cargarEventos(){
   var fechaStr=formatFecha(fechaSeleccionada);
-  fetch('https://api.baserow.io/api/database/rows/table/'+TABLA_EVENTOS+'/?user_field_names=true&size=200',
-    {headers:{Authorization:'Token '+BASEROW_TOKEN}})
+  fetch('https://api.baserow.io/api/database/rows/table/'+TABLA_EVENTOS+'/?user_field_names=true&size=200',{headers:{Authorization:'Token '+BASEROW_TOKEN}})
   .then(function(r){return r.json();})
-  .then(function(data){
-    eventosTodos=data.results||[];
-    eventos=eventosTodos.filter(function(e){
-      return parseFecha(e['Fecha'])===fechaStr;
-    });
-    renderTablaEventos();
-    renderTabla();
-  })
+  .then(function(data){eventosTodos=data.results||[];eventos=eventosTodos.filter(function(e){return parseFecha(e['Fecha'])===fechaStr;});actualizarBadgePendientes();renderTablaEventos();renderTabla();})
   .catch(function(e){console.error('Error eventos',e);});
 }
-
 function cargarWalkins(){
-  fetch('https://api.baserow.io/api/database/rows/table/'+TABLA_WALKINS+'/?user_field_names=true&size=200',
-    {headers:{Authorization:'Token '+BASEROW_TOKEN}})
+  fetch('https://api.baserow.io/api/database/rows/table/'+TABLA_WALKINS+'/?user_field_names=true&size=200',{headers:{Authorization:'Token '+BASEROW_TOKEN}})
   .then(function(r){return r.json();})
-  .then(function(data){
-    var walkins=(data.results||[]).filter(function(w){return w['Activo']===true;});
-    var allMesas=mesasData.comedor.concat(mesasData.patio).concat(mesasData.cava);
-    allMesas.forEach(function(m){m.walkin=0;m.walkinId=null;});
-    walkins.forEach(function(w){
-      var mesa=allMesas.filter(function(m){return m.num===w['Mesa'];})[0];
-      if(mesa){mesa.walkin=parseInt(w['Personas'])||0;mesa.walkinId=w.id;}
-    });
-    renderMesas();renderMetrics();
-  })
+  .then(function(data){var walkins=(data.results||[]).filter(function(w){return w['Activo']===true;});var allMesas=mesasData.comedor.concat(mesasData.patio).concat(mesasData.cava);allMesas.forEach(function(m){m.walkin=0;m.walkinId=null;});walkins.forEach(function(w){var mesa=allMesas.filter(function(m){return m.num===w['Mesa'];})[0];if(mesa){mesa.walkin=parseInt(w['Personas'])||0;mesa.walkinId=w.id;}});renderMesas();renderMetrics();})
   .catch(function(e){console.error('Error walkins',e);});
 }
-
 function renderTablaEventos(){
   var tb=document.getElementById('tabla-eventos-body');
   var lista=reservas.map(function(r){return {tipo:'reserva',data:r};});
@@ -703,148 +451,62 @@ function renderTablaEventos(){
   else if(filtroEventos==='confirmada') lista=lista.filter(function(i){return getEstadoNombre(i.data)==='confirmada';});
   if(!lista.length){tb.innerHTML='<tr><td colspan="8" class="empty">Sin reservas para este día</td></tr>';return;}
   tb.innerHTML=lista.map(function(item){
-    var r=item.data;
-    var estado=getEstadoNombre(r);
-    var fecha=parseFecha(r['Fecha'])||'--';
-    var tel=r['Telefono']||r['Teléfono']||'--';
-    var mesa=r['Mesa']||'--';
+    var r=item.data;var estado=getEstadoNombre(r);var fecha=parseFecha(r['Fecha'])||'--';
+    var tel=(r['Telefono']||r['Teléfono']||'--').replace(/'/g,'');
+    var nombre=(r['Nombre']||'--').replace(/'/g,'');
+    var hora=(r['Hora']||'').replace(/'/g,'');
+    var personas=parseInt(r['Personas'])||0;
     var acciones=estado==='pendiente'?
-      '<button class="btn-confirm" onclick="abrirModalConfirmar('+r.id+',\''+tel+'\',\''+r['Nombre']+'\',\''+(r['Hora']||'')+'\','+(parseInt(r['Personas'])||0)+')">Confirmar</button><button class="btn-cancel" onclick="pedirConfirmacionCancelar(\'reserva\','+r.id+',\''+tel+'\',\''+r['Nombre']+'\')">Cancelar</button>':
+      '<button class="btn-confirm" onclick="abrirModalConfirmar('+r.id+',\''+tel+'\',\''+nombre+'\',\''+hora+'\','+personas+')">Confirmar</button>'+
+      '<button class="btn-cancel" onclick="pedirConfirmacionCancelar(\'reserva\','+r.id+',\''+tel+'\',\''+nombre+'\')">Cancelar</button>':
       '<span style="font-size:12px;color:#aaa">'+(estado==='confirmada'?'Confirmada':'Cancelada')+'</span>';
-    return '<tr><td style="font-weight:500">'+(r['Nombre']||'--')+'</td><td><span style="font-size:11px;color:#aaa">Reserva</span></td><td>'+fecha+'</td><td>'+(r['Hora']||'--')+'</td><td>'+(r['Personas']||'--')+'</td><td style="font-size:12px;color:#888">'+tel+'</td><td><span class="badge badge-'+estado+'">'+estado+'</span></td><td>'+acciones+'</td></tr>';
+    return '<tr><td style="font-weight:500">'+nombre+'</td><td><span style="font-size:11px;color:#aaa">Reserva</span></td><td>'+fecha+'</td><td>'+(hora||'--')+'</td><td>'+personas+'</td><td style="font-size:12px;color:#888">'+tel+'</td><td><span class="badge badge-'+estado+'">'+estado+'</span></td><td>'+acciones+'</td></tr>';
   }).join('');
 }
-
-function filtrarEventos(filtro,btn){
-  filtroEventos=filtro;
-  document.querySelectorAll('#tab-eventos .filter-btn').forEach(function(b){b.classList.remove('active');});
-  btn.classList.add('active');
-  renderTablaEventos();
-}
-
-// FIX UX 3: modal de confirmación de cancelación
+function filtrarEventos(filtro,btn){filtroEventos=filtro;document.querySelectorAll('#tab-eventos .filter-btn').forEach(function(b){b.classList.remove('active');});btn.classList.add('active');renderTablaEventos();}
 function pedirConfirmacionCancelar(tipo,id,telefono,nombre){
-  var mc=document.getElementById('modal-container');
-  var prev=mc.innerHTML;
-  var overlay=document.createElement('div');
-  overlay.className='modal-confirm-bg';
-  overlay.id='confirm-cancel-overlay';
-  overlay.innerHTML=
-    '<div class="modal-confirm" onclick="event.stopPropagation()">'+
-    '<div class="modal-confirm-title">¿Cancelar esta reserva?</div>'+
-    '<div class="modal-confirm-sub">Se cancelará la reserva de <strong>'+nombre+'</strong> y se notificará al cliente por WhatsApp.</div>'+
-    '<div class="modal-confirm-btns">'+
-    '<button style="flex:1;padding:10px;border-radius:8px;border:1px solid #e53935;color:#c62828;background:#ffebee;cursor:pointer;font-size:13px;font-weight:500" onclick="ejecutarCancelacion(\''+tipo+'\','+id+',\''+telefono+'\')">Sí, cancelar</button>'+
-    '<button style="flex:1;padding:10px;border-radius:8px;border:1px solid #e5e5e0;color:#888;background:transparent;cursor:pointer;font-size:13px" onclick="cerrarConfirmCancelar()">Volver</button>'+
-    '</div></div>';
+  var overlay=document.createElement('div');overlay.className='modal-confirm-bg';overlay.id='confirm-cancel-overlay';
+  overlay.innerHTML='<div class="modal-confirm" onclick="event.stopPropagation()"><div class="modal-confirm-title">¿Cancelar esta reserva?</div><div class="modal-confirm-sub">Se cancelará la reserva de <strong>'+nombre+'</strong> y se notificará al cliente por WhatsApp.</div><div class="modal-confirm-btns"><button style="flex:1;padding:10px;border-radius:8px;border:1px solid #e53935;color:#c62828;background:#ffebee;cursor:pointer;font-size:13px;font-weight:500" onclick="ejecutarCancelacion(\''+tipo+'\','+id+',\''+telefono+'\')">Sí, cancelar</button><button style="flex:1;padding:10px;border-radius:8px;border:1px solid #e5e5e0;color:#888;background:transparent;cursor:pointer;font-size:13px" onclick="cerrarConfirmCancelar()">Volver</button></div></div>';
   document.body.appendChild(overlay);
 }
+function cerrarConfirmCancelar(){var el=document.getElementById('confirm-cancel-overlay');if(el) el.remove();}
+function ejecutarCancelacion(tipo,id,telefono){cerrarConfirmCancelar();if(tipo==='evento') cancelarEvento(id,telefono);else accionReserva(id,'cancelar',telefono);}
+function confirmarEvento(id,telefono){var body={};body['field_'+FIELD_ESTADO_EVENTOS]=ESTADOS_EVENTOS.confirmada;fetch('https://api.baserow.io/api/database/rows/table/'+TABLA_EVENTOS+'/'+id+'/?user_field_names=false',{method:'PATCH',headers:{Authorization:'Token '+BASEROW_TOKEN,'Content-Type':'application/json'},body:JSON.stringify(body)}).then(function(){return fetch(WEBHOOK_CONFIRMAR+'?reserva_id='+id+'&telefono='+telefono);}).then(function(){showToast('Evento confirmado','#1D9E75');cargarEventos();}).catch(function(){showToast('Error al confirmar evento','#c62828');});}
+function cancelarEvento(id,telefono){var body={};body['field_'+FIELD_ESTADO_EVENTOS]=ESTADOS_EVENTOS.cancelada;fetch('https://api.baserow.io/api/database/rows/table/'+TABLA_EVENTOS+'/'+id+'/?user_field_names=false',{method:'PATCH',headers:{Authorization:'Token '+BASEROW_TOKEN,'Content-Type':'application/json'},body:JSON.stringify(body)}).then(function(){return fetch(WEBHOOK_CANCELAR+'?reserva_id='+id+'&telefono='+telefono);}).then(function(){showToast('Evento cancelado','#c62828');cargarEventos();}).catch(function(){showToast('Error al cancelar evento','#c62828');});}
 
-function cerrarConfirmCancelar(){
-  var el=document.getElementById('confirm-cancel-overlay');
-  if(el) el.remove();
-}
-
-function ejecutarCancelacion(tipo,id,telefono){
-  cerrarConfirmCancelar();
-  if(tipo==='evento') cancelarEvento(id,telefono);
-  else accionReserva(id,'cancelar',telefono);
-}
-
-// FIX 5: confirmarEvento usa field ID correcto (8586169) y valor limpio
-function confirmarEvento(id,telefono){
-  var body={};
-  body['field_'+FIELD_ESTADO_EVENTOS]=ESTADOS_EVENTOS.confirmada;
-  fetch('https://api.baserow.io/api/database/rows/table/'+TABLA_EVENTOS+'/'+id+'/?user_field_names=false',{
-    method:'PATCH',headers:{Authorization:'Token '+BASEROW_TOKEN,'Content-Type':'application/json'},
-    body:JSON.stringify(body)
-  })
-  .then(function(){
-    return fetch(WEBHOOK_CONFIRMAR+'?reserva_id='+id+'&telefono='+telefono);
-  })
-  .then(function(){
-    showToast('Evento confirmado','#1D9E75');
-    cargarEventos();
-  })
-  .catch(function(){showToast('Error al confirmar evento','#c62828');});
-}
-
-// FIX 5: cancelarEvento usa field ID correcto
-function cancelarEvento(id,telefono){
-  var body={};
-  body['field_'+FIELD_ESTADO_EVENTOS]=ESTADOS_EVENTOS.cancelada;
-  fetch('https://api.baserow.io/api/database/rows/table/'+TABLA_EVENTOS+'/'+id+'/?user_field_names=false',{
-    method:'PATCH',headers:{Authorization:'Token '+BASEROW_TOKEN,'Content-Type':'application/json'},
-    body:JSON.stringify(body)
-  })
-  .then(function(){
-    return fetch(WEBHOOK_CANCELAR+'?reserva_id='+id+'&telefono='+telefono);
-  })
-  .then(function(){
-    showToast('Evento cancelado','#c62828');
-    cargarEventos();
-  })
-  .catch(function(){showToast('Error al cancelar evento','#c62828');});
-}
-
+/* === FIX 1: renderTabla pasa parámetros directamente a abrirModalConfirmar === */
 function renderTabla(){
   var tb=document.getElementById('tabla-body');
   var listaReservas=reservasSolicitudes.map(function(r){return {tipo:'reserva',data:r};});
   var listaEventosTodos=eventosTodos.map(function(e){return {tipo:'evento',data:e};});
   var lista;
-  if(filtroEstado==='solo_eventos'){
-    lista=listaEventosTodos;
-  } else {
-    lista=listaReservas.concat(listaEventosTodos);
-    if(filtroEstado!=='todas'){
-      lista=lista.filter(function(i){return getEstadoNombre(i.data)===filtroEstado.toLowerCase();});
-    }
-  }
-  if(textoBusqueda){
-    lista=lista.filter(function(i){
-      var nombre=(i.data['Nombre']||'').toLowerCase();
-      var tel=(i.data['Telefono']||i.data['Teléfono']||'').toLowerCase();
-      return nombre.indexOf(textoBusqueda)>-1||tel.indexOf(textoBusqueda)>-1;
-    });
-  }
+  if(filtroEstado==='solo_eventos'){lista=listaEventosTodos;}
+  else{lista=listaReservas.concat(listaEventosTodos);if(filtroEstado!=='todas'){lista=lista.filter(function(i){return getEstadoNombre(i.data)===filtroEstado.toLowerCase();});}}
+  if(textoBusqueda){lista=lista.filter(function(i){var nombre=(i.data['Nombre']||'').toLowerCase();var tel=(i.data['Telefono']||i.data['Teléfono']||'').toLowerCase();return nombre.indexOf(textoBusqueda)>-1||tel.indexOf(textoBusqueda)>-1;});}
   if(!lista.length){tb.innerHTML='<tr><td colspan="9" class="empty">Sin registros</td></tr>';return;}
   tb.innerHTML=lista.map(function(item){
-    var r=item.data;
-    var esEvento=item.tipo==='evento';
-    var estado=getEstadoNombre(r);
+    var r=item.data;var esEvento=item.tipo==='evento';var estado=getEstadoNombre(r);
     var fecha=parseFecha(r['Fecha'])||'--';
-    var tel=r['Telefono']||r['Teléfono']||'--';
+    var tel=(r['Telefono']||r['Teléfono']||'--').replace(/'/g,'');
     var mesa=r['Mesa']||'--';
+    var nombre=(r['Nombre']||'--').replace(/'/g,'');
+    var hora=(r['Hora']||'').replace(/'/g,'');
+    var personas=parseInt(r['Personas'])||0;
     var tipoBadge=esEvento?'<span class="badge badge-evento"><span class="dot-evento"></span>Evento</span>':'<span style="font-size:11px;color:#aaa">Reserva</span>';
     var acciones='';
     if(estado==='pendiente'){
       if(esEvento){
         acciones='<button class="btn-confirm" onclick="confirmarEvento('+r.id+',\''+tel+'\')">Confirmar</button>'+
-          '<button class="btn-cancel" onclick="pedirConfirmacionCancelarId(\'evento\','+r.id+')">Cancelar</button>';
+          '<button class="btn-cancel" onclick="pedirConfirmacionCancelar(\'evento\','+r.id+',\''+tel+'\',\''+nombre+'\')">Cancelar</button>';
       } else {
-        acciones='<button class="btn-confirm" onclick="prepararConfirmar('+r.id+')">Confirmar</button>'+
-          '<button class="btn-cancel" onclick="pedirConfirmacionCancelarId(\'reserva\','+r.id+')">Cancelar</button>';
+        acciones='<button class="btn-confirm" onclick="abrirModalConfirmar('+r.id+',\''+tel+'\',\''+nombre+'\',\''+hora+'\','+personas+')">Confirmar</button>'+
+          '<button class="btn-cancel" onclick="pedirConfirmacionCancelar(\'reserva\','+r.id+',\''+tel+'\',\''+nombre+'\')">Cancelar</button>';
       }
     } else {
       acciones='<span style="font-size:12px;color:#aaa">'+(estado==='confirmada'?'Confirmada':'Cancelada')+'</span>';
     }
-    return '<tr><td style="font-weight:500">'+(r['Nombre']||'--')+'</td><td>'+tipoBadge+'</td><td>'+fecha+'</td><td>'+(r['Hora']||'--')+'</td><td>'+(r['Personas']||'--')+'</td><td style="font-size:12px;color:#888">'+tel+'</td><td><span class="badge badge-'+estado+'">'+estado+'</span></td><td style="font-size:12px;color:#888">'+(esEvento?'--':mesa)+'</td><td>'+acciones+'</td></tr>';
+    return '<tr><td style="font-weight:500">'+nombre+'</td><td>'+tipoBadge+'</td><td>'+fecha+'</td><td>'+(hora||'--')+'</td><td>'+personas+'</td><td style="font-size:12px;color:#888">'+tel+'</td><td><span class="badge badge-'+estado+'">'+estado+'</span></td><td style="font-size:12px;color:#888">'+(esEvento?'--':mesa)+'</td><td>'+acciones+'</td></tr>';
   }).join('');
-}
-
-function prepararConfirmar(id){
-  var r=reservasSolicitudes.filter(function(x){return x.id===id;})[0];
-  if(!r) return;
-  var tel=r['Telefono']||r['Teléfono']||'';
-  abrirModalConfirmar(r.id,tel,r['Nombre']||'',r['Hora']||'',parseInt(r['Personas'])||0);
-}
-
-function pedirConfirmacionCancelarId(tipo,id){
-  var lista=tipo==='evento'?eventosTodos:reservasSolicitudes;
-  var r=lista.filter(function(x){return x.id===id;})[0];
-  if(!r) return;
-  var tel=r['Telefono']||r['Teléfono']||'';
-  pedirConfirmacionCancelar(tipo,id,tel,r['Nombre']||'');
 }
 
 function abrirModalConfirmar(id,telefono,nombre,hora,personas){
@@ -852,362 +514,54 @@ function abrirModalConfirmar(id,telefono,nombre,hora,personas){
   mesaSeleccionada=null;
   var ocupadas=getMesasOcupadas();
   var allMesas=mesasData.comedor.concat(mesasData.patio).concat(mesasData.cava);
-  var opcionesMesas=allMesas.map(function(m){
-    var estaOcupada=ocupadas.indexOf(m.num)>-1;
-    return '<div class="mesa-opt'+(estaOcupada?' ocupada':'')+'" onclick="seleccionarMesa(\''+m.num+'\')" id="opt-'+m.num.replace('/','_')+'">'+m.num+'<br><span style="font-size:10px;color:inherit">'+m.cap+' pers.</span></div>';
-  }).join('');
+  var opcionesMesas=allMesas.map(function(m){var estaOcupada=ocupadas.indexOf(m.num)>-1;return '<div class="mesa-opt'+(estaOcupada?' ocupada':'')+'" onclick="seleccionarMesa(\''+m.num+'\')" id="opt-'+m.num.replace('/','_')+'">'+m.num+'<br><span style="font-size:10px;color:inherit">'+m.cap+' pers.</span></div>';}).join('');
   var mc=document.getElementById('modal-container');
-  mc.innerHTML='<div class="modal-bg" onclick="cerrarModal()"><div class="modal" onclick="event.stopPropagation()">'+
-    '<div class="modal-title">Confirmar reserva</div>'+
-    '<div class="modal-sub">'+nombre+' · '+hora+' · '+personas+' personas</div>'+
-    '<div style="font-size:12px;color:#888;margin-bottom:8px">Selecciona una mesa disponible:</div>'+
-    '<div class="mesas-selector">'+opcionesMesas+'</div>'+
-    '<div class="modal-btns">'+
-    '<button class="btn-ocupar" id="btn-confirmar-final" onclick="confirmarConMesa()" style="opacity:0.5;pointer-events:none">Confirmar reserva</button>'+
-    '<button class="btn-cerrar" onclick="cerrarModal()">Cancelar</button>'+
-    '</div></div></div>';
+  mc.innerHTML='<div class="modal-bg" onclick="cerrarModal()"><div class="modal" onclick="event.stopPropagation()"><div class="modal-title">Confirmar reserva</div><div class="modal-sub">'+nombre+' · '+hora+' · '+personas+' personas</div><div style="font-size:12px;color:#888;margin-bottom:8px">Selecciona una mesa disponible:</div><div class="mesas-selector">'+opcionesMesas+'</div><div class="modal-btns"><button class="btn-ocupar" id="btn-confirmar-final" onclick="confirmarConMesa()" style="opacity:0.5;pointer-events:none">Confirmar reserva</button><button class="btn-cerrar" onclick="cerrarModal()">Cancelar</button></div></div></div>';
 }
-
-function seleccionarMesa(mesaNum){
-  mesaSeleccionada=mesaNum;
-  document.querySelectorAll('.mesa-opt').forEach(function(el){el.classList.remove('selected');});
-  var el=document.getElementById('opt-'+mesaNum.replace('/','_'));
-  if(el) el.classList.add('selected');
-  var btn=document.getElementById('btn-confirmar-final');
-  if(btn){btn.style.opacity='1';btn.style.pointerEvents='auto';}
-}
-
+function seleccionarMesa(mesaNum){mesaSeleccionada=mesaNum;document.querySelectorAll('.mesa-opt').forEach(function(el){el.classList.remove('selected');});var el=document.getElementById('opt-'+mesaNum.replace('/','_'));if(el) el.classList.add('selected');var btn=document.getElementById('btn-confirmar-final');if(btn){btn.style.opacity='1';btn.style.pointerEvents='auto';}}
 function confirmarConMesa(){
   if(!mesaSeleccionada||!reservaActual) return;
-  var body={};
-  body['field_8586169']=ESTADOS.confirmada;
-  body['field_'+FIELD_MESA]=mesaSeleccionada;
-  fetch('https://api.baserow.io/api/database/rows/table/'+TABLA_RESERVAS+'/'+reservaActual.id+'/?user_field_names=false',{
-    method:'PATCH',headers:{Authorization:'Token '+BASEROW_TOKEN,'Content-Type':'application/json'},body:JSON.stringify(body)
-  })
+  var body={};body['field_8586169']=ESTADOS.confirmada;body['field_'+FIELD_MESA]=mesaSeleccionada;
+  fetch('https://api.baserow.io/api/database/rows/table/'+TABLA_RESERVAS+'/'+reservaActual.id+'/?user_field_names=false',{method:'PATCH',headers:{Authorization:'Token '+BASEROW_TOKEN,'Content-Type':'application/json'},body:JSON.stringify(body)})
   .then(function(){return fetch(WEBHOOK_CONFIRMAR+'?reserva_id='+reservaActual.id+'&telefono='+reservaActual.telefono);})
-  .then(function(){
-    showToast('Reserva confirmada en mesa '+mesaSeleccionada,'#1D9E75');
-    cerrarModal();cargarReservas();
-  })
+  .then(function(){showToast('Reserva confirmada en mesa '+mesaSeleccionada,'#1D9E75');cerrarModal();cargarReservas();})
   .catch(function(){showToast('Error al confirmar','#c62828');});
 }
-
-function accionReserva(id,accion,telefono){
-  var body={};body['field_8586169']=ESTADOS.cancelada;
-  fetch('https://api.baserow.io/api/database/rows/table/'+TABLA_RESERVAS+'/'+id+'/?user_field_names=false',{
-    method:'PATCH',headers:{Authorization:'Token '+BASEROW_TOKEN,'Content-Type':'application/json'},body:JSON.stringify(body)
-  })
-  .then(function(){return fetch(WEBHOOK_CANCELAR+'?reserva_id='+id+'&telefono='+telefono);})
-  .then(function(){showToast('Reserva cancelada','#c62828');cargarReservas();})
-  .catch(function(){showToast('Error al cancelar','#c62828');});
-}
-
-function filtrar(estado,btn){
-  filtroEstado=estado;
-  document.querySelectorAll('#tab-solicitudes .filter-btn').forEach(function(b){b.classList.remove('active');});
-  btn.classList.add('active');renderTabla();
-}
-
-function renderMetrics(){
-  var conf=reservas.filter(function(r){return getEstadoNombre(r)==='confirmada';}).length;
-  var pend=reservas.filter(function(r){return getEstadoNombre(r)==='pendiente';}).length;
-  var persReserva=reservas.filter(function(r){return getEstadoNombre(r)==='confirmada';}).reduce(function(a,r){return a+(parseInt(r['Personas'])||0);},0);
-  var allMesas=mesasData.comedor.concat(mesasData.patio).concat(mesasData.cava);
-  // FIX UX 4: incluir walk-ins en ocupación
-  var persWalkin=allMesas.reduce(function(a,m){return a+(parseInt(m.walkin)||0);},0);
-  var total=persReserva+persWalkin;
-  var pct=Math.round(total/CAPACIDAD_TOTAL*100);
-  document.getElementById('m-ocup').textContent=pct+'%';
-  document.getElementById('m-ocup-sub').textContent=total+' de '+CAPACIDAD_TOTAL+' personas';
-  document.getElementById('m-conf').textContent=conf;
-  document.getElementById('m-pend').textContent=pend;
-  document.getElementById('m-disp').textContent=Math.max(0,CAPACIDAD_TOTAL-total);
-}
-
-function renderMesas(){
-  var caps={C1:4,C2:4,C3:4,C4:4,C5:4,C6:5,C7:4,C8:6,'C9/10':8,C11:2,C12:2,P1:2,P2:2,'P2/3/4':8,P5:5,CV1:8};
-  var shapes={'C9/10':'rect','P2/3/4':'rect',CV1:'rect'};
-  Object.keys(mesasData).forEach(function(area){
-    mesasData[area].forEach(function(m){
-      var el=document.getElementById('pm-'+m.num);
-      if(!el) return;
-      var shape=shapes[m.num]||'circulo';
-      el.className='pm '+shape;
-      if(m.reserva){
-        el.className='pm '+shape+' reservada';
-        el.innerHTML='<span>'+m.num+'</span><div class="pm-cliente">'+m.reserva.nombre+'</div><small>'+m.reserva.hora+'</small>';
-      }else if(m.walkin>0){
-        el.className='pm '+shape+' walk-in';
-        el.innerHTML='<span>'+m.num+'</span><small>'+m.walkin+' walk-in</small>';
-      }else{
-        el.innerHTML='<span>'+m.num+'</span><small>'+(caps[m.num]||'')+' pers.</small>';
-      }
-    });
-  });
-}
-
+function accionReserva(id,accion,telefono){var body={};body['field_8586169']=ESTADOS.cancelada;fetch('https://api.baserow.io/api/database/rows/table/'+TABLA_RESERVAS+'/'+id+'/?user_field_names=false',{method:'PATCH',headers:{Authorization:'Token '+BASEROW_TOKEN,'Content-Type':'application/json'},body:JSON.stringify(body)}).then(function(){return fetch(WEBHOOK_CANCELAR+'?reserva_id='+id+'&telefono='+telefono);}).then(function(){showToast('Reserva cancelada','#c62828');cargarReservas();}).catch(function(){showToast('Error al cancelar','#c62828');});}
+function filtrar(estado,btn){filtroEstado=estado;document.querySelectorAll('#tab-solicitudes .filter-btn').forEach(function(b){b.classList.remove('active');});btn.classList.add('active');renderTabla();}
+function renderMetrics(){var conf=reservas.filter(function(r){return getEstadoNombre(r)==='confirmada';}).length;var pend=reservas.filter(function(r){return getEstadoNombre(r)==='pendiente';}).length;var persReserva=reservas.filter(function(r){return getEstadoNombre(r)==='confirmada';}).reduce(function(a,r){return a+(parseInt(r['Personas'])||0);},0);var allMesas=mesasData.comedor.concat(mesasData.patio).concat(mesasData.cava);var persWalkin=allMesas.reduce(function(a,m){return a+(parseInt(m.walkin)||0);},0);var total=persReserva+persWalkin;var pct=Math.round(total/CAPACIDAD_TOTAL*100);document.getElementById('m-ocup').textContent=pct+'%';document.getElementById('m-ocup-sub').textContent=total+' de '+CAPACIDAD_TOTAL+' personas';document.getElementById('m-conf').textContent=conf;document.getElementById('m-pend').textContent=pend;document.getElementById('m-disp').textContent=Math.max(0,CAPACIDAD_TOTAL-total);}
+function renderMesas(){var caps={C1:4,C2:4,C3:4,C4:4,C5:4,C6:5,C7:4,C8:6,'C9/10':8,C11:2,C12:2,P1:2,P2:2,'P2/3/4':8,P5:5,CV1:8};var shapes={'C9/10':'rect','P2/3/4':'rect',CV1:'rect'};Object.keys(mesasData).forEach(function(area){mesasData[area].forEach(function(m){var el=document.getElementById('pm-'+m.num);if(!el) return;var shape=shapes[m.num]||'circulo';el.className='pm '+shape;if(m.reserva){el.className='pm '+shape+' reservada';el.innerHTML='<span>'+m.num+'</span><div class="pm-cliente">'+m.reserva.nombre+'</div><small>'+m.reserva.hora+'</small>';}else if(m.walkin>0){el.className='pm '+shape+' walk-in';el.innerHTML='<span>'+m.num+'</span><small>'+m.walkin+' walk-in</small>';}else{el.innerHTML='<span>'+m.num+'</span><small>'+(caps[m.num]||'')+' pers.</small>';}});});}
 function abrirModal(area,mesaNum){
   var mesa=mesasData[area].filter(function(m){return m.num===mesaNum;})[0];
   if(!mesa) return;
   var mc=document.getElementById('modal-container');
   if(mesa.reserva){
     var r=reservas.filter(function(r){return r['Mesa']===mesaNum&&getEstadoNombre(r)==='confirmada';})[0];
-    var tel=r?(r['Telefono']||r['Tel\u00e9fono']||'--'):'--';
+    var tel=r?(r['Telefono']||r['Teléfono']||'--'):'--';
     var rid=mesa.reserva.id;
     var tipoEvento=r?(r['Tipo_Evento']&&typeof r['Tipo_Evento']==='object'?r['Tipo_Evento'].value:(r['Tipo_Evento']||'')):'';
     var restricciones=r?(r['Restricciones']||''):'';
-    mc.innerHTML='<div class="modal-bg" onclick="cerrarModal()"><div class="modal" style="padding:0;overflow:hidden" onclick="event.stopPropagation()">'+
-      '<div style="background:#3DB58A;padding:14px 16px;display:flex;align-items:center;gap:10px">'+
-        '<div style="width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;font-weight:500;font-size:16px;color:#fff;flex-shrink:0">'+mesa.reserva.nombre.charAt(0).toUpperCase()+'</div>'+
-        '<div>'+
-          '<div style="font-size:15px;font-weight:500;color:#fff">'+mesa.reserva.nombre+'</div>'+
-          '<div style="font-size:11px;color:#c8ede3">Mesa '+mesaNum+' · '+mesa.reserva.personas+' personas</div>'+
-        '</div>'+
-      '</div>'+
-      '<div style="padding:14px 16px">'+
-        '<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">'+
-          '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#3DB58A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>'+
-          '<span style="font-size:13px;color:var(--color-text-primary)">'+mesa.reserva.hora+'</span>'+
-        '</div>'+
-        '<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">'+
-          '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#3DB58A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.8a19.79 19.79 0 01-3.07-8.63A2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14.92z"/></svg>'+
-          '<span style="font-size:13px;color:var(--color-text-primary)">'+tel+'</span>'+
-        '</div>'+
-        (tipoEvento?'<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#3DB58A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1010 10A10 10 0 0012 2z"/><path d="M8.56 2.75c4.37 6.03 6.02 9.42 8.03 17.72m2.54-15.38c-3.72 4.35-8.94 5.66-16.88 5.85m19.5 1.9c-3.5-.93-6.63-.82-8.94 0-2.58.92-5.01 2.86-7.44 6.32"/></svg><span style="display:inline-block;padding:2px 10px;border-radius:20px;font-size:11px;font-weight:500;background:#E1F5EE;color:#0F6E56">'+tipoEvento+'</span></div>':'')+
-        (restricciones?'<div style="background:#FCEBEB;border-radius:8px;padding:8px 10px;display:flex;align-items:flex-start;gap:8px;margin-top:6px"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#A32D2D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-top:1px;flex-shrink:0"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg><div><div style="font-size:11px;font-weight:500;color:#A32D2D;margin-bottom:2px">Restriccion alimenticia</div><div style="font-size:12px;color:#A32D2D">'+restricciones+'</div></div></div>':'')+
-      '</div>'+
-      '<div style="border-top:0.5px solid var(--color-border-tertiary)"></div>'+
-      '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:12px 16px">'+
-      '<button class="btn-liberar" onclick="liberarReserva(\''+area+'\',\''+mesaNum+'\','+rid+')">Liberar mesa</button>'+
-      '<button class="btn-cerrar" onclick="cerrarModal()">Cerrar</button>'+
-      '</div></div></div>';
+    mc.innerHTML='<div class="modal-bg" onclick="cerrarModal()"><div class="modal" style="padding:0;overflow:hidden" onclick="event.stopPropagation()"><div style="background:#3DB58A;padding:14px 16px;display:flex;align-items:center;gap:10px"><div style="width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;font-weight:500;font-size:16px;color:#fff;flex-shrink:0">'+mesa.reserva.nombre.charAt(0).toUpperCase()+'</div><div><div style="font-size:15px;font-weight:500;color:#fff">'+mesa.reserva.nombre+'</div><div style="font-size:11px;color:#c8ede3">Mesa '+mesaNum+' · '+mesa.reserva.personas+' personas</div></div></div><div style="padding:14px 16px"><div style="display:flex;align-items:center;gap:8px;margin-bottom:8px"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#3DB58A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg><span style="font-size:13px">'+mesa.reserva.hora+'</span></div><div style="display:flex;align-items:center;gap:8px;margin-bottom:8px"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#3DB58A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.8a19.79 19.79 0 01-3.07-8.63A2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14.92z"/></svg><span style="font-size:13px">'+tel+'</span></div>'+(tipoEvento?'<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#3DB58A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1010 10A10 10 0 0012 2z"/><path d="M8.56 2.75c4.37 6.03 6.02 9.42 8.03 17.72m2.54-15.38c-3.72 4.35-8.94 5.66-16.88 5.85m19.5 1.9c-3.5-.93-6.63-.82-8.94 0-2.58.92-5.01 2.86-7.44 6.32"/></svg><span style="display:inline-block;padding:2px 10px;border-radius:20px;font-size:11px;font-weight:500;background:#E1F5EE;color:#0F6E56">'+tipoEvento+'</span></div>':'')+(restricciones?'<div style="background:#FCEBEB;border-radius:8px;padding:8px 10px;display:flex;align-items:flex-start;gap:8px;margin-top:6px"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#A32D2D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-top:1px;flex-shrink:0"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg><div><div style="font-size:11px;font-weight:500;color:#A32D2D;margin-bottom:2px">Restriccion alimenticia</div><div style="font-size:12px;color:#A32D2D">'+restricciones+'</div></div></div>':'')+'</div><div style="border-top:0.5px solid #e5e5e0"></div><div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:12px 16px"><button class="btn-liberar" onclick="liberarReserva(\''+area+'\',\''+mesaNum+'\','+rid+')">Liberar mesa</button><button class="btn-cerrar" onclick="cerrarModal()">Cerrar</button></div></div></div>';
     return;
   }
-  if(mesa.walkin>0){
-    mc.innerHTML='<div class="modal-bg" onclick="cerrarModal()"><div class="modal" onclick="event.stopPropagation()"><div class="modal-title">Mesa '+mesaNum+'</div><div class="modal-sub">'+mesa.walkin+' personas sin reserva.</div><div class="modal-btns"><button class="btn-liberar" onclick="liberarMesa(\''+area+'\',\''+mesaNum+'\')">Liberar mesa</button><button class="btn-cerrar" onclick="cerrarModal()">Cancelar</button></div></div></div>';
-  }else{
-    mc.innerHTML='<div class="modal-bg" onclick="cerrarModal()"><div class="modal" onclick="event.stopPropagation()"><div class="modal-title">Ocupar mesa '+mesaNum+'</div><div class="modal-sub">Capacidad: '+mesa.cap+' personas.</div><input type="number" id="personas-input" min="1" max="'+mesa.cap+'" placeholder="Numero de personas"><div class="modal-btns"><button class="btn-ocupar" onclick="ocuparMesa(\''+area+'\',\''+mesaNum+'\')">Ocupar</button><button class="btn-cerrar" onclick="cerrarModal()">Cancelar</button></div></div></div>';
-  }
+  if(mesa.walkin>0){mc.innerHTML='<div class="modal-bg" onclick="cerrarModal()"><div class="modal" onclick="event.stopPropagation()"><div class="modal-title">Mesa '+mesaNum+'</div><div class="modal-sub">'+mesa.walkin+' personas sin reserva.</div><div class="modal-btns"><button class="btn-liberar" onclick="liberarMesa(\''+area+'\',\''+mesaNum+'\')">Liberar mesa</button><button class="btn-cerrar" onclick="cerrarModal()">Cancelar</button></div></div></div>';}
+  else{mc.innerHTML='<div class="modal-bg" onclick="cerrarModal()"><div class="modal" onclick="event.stopPropagation()"><div class="modal-title">Ocupar mesa '+mesaNum+'</div><div class="modal-sub">Capacidad: '+mesa.cap+' personas.</div><input type="number" id="personas-input" min="1" max="'+mesa.cap+'" placeholder="Numero de personas"><div class="modal-btns"><button class="btn-ocupar" onclick="ocuparMesa(\''+area+'\',\''+mesaNum+'\')">Ocupar</button><button class="btn-cerrar" onclick="cerrarModal()">Cancelar</button></div></div></div>';}
 }
-
-function liberarReserva(area,mesaNum,reservaId){
-  var mesa=mesasData[area].filter(function(m){return m.num===mesaNum;})[0];
-  if(!mesa) return;
-  var body={};body['field_'+FIELD_MESA]='';
-  fetch('https://api.baserow.io/api/database/rows/table/'+TABLA_RESERVAS+'/'+reservaId+'/?user_field_names=false',{
-    method:'PATCH',headers:{Authorization:'Token '+BASEROW_TOKEN,'Content-Type':'application/json'},body:JSON.stringify(body)
-  })
-  .then(function(){mesa.reserva=null;renderMesas();renderMetrics();cerrarModal();showToast('Mesa liberada');})
-  .catch(function(){showToast('Error al liberar','#c62828');});
-}
-
-function ocuparMesa(area,mesaNum){
-  var input=document.getElementById('personas-input');
-  var personas=parseInt(input.value);
-  if(!personas||personas<1){showToast('Ingresa el numero de personas','#e65100');return;}
-  var mesa=mesasData[area].filter(function(m){return m.num===mesaNum;})[0];
-  if(!mesa) return;
-  var body={};
-  body['field_8672780']=mesaNum;body['field_8672781']=personas;
-  body['field_8672782']=formatFecha(fechaSeleccionada);body['field_8672787']=area;body['field_8672820']=true;
-  fetch('https://api.baserow.io/api/database/rows/table/'+TABLA_WALKINS+'/?user_field_names=false',{
-    method:'POST',headers:{Authorization:'Token '+BASEROW_TOKEN,'Content-Type':'application/json'},body:JSON.stringify(body)
-  })
-  .then(function(r){return r.json();})
-  .then(function(data){
-    mesa.walkin=personas;mesa.walkinId=data.id;
-    renderMesas();renderMetrics();cerrarModal();showToast('Mesa ocupada');
-  })
-  .catch(function(){showToast('Error al ocupar mesa','#c62828');});
-}
-
-function liberarMesa(area,mesaNum){
-  var mesa=mesasData[area].filter(function(m){return m.num===mesaNum;})[0];
-  if(!mesa||!mesa.walkinId) return;
-  var body={};body['field_8672820']=false;
-  fetch('https://api.baserow.io/api/database/rows/table/'+TABLA_WALKINS+'/'+mesa.walkinId+'/?user_field_names=false',{
-    method:'PATCH',headers:{Authorization:'Token '+BASEROW_TOKEN,'Content-Type':'application/json'},body:JSON.stringify(body)
-  })
-  .then(function(){mesa.walkin=0;mesa.walkinId=null;renderMesas();renderMetrics();cerrarModal();showToast('Mesa liberada');})
-  .catch(function(){showToast('Error al liberar mesa','#c62828');});
-}
-
+function liberarReserva(area,mesaNum,reservaId){var mesa=mesasData[area].filter(function(m){return m.num===mesaNum;})[0];if(!mesa) return;var body={};body['field_'+FIELD_MESA]='';fetch('https://api.baserow.io/api/database/rows/table/'+TABLA_RESERVAS+'/'+reservaId+'/?user_field_names=false',{method:'PATCH',headers:{Authorization:'Token '+BASEROW_TOKEN,'Content-Type':'application/json'},body:JSON.stringify(body)}).then(function(){mesa.reserva=null;renderMesas();renderMetrics();cerrarModal();showToast('Mesa liberada');}).catch(function(){showToast('Error al liberar','#c62828');});}
+function ocuparMesa(area,mesaNum){var input=document.getElementById('personas-input');var personas=parseInt(input.value);if(!personas||personas<1){showToast('Ingresa el numero de personas','#e65100');return;}var mesa=mesasData[area].filter(function(m){return m.num===mesaNum;})[0];if(!mesa) return;var body={};body['field_8672780']=mesaNum;body['field_8672781']=personas;body['field_8672782']=formatFecha(fechaSeleccionada);body['field_8672787']=area;body['field_8672820']=true;fetch('https://api.baserow.io/api/database/rows/table/'+TABLA_WALKINS+'/?user_field_names=false',{method:'POST',headers:{Authorization:'Token '+BASEROW_TOKEN,'Content-Type':'application/json'},body:JSON.stringify(body)}).then(function(r){return r.json();}).then(function(data){mesa.walkin=personas;mesa.walkinId=data.id;renderMesas();renderMetrics();cerrarModal();showToast('Mesa ocupada');}).catch(function(){showToast('Error al ocupar mesa','#c62828');});}
+function liberarMesa(area,mesaNum){var mesa=mesasData[area].filter(function(m){return m.num===mesaNum;})[0];if(!mesa||!mesa.walkinId) return;var body={};body['field_8672820']=false;fetch('https://api.baserow.io/api/database/rows/table/'+TABLA_WALKINS+'/'+mesa.walkinId+'/?user_field_names=false',{method:'PATCH',headers:{Authorization:'Token '+BASEROW_TOKEN,'Content-Type':'application/json'},body:JSON.stringify(body)}).then(function(){mesa.walkin=0;mesa.walkinId=null;renderMesas();renderMetrics();cerrarModal();showToast('Mesa liberada');}).catch(function(){showToast('Error al liberar mesa','#c62828');});}
 function cerrarModal(){document.getElementById('modal-container').innerHTML='';mesaSeleccionada=null;reservaActual=null;}
+function renderHoras(){var c=document.getElementById('horas-chart');var porHora={};horasData.forEach(function(h){porHora[h.h]=0;});reservas.filter(function(r){return getEstadoNombre(r)==='confirmada';}).forEach(function(r){var hora=(r['Hora']||'').trim();var clave=null;Object.keys(porHora).forEach(function(h){if(hora.indexOf(h)===0) clave=h;});if(clave) porHora[clave]+=(parseInt(r['Personas'])||0);});c.innerHTML=horasData.map(function(h){var personas=porHora[h.h]||0;var pct=Math.round(personas/CAPACIDAD_TOTAL*100);var altura=Math.max(8,Math.round(pct*0.8));return '<div class="hora-col"><div class="hora-barra" style="height:'+altura+'px;background:'+getColorBarra(pct)+'"></div><div class="hora-label">'+h.h+'</div></div>';}).join('');}
+function filtrarArea(area,btn){document.querySelectorAll('#tab-ocupacion .filter-btn').forEach(function(b){b.classList.remove('active');});btn.classList.add('active');renderHoras();}
 
-function renderHoras(){
-  var c=document.getElementById('horas-chart');
-  var porHora={};
-  horasData.forEach(function(h){porHora[h.h]=0;});
-  reservas.filter(function(r){return getEstadoNombre(r)==='confirmada';}).forEach(function(r){
-    var hora=(r['Hora']||'').trim();
-    var clave=null;
-    Object.keys(porHora).forEach(function(h){if(hora.indexOf(h)===0) clave=h;});
-    if(clave) porHora[clave]+=(parseInt(r['Personas'])||0);
-  });
-  c.innerHTML=horasData.map(function(h){
-    var personas=porHora[h.h]||0;
-    var pct=Math.round(personas/CAPACIDAD_TOTAL*100);
-    var altura=Math.max(8,Math.round(pct*0.8));
-    return '<div class="hora-col"><div class="hora-barra" style="height:'+altura+'px;background:'+getColorBarra(pct)+'"></div><div class="hora-label">'+h.h+'</div></div>';
-  }).join('');
-}
-
-function filtrarArea(area,btn){
-  document.querySelectorAll('#tab-ocupacion .filter-btn').forEach(function(b){b.classList.remove('active');});
-  btn.classList.add('active');renderHoras();
-}
-
+/* === FIX 2: showTab definido UNA SOLA VEZ, consolida todo === */
 function showTab(tab,btn){
   tabActual=tab;
-  ['solicitudes','eventos','mesas','ocupacion'].forEach(function(t){
-    document.getElementById('tab-'+t).style.display=t===tab?'block':'none';
-  });
+  ['solicitudes','eventos','mesas','ocupacion'].forEach(function(t){document.getElementById('tab-'+t).style.display=t===tab?'block':'none';});
   document.querySelectorAll('.tab').forEach(function(b){b.classList.remove('active');});
   btn.classList.add('active');
-  if(tab==='eventos') renderTablaEventos();
-}
-
-if(localStorage.getItem('dark')==='1'){
-  document.body.classList.add('dark');
-  document.getElementById('dark-btn').textContent='Modo claro';
-}
-document.getElementById('fecha-hoy').textContent=formatFechaLabel(fechaSeleccionada)+', '+fechaSeleccionada.getFullYear();
-cargarReservas();
-cargarWalkins();
-cargarEventos();
-setInterval(function(){cargarReservas();cargarWalkins();cargarEventos();},3000);
-
-var textoBusqueda='';
-
-function filtrarBusqueda(){
-  textoBusqueda=document.getElementById('buscar-reserva').value.toLowerCase().trim();
-  renderTabla();
-}
-
-function limpiarBusqueda(){
-  document.getElementById('buscar-reserva').value='';
-  textoBusqueda='';
-  renderTabla();
-}
-
-// FIX UX 5: Drag & Drop mejorado - re-inicializa tras cada render
-var dragEl=null,dragOffX=0,dragOffY=0,moverActivo=false;
-
-function toggleMoverMesas(){
-  moverActivo=!moverActivo;
-  var btn=document.getElementById('btn-mover-mesas');
-  if(moverActivo){
-    btn.textContent='Mover mesas: ON';
-    btn.style.background='#E1F5EE';btn.style.color='#0F6E56';btn.style.borderColor='#1D9E75';
-  } else {
-    btn.textContent='Mover mesas: OFF';
-    btn.style.background='transparent';btn.style.color='#666';btn.style.borderColor='#e5e5e0';
-  }
-  initDrag();
-}
-
-function initDrag(){
-  document.querySelectorAll('.pm').forEach(function(el){
-    var key='mesa-pos-'+el.id;
-    var saved=localStorage.getItem(key);
-    if(saved){var pos=JSON.parse(saved);el.style.left=pos.left;el.style.top=pos.top;}
-    el.style.cursor=moverActivo?'grab':'pointer';
-    // Clonar para eliminar listeners anteriores y evitar duplicados
-    var newEl=el.cloneNode(true);
-    el.parentNode.replaceChild(newEl,el);
-    var fresh=document.getElementById(newEl.id);
-    if(!fresh) return;
-    // Restaurar onclick
-    var mesaId=newEl.id.replace('pm-','');
-    var area=mesaId.startsWith('CV')?'cava':mesaId.startsWith('C')?'comedor':mesaId.startsWith('P')?'patio':'cava';
-    fresh.onclick=function(){if(!moverActivo) abrirModal(area,mesaId);};
-    fresh.style.cursor=moverActivo?'grab':'pointer';
-
-    fresh.addEventListener('mousedown',function(e){
-      if(e.button!==0||!moverActivo) return;
-      dragEl=fresh;
-      var rect=fresh.getBoundingClientRect();
-      dragOffX=e.clientX-rect.left;dragOffY=e.clientY-rect.top;
-      fresh.style.zIndex=100;fresh.style.opacity='0.85';
-      e.preventDefault();
-    });
-    fresh.addEventListener('touchstart',function(e){
-      if(!moverActivo) return;
-      dragEl=fresh;
-      var touch=e.touches[0];
-      var rect=fresh.getBoundingClientRect();
-      dragOffX=touch.clientX-rect.left;dragOffY=touch.clientY-rect.top;
-      fresh.style.zIndex=100;fresh.style.opacity='0.85';
-      e.preventDefault();
-    },{passive:false});
-  });
-}
-
-document.addEventListener('mousemove',function(e){
-  if(!dragEl) return;
-  var parentRect=dragEl.parentElement.getBoundingClientRect();
-  var x=e.clientX-parentRect.left-dragOffX;
-  var y=e.clientY-parentRect.top-dragOffY;
-  x=Math.max(0,Math.min(x,parentRect.width-dragEl.offsetWidth));
-  y=Math.max(0,Math.min(y,parentRect.height-dragEl.offsetHeight));
-  dragEl.style.left=x+'px';dragEl.style.top=y+'px';
-});
-document.addEventListener('touchmove',function(e){
-  if(!dragEl) return;
-  var touch=e.touches[0];
-  var parentRect=dragEl.parentElement.getBoundingClientRect();
-  var x=touch.clientX-parentRect.left-dragOffX;
-  var y=touch.clientY-parentRect.top-dragOffY;
-  x=Math.max(0,Math.min(x,parentRect.width-dragEl.offsetWidth));
-  y=Math.max(0,Math.min(y,parentRect.height-dragEl.offsetHeight));
-  dragEl.style.left=x+'px';dragEl.style.top=y+'px';
-  e.preventDefault();
-},{passive:false});
-
-function stopDrag(){
-  if(!dragEl) return;
-  dragEl.style.zIndex='';dragEl.style.opacity='1';
-  localStorage.setItem('mesa-pos-'+dragEl.id,JSON.stringify({left:dragEl.style.left,top:dragEl.style.top}));
-  dragEl=null;
-}
-document.addEventListener('mouseup',stopDrag);
-document.addEventListener('touchend',stopDrag);
-
-function resetMesasPos(){
-  document.querySelectorAll('.pm').forEach(function(el){localStorage.removeItem('mesa-pos-'+el.id);});
-  location.reload();
-}
-
-function escalarPlano(){
-  var scaler=document.getElementById('comedor-scaler');
-  var area=document.getElementById('comedor-area');
-  if(!scaler||!area) return;
-  var anchoReal=480; // ancho original del plano (390px mesa + 75px + margen)
-  var anchoDisp=scaler.parentElement.offsetWidth-28;
-  if(anchoDisp<anchoReal){
-    var escala=anchoDisp/anchoReal;
-    area.style.transform='scale('+escala+')';
-    area.style.transformOrigin='top left';
-    scaler.style.height=Math.round(380*escala)+'px';
-  }else{
-    area.style.transform='';
-    scaler.style.height='';
-  }
-}
-window.addEventListener('resize',escalarPlano);
-var origShowTabPlano=showTab;
-showTab=function(tab,btn){
-  origShowTabPlano(tab,btn);
-  if(tab==='mesas') setTimeout(escalarPlano,120);
-};
-setTimeout(escalarPlano,300);
-
-var origShowTab=showTab;
-showTab=function(tab,btn){
-  origShowTab(tab,btn);
   if(tab==='mesas'){
-    setTimeout(initDrag,100);
+    setTimeout(function(){escalarPlano();initDrag();},120);
     document.getElementById('settings-btn').style.display='';
   } else {
     document.getElementById('settings-btn').style.display='none';
@@ -1216,20 +570,46 @@ showTab=function(tab,btn){
     var btnM=document.getElementById('btn-mover-mesas');
     if(btnM){btnM.textContent='Mover mesas: OFF';btnM.style.background='transparent';btnM.style.color='#666';btnM.style.borderColor='#e5e5e0';}
   }
-};
-
-function toggleSettings(){
-  var dd=document.getElementById('settings-dropdown');
-  dd.style.display=dd.style.display==='none'?'block':'none';
+  if(tab==='eventos') renderTablaEventos();
 }
-document.addEventListener('click',function(e){
-  var dd=document.getElementById('settings-dropdown');
-  var btn=document.getElementById('settings-btn');
-  if(dd&&dd.style.display==='block'&&!dd.contains(e.target)&&!btn.contains(e.target)) dd.style.display='none';
-});
-</script>
 
-<!-- Tarjeta resumen descargable -->
+if(localStorage.getItem('dark')==='1'){document.body.classList.add('dark');document.getElementById('dark-btn').textContent='Modo claro';}
+document.getElementById('fecha-hoy').textContent=formatFechaLabel(fechaSeleccionada)+', '+fechaSeleccionada.getFullYear();
+cargarReservas();cargarWalkins();cargarEventos();
+setInterval(function(){cargarReservas();cargarWalkins();cargarEventos();},5000);
+
+var textoBusqueda='';
+function filtrarBusqueda(){textoBusqueda=document.getElementById('buscar-reserva').value.toLowerCase().trim();renderTabla();}
+function limpiarBusqueda(){document.getElementById('buscar-reserva').value='';textoBusqueda='';renderTabla();}
+
+var dragEl=null,dragOffX=0,dragOffY=0,moverActivo=false;
+function toggleMoverMesas(){moverActivo=!moverActivo;var btn=document.getElementById('btn-mover-mesas');if(moverActivo){btn.textContent='Mover mesas: ON';btn.style.background='#E1F5EE';btn.style.color='#0F6E56';btn.style.borderColor='#1D9E75';}else{btn.textContent='Mover mesas: OFF';btn.style.background='transparent';btn.style.color='#666';btn.style.borderColor='#e5e5e0';}initDrag();}
+function initDrag(){
+  document.querySelectorAll('.pm').forEach(function(el){
+    var key='mesa-pos-'+el.id;var saved=localStorage.getItem(key);
+    if(saved){var pos=JSON.parse(saved);el.style.left=pos.left;el.style.top=pos.top;}
+    el.style.cursor=moverActivo?'grab':'pointer';
+    var newEl=el.cloneNode(true);el.parentNode.replaceChild(newEl,el);
+    var fresh=document.getElementById(newEl.id);if(!fresh) return;
+    var mesaId=newEl.id.replace('pm-','');
+    var area=mesaId.startsWith('CV')?'cava':mesaId.startsWith('C')?'comedor':mesaId.startsWith('P')?'patio':'cava';
+    fresh.onclick=function(){if(!moverActivo) abrirModal(area,mesaId);};
+    fresh.style.cursor=moverActivo?'grab':'pointer';
+    fresh.addEventListener('mousedown',function(e){if(e.button!==0||!moverActivo) return;dragEl=fresh;var rect=fresh.getBoundingClientRect();dragOffX=e.clientX-rect.left;dragOffY=e.clientY-rect.top;fresh.style.zIndex=100;fresh.style.opacity='0.85';e.preventDefault();});
+    fresh.addEventListener('touchstart',function(e){if(!moverActivo) return;dragEl=fresh;var touch=e.touches[0];var rect=fresh.getBoundingClientRect();dragOffX=touch.clientX-rect.left;dragOffY=touch.clientY-rect.top;fresh.style.zIndex=100;fresh.style.opacity='0.85';e.preventDefault();},{passive:false});
+  });
+}
+document.addEventListener('mousemove',function(e){if(!dragEl) return;var parentRect=dragEl.parentElement.getBoundingClientRect();var x=e.clientX-parentRect.left-dragOffX;var y=e.clientY-parentRect.top-dragOffY;x=Math.max(0,Math.min(x,parentRect.width-dragEl.offsetWidth));y=Math.max(0,Math.min(y,parentRect.height-dragEl.offsetHeight));dragEl.style.left=x+'px';dragEl.style.top=y+'px';});
+document.addEventListener('touchmove',function(e){if(!dragEl) return;var touch=e.touches[0];var parentRect=dragEl.parentElement.getBoundingClientRect();var x=touch.clientX-parentRect.left-dragOffX;var y=touch.clientY-parentRect.top-dragOffY;x=Math.max(0,Math.min(x,parentRect.width-dragEl.offsetWidth));y=Math.max(0,Math.min(y,parentRect.height-dragEl.offsetHeight));dragEl.style.left=x+'px';dragEl.style.top=y+'px';e.preventDefault();},{passive:false});
+function stopDrag(){if(!dragEl) return;dragEl.style.zIndex='';dragEl.style.opacity='1';localStorage.setItem('mesa-pos-'+dragEl.id,JSON.stringify({left:dragEl.style.left,top:dragEl.style.top}));dragEl=null;}
+document.addEventListener('mouseup',stopDrag);document.addEventListener('touchend',stopDrag);
+function resetMesasPos(){document.querySelectorAll('.pm').forEach(function(el){localStorage.removeItem('mesa-pos-'+el.id);});location.reload();}
+function escalarPlano(){var scaler=document.getElementById('comedor-scaler');var area=document.getElementById('comedor-area');if(!scaler||!area) return;var anchoReal=480;var anchoDisp=scaler.parentElement.offsetWidth-28;if(anchoDisp<anchoReal){var escala=anchoDisp/anchoReal;area.style.transform='scale('+escala+')';area.style.transformOrigin='top left';scaler.style.height=Math.round(380*escala)+'px';}else{area.style.transform='';scaler.style.height='';}}
+window.addEventListener('resize',escalarPlano);setTimeout(escalarPlano,300);
+function toggleSettings(){var dd=document.getElementById('settings-dropdown');dd.style.display=dd.style.display==='none'?'block':'none';}
+document.addEventListener('click',function(e){var dd=document.getElementById('settings-dropdown');var btn=document.getElementById('settings-btn');if(dd&&dd.style.display==='block'&&!dd.contains(e.target)&&!btn.contains(e.target)) dd.style.display='none';});
+<\/script>
+
 <div id="resumen-card" style="position:fixed;left:-9999px;top:0;z-index:-1;background:#fff;padding:20px;width:400px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif">
   <div style="background:linear-gradient(135deg,#1D9E75,#0F6E56);border-radius:12px;padding:14px 16px;margin-bottom:16px;color:#fff">
     <div style="font-size:15px;font-weight:500;margin-bottom:2px">Buenos días, equipo OLIVO</div>
@@ -1239,63 +619,38 @@ document.addEventListener('click',function(e){
     <div style="font-size:10px;font-weight:500;color:#0F6E56;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:8px">Ocupación total</div>
     <div style="display:flex;align-items:center;gap:12px">
       <div style="position:relative;width:56px;height:56px;flex-shrink:0">
-        <svg width="56" height="56" viewBox="0 0 56 56">
-          <circle cx="28" cy="28" r="22" fill="none" stroke="#f0f0f0" stroke-width="5"/>
-          <circle id="resumen-circle" cx="28" cy="28" r="22" fill="none" stroke="#3DB58A" stroke-width="5" stroke-dasharray="138.2" stroke-dashoffset="138.2" stroke-linecap="round" transform="rotate(-90 28 28)"/>
-        </svg>
+        <svg width="56" height="56" viewBox="0 0 56 56"><circle cx="28" cy="28" r="22" fill="none" stroke="#f0f0f0" stroke-width="5"/><circle id="resumen-circle" cx="28" cy="28" r="22" fill="none" stroke="#3DB58A" stroke-width="5" stroke-dasharray="138.2" stroke-dashoffset="138.2" stroke-linecap="round" transform="rotate(-90 28 28)"/></svg>
         <div id="resumen-pct" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:13px;font-weight:500;color:#0F6E56">0%</div>
       </div>
-      <div>
-        <div id="resumen-personas" style="font-size:14px;font-weight:500;color:#1a1a1a"></div>
-        <div id="resumen-total-res" style="font-size:11px;color:#888"></div>
-      </div>
+      <div><div id="resumen-personas" style="font-size:14px;font-weight:500;color:#1a1a1a"></div><div id="resumen-total-res" style="font-size:11px;color:#888"></div></div>
     </div>
   </div>
   <hr style="border:none;border-top:0.5px solid #f0f0f0;margin:12px 0">
-  <div style="margin-bottom:14px">
-    <div style="font-size:10px;font-weight:500;color:#0F6E56;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:8px">Reservas del día</div>
-    <div id="resumen-reservas"></div>
-  </div>
+  <div style="margin-bottom:14px"><div style="font-size:10px;font-weight:500;color:#0F6E56;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:8px">Reservas del día</div><div id="resumen-reservas"></div></div>
   <hr style="border:none;border-top:0.5px solid #f0f0f0;margin:12px 0">
-  <div style="margin-bottom:14px">
-    <div style="font-size:10px;font-weight:500;color:#0F6E56;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:8px">Ocupación por área</div>
-    <div id="resumen-areas"></div>
-  </div>
+  <div style="margin-bottom:14px"><div style="font-size:10px;font-weight:500;color:#0F6E56;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:8px">Ocupación por área</div><div id="resumen-areas"></div></div>
   <hr style="border:none;border-top:0.5px solid #f0f0f0;margin:12px 0">
-  <div style="margin-bottom:14px">
-    <div style="font-size:10px;font-weight:500;color:#0F6E56;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:6px">Eventos especiales</div>
-    <div id="resumen-eventos"></div>
-  </div>
+  <div style="margin-bottom:14px"><div style="font-size:10px;font-weight:500;color:#0F6E56;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:6px">Eventos especiales</div><div id="resumen-eventos"></div></div>
   <div style="text-align:center;font-size:10px;color:#aaa;margin-top:12px;padding-top:10px;border-top:0.5px solid #f0f0f0">OLIVO · Restaurante · Guatapé, Antioquia</div>
 </div>
 
 <script>
 function generarResumen(){
-  var btn=document.getElementById('resumen-btn');
-  btn.innerHTML='Generando...';
-  btn.disabled=true;
-
+  var btn=document.getElementById('resumen-btn');btn.innerHTML='Generando...';btn.disabled=true;
   var fechaStr=formatFecha(fechaSeleccionada);
   var reservasHoy=reservas.filter(function(r){return parseFecha(r['Fecha'])===fechaStr&&getEstadoNombre(r)==='confirmada';});
-
-  // FIX UX 4: incluir walk-ins en el resumen
   var allMesas=mesasData.comedor.concat(mesasData.patio).concat(mesasData.cava);
   var persWalkin=allMesas.reduce(function(a,m){return a+(parseInt(m.walkin)||0);},0);
   var persReserva=reservasHoy.reduce(function(s,r){return s+(parseInt(r['Personas'])||0);},0);
   var totalPersonas=persReserva+persWalkin;
-
-  var capacidad=70;
-  var pct=Math.round((totalPersonas/capacidad)*100);
+  var capacidad=70;var pct=Math.round((totalPersonas/capacidad)*100);
   var offset=Math.round(138.2-(138.2*pct/100));
   var colorCircle=pct>=70?'#E24B4A':pct>=40?'#EF9F27':'#3DB58A';
   var colorPct=pct>=70?'#A32D2D':pct>=40?'#854F0B':'#0F6E56';
-
-  // FIX 2: fecha correcta sin desplazar el día de la semana
   var dias=['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
   var meses=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
   var d=new Date(fechaSeleccionada);
   var fechaFormato=dias[d.getDay()]+' '+d.getDate()+' de '+meses[d.getMonth()]+' de '+d.getFullYear();
-
   document.getElementById('resumen-fecha').textContent=fechaFormato+' · Resumen del día';
   document.getElementById('resumen-pct').textContent=pct+'%';
   document.getElementById('resumen-pct').style.color=colorPct;
@@ -1303,47 +658,25 @@ function generarResumen(){
   document.getElementById('resumen-circle').setAttribute('stroke',colorCircle);
   document.getElementById('resumen-personas').textContent=totalPersonas+' de '+capacidad+' personas';
   document.getElementById('resumen-total-res').textContent=reservasHoy.length+' reservas · '+(persWalkin>0?persWalkin+' walk-in':'sin walk-ins');
-
-  var filasHtml=reservasHoy.length>0?reservasHoy.sort(function(a,b){return (a['Hora']||'').localeCompare(b['Hora']||'');}).map(function(r){
-    return '<div style="display:flex;justify-content:space-between;padding:4px 0;font-size:12px;border-bottom:0.5px solid #f5f5f0"><span style="font-weight:500;color:#1a1a1a">'+(r['Hora']||'')+'</span><span style="color:#666;font-size:11px">'+(r['Personas']||'')+' pers. · Mesa '+(r['Mesa']||'-')+'</span></div>';
-  }).join(''):'<div style="font-size:11px;color:#aaa">Sin reservas confirmadas hoy.</div>';
+  var filasHtml=reservasHoy.length>0?reservasHoy.sort(function(a,b){return (a['Hora']||'').localeCompare(b['Hora']||'');}).map(function(r){return '<div style="display:flex;justify-content:space-between;padding:4px 0;font-size:12px;border-bottom:0.5px solid #f5f5f0"><span style="font-weight:500;color:#1a1a1a">'+(r['Hora']||'')+'</span><span style="color:#666;font-size:11px">'+(r['Personas']||'')+' pers. · Mesa '+(r['Mesa']||'-')+'</span></div>';}).join(''):'<div style="font-size:11px;color:#aaa">Sin reservas confirmadas hoy.</div>';
   document.getElementById('resumen-reservas').innerHTML=filasHtml;
-
   var pComedor=reservasHoy.filter(function(r){return (r['Mesa']||'').startsWith('C')&&!(r['Mesa']||'').startsWith('CV');}).reduce(function(s,r){return s+(parseInt(r['Personas'])||0);},0);
   var pPatio=reservasHoy.filter(function(r){return (r['Mesa']||'').startsWith('P');}).reduce(function(s,r){return s+(parseInt(r['Personas'])||0);},0);
   var pCava=reservasHoy.filter(function(r){return (r['Mesa']||'').startsWith('CV');}).reduce(function(s,r){return s+(parseInt(r['Personas'])||0);},0);
-
-  document.getElementById('resumen-areas').innerHTML=
-    '<div style="display:flex;align-items:center;gap:8px;padding:3px 0"><span style="font-size:11px;color:#555;width:56px">Comedor</span><div style="flex:1;height:6px;background:#f0f0f0;border-radius:3px;overflow:hidden"><div style="width:'+Math.round((pComedor/45)*100)+'%;height:100%;background:#3DB58A;border-radius:3px"></div></div><span style="font-size:11px;color:#555;width:40px;text-align:right">'+pComedor+' p.</span></div>'+
-    '<div style="display:flex;align-items:center;gap:8px;padding:3px 0"><span style="font-size:11px;color:#555;width:56px">Patio</span><div style="flex:1;height:6px;background:#f0f0f0;border-radius:3px;overflow:hidden"><div style="width:'+Math.round((pPatio/15)*100)+'%;height:100%;background:#3DB58A;border-radius:3px"></div></div><span style="font-size:11px;color:'+(pPatio>0?'#555':'#ccc')+';width:40px;text-align:right">'+pPatio+' p.</span></div>'+
-    '<div style="display:flex;align-items:center;gap:8px;padding:3px 0"><span style="font-size:11px;color:#555;width:56px">Cava</span><div style="flex:1;height:6px;background:#f0f0f0;border-radius:3px;overflow:hidden"><div style="width:'+Math.round((pCava/8)*100)+'%;height:100%;background:#3DB58A;border-radius:3px"></div></div><span style="font-size:11px;color:'+(pCava>0?'#555':'#ccc')+';width:40px;text-align:right">'+pCava+' p.</span></div>';
-
-  // FIX 3: mostrar eventos reales del día
+  document.getElementById('resumen-areas').innerHTML='<div style="display:flex;align-items:center;gap:8px;padding:3px 0"><span style="font-size:11px;color:#555;width:56px">Comedor</span><div style="flex:1;height:6px;background:#f0f0f0;border-radius:3px;overflow:hidden"><div style="width:'+Math.round((pComedor/45)*100)+'%;height:100%;background:#3DB58A;border-radius:3px"></div></div><span style="font-size:11px;color:#555;width:40px;text-align:right">'+pComedor+' p.</span></div><div style="display:flex;align-items:center;gap:8px;padding:3px 0"><span style="font-size:11px;color:#555;width:56px">Patio</span><div style="flex:1;height:6px;background:#f0f0f0;border-radius:3px;overflow:hidden"><div style="width:'+Math.round((pPatio/15)*100)+'%;height:100%;background:#3DB58A;border-radius:3px"></div></div><span style="font-size:11px;color:'+(pPatio>0?'#555':'#ccc')+';width:40px;text-align:right">'+pPatio+' p.</span></div><div style="display:flex;align-items:center;gap:8px;padding:3px 0"><span style="font-size:11px;color:#555;width:56px">Cava</span><div style="flex:1;height:6px;background:#f0f0f0;border-radius:3px;overflow:hidden"><div style="width:'+Math.round((pCava/8)*100)+'%;height:100%;background:#3DB58A;border-radius:3px"></div></div><span style="font-size:11px;color:'+(pCava>0?'#555':'#ccc')+';width:40px;text-align:right">'+pCava+' p.</span></div>';
   var eventosHoy=eventos.filter(function(e){return parseFecha(e['Fecha'])===fechaStr;});
-  document.getElementById('resumen-eventos').innerHTML=eventosHoy.length>0?
-    eventosHoy.map(function(e){
-      return '<div style="display:flex;justify-content:space-between;padding:4px 0;font-size:12px;border-bottom:0.5px solid #f5f5f0">'+
-        '<span style="font-weight:500;color:#3C3489">'+(e['Nombre']||'--')+'</span>'+
-        '<span style="font-size:11px;color:#7F77DD">'+(e['Hora']||'')+(e['Personas']?' · '+(e['Personas'])+' pers.':'')+'</span>'+
-        '</div>';
-    }).join(''):
-    '<div style="font-size:11px;color:#aaa">Sin eventos hoy.</div>';
-
+  document.getElementById('resumen-eventos').innerHTML=eventosHoy.length>0?eventosHoy.map(function(e){return '<div style="display:flex;justify-content:space-between;padding:4px 0;font-size:12px;border-bottom:0.5px solid #f5f5f0"><span style="font-weight:500;color:#3C3489">'+(e['Nombre']||'--')+'</span><span style="font-size:11px;color:#7F77DD">'+(e['Hora']||'')+(e['Personas']?' · '+e['Personas']+' pers.':'')+'</span></div>';}).join(''):'<div style="font-size:11px;color:#aaa">Sin eventos hoy.</div>';
   var card=document.getElementById('resumen-card');
   card.style.left='0';card.style.zIndex='9999';card.style.position='fixed';card.style.top='0';
-
   setTimeout(function(){
     html2canvas(card,{scale:2,backgroundColor:'#ffffff',useCORS:true}).then(function(canvas){
       card.style.left='-9999px';card.style.zIndex='-1';
-      var link=document.createElement('a');
-      link.download='resumen-olivo-'+fechaStr+'.png';
-      link.href=canvas.toDataURL('image/png');
-      link.click();
+      var link=document.createElement('a');link.download='resumen-olivo-'+fechaStr+'.png';link.href=canvas.toDataURL('image/png');link.click();
       btn.innerHTML='<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#2e7d32" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Resumen';
       btn.disabled=false;
     });
   },300);
 }
-</script>
+<\/script>
 </body>
 </html>
