@@ -149,8 +149,39 @@ body.dark .modal-confirm{background:#1e1e1e;border:0.5px solid #333}
 .modal-confirm-title{font-size:15px;font-weight:500;margin-bottom:6px}
 .modal-confirm-sub{font-size:13px;color:#888;margin-bottom:1.2rem}
 .modal-confirm-btns{display:flex;gap:8px}
-.tipo-select{background:#fff;color:#1a1a1a;max-width:110px}
-body.dark .tipo-select{background:#2a2a2a;border-color:#444 !important;color:#e5e5e0}
+.tipo-select{display:none}
+.tipo-pill{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:20px;font-size:12px;font-weight:500;cursor:pointer;border:none;white-space:nowrap;position:relative}
+.tipo-pill:hover{opacity:0.85}
+.tipo-pill-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.tipo-pill-chevron{font-size:10px;opacity:0.55;margin-left:1px}
+.tipo-pill-reserva{background:#F1EFE8;color:#444441}
+.tipo-pill-dot-reserva{background:#888780}
+body.dark .tipo-pill-reserva{background:#2C2C2A;color:#D3D1C7}
+.tipo-pill-cumpleanos{background:#FBEAF0;color:#72243E}
+.tipo-pill-dot-cumpleanos{background:#D4537E}
+body.dark .tipo-pill-cumpleanos{background:#4B1528;color:#F4C0D1}
+.tipo-pill-empresarial{background:#E6F1FB;color:#0C447C}
+.tipo-pill-dot-empresarial{background:#378ADD}
+body.dark .tipo-pill-empresarial{background:#042C53;color:#B5D4F4}
+.tipo-pill-aniversario{background:#EEEDFE;color:#3C3489}
+.tipo-pill-dot-aniversario{background:#7F77DD}
+body.dark .tipo-pill-aniversario{background:#26215C;color:#CECBF6}
+.tipo-pill-otro{background:#F1EFE8;color:#5F5E5A}
+.tipo-pill-dot-otro{background:#B4B2A9}
+body.dark .tipo-pill-otro{background:#2C2C2A;color:#B4B2A9}
+.tipo-pill-evento{background:#EEEDFE;color:#3C3489}
+.tipo-pill-dot-evento{background:#534AB7}
+body.dark .tipo-pill-evento{background:#26215C;color:#CECBF6}
+.tipo-popover{position:absolute;top:calc(100% + 6px);left:0;background:#fff;border:0.5px solid #e5e5e0;border-radius:12px;padding:6px;z-index:999;min-width:150px;box-shadow:0 4px 16px rgba(0,0,0,0.10)}
+body.dark .tipo-popover{background:#1e1e1e;border-color:#333}
+.tipo-popover-opt{display:flex;align-items:center;gap:8px;padding:7px 10px;border-radius:8px;cursor:pointer;font-size:12px;font-weight:500;border:none;background:transparent;width:100%;text-align:left;color:#1a1a1a}
+body.dark .tipo-popover-opt{color:#e5e5e0}
+.tipo-popover-opt:hover{background:#f5f5f0}
+body.dark .tipo-popover-opt:hover{background:#2a2a2a}
+.tipo-popover-opt.activo{background:#f5f5f0}
+body.dark .tipo-popover-opt.activo{background:#2a2a2a}
+.tipo-popover-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.tipo-popover-check{margin-left:auto;font-size:13px}
 @media(max-width:600px){
   .header{padding:0.75rem 1rem;gap:8px;flex-wrap:nowrap}
   .logo{font-size:15px;white-space:nowrap}
@@ -448,9 +479,8 @@ function renderTabla(){
     var hora=r['Hora']||'';
     var personas=parseInt(r['Personas'])||0;
     var tipoActual=(r['Tipo_Evento']&&typeof r['Tipo_Evento']==='object'?r['Tipo_Evento'].value:(r['Tipo_Evento']||''))||'Reserva';
-    var estiloTipo=TIPO_COLORES[tipoActual]||'';
-    var opcionesTipo=TIPOS_EVENTO.map(function(t){return '<option value="'+t+'"'+(t===tipoActual?' selected':'')+'>'+t+'</option>';}).join('');
-    var tipoBadge='<select class="tipo-select" data-rid="'+r.id+'" data-tabla="reserva" style="font-size:11px;border-radius:6px;border:1px solid #e5e5e0;padding:3px 6px;cursor:pointer;outline:none;'+estiloTipo+'">'+opcionesTipo+'</select>';
+    var tipoKey=tipoActual.toLowerCase().replace(/[^a-z]/g,'');
+    var tipoBadge='<span class="tipo-pill tipo-pill-'+tipoKey+' tipo-pill-btn" data-rid="'+r.id+'" data-tipo="'+tipoActual+'"><span class="tipo-pill-dot tipo-pill-dot-'+tipoKey+'"></span>'+tipoActual+'<span class="tipo-pill-chevron">▾</span></span>';
     var acciones='';
     if(estado==='pendiente'){
       acciones='<button class="btn-confirm btn-accion" data-accion="confirmar-reserva" data-id="'+r.id+'" data-tel="'+encodeURIComponent(tel)+'" data-nombre="'+encodeURIComponent(nombre)+'" data-hora="'+encodeURIComponent(hora)+'" data-personas="'+personas+'">Confirmar</button>'+
@@ -508,22 +538,29 @@ function cerrarModal(){document.getElementById('modal-container').innerHTML='';m
 function renderHoras(){var c=document.getElementById('horas-chart');var porHora={};horasData.forEach(function(h){porHora[h.h]=0;});reservas.filter(function(r){return getEstadoNombre(r)==='confirmada';}).forEach(function(r){var hora=(r['Hora']||'').trim();var clave=null;Object.keys(porHora).forEach(function(h){if(hora.indexOf(h)===0) clave=h;});if(clave) porHora[clave]+=(parseInt(r['Personas'])||0);});c.innerHTML=horasData.map(function(h){var personas=porHora[h.h]||0;var pct=Math.round(personas/CAPACIDAD_TOTAL*100);var altura=Math.max(8,Math.round(pct*0.8));return '<div class="hora-col"><div class="hora-barra" style="height:'+altura+'px;background:'+getColorBarra(pct)+'"></div><div class="hora-label">'+h.h+'</div></div>';}).join('');}
 function filtrarArea(area,btn){document.querySelectorAll('#tab-ocupacion .filter-btn').forEach(function(b){b.classList.remove('active');});btn.classList.add('active');renderHoras();}
 
-function updateTipo(id,valor,selectEl){
-  selectEl.disabled=true;
-  var tabla=TABLA_RESERVAS;
+function cerrarPopoverTipo(){
+  document.querySelectorAll('.tipo-popover').forEach(function(p){p.remove();});
+}
+document.addEventListener('click',function(e){
+  if(!e.target.closest('.tipo-pill-btn')) cerrarPopoverTipo();
+});
+function updateTipoPill(id,valor,pillEl){
+  pillEl.style.opacity='0.5';
   var body={};
   body['field_'+FIELD_TIPO_EVENTO]=valor;
-  fetch('https://api.baserow.io/api/database/rows/table/'+tabla+'/'+id+'/?user_field_names=false',{
+  fetch('https://api.baserow.io/api/database/rows/table/'+TABLA_RESERVAS+'/'+id+'/?user_field_names=false',{
     method:'PATCH',headers:{Authorization:'Token '+BASEROW_TOKEN,'Content-Type':'application/json'},
     body:JSON.stringify(body)
   })
   .then(function(){
-    selectEl.disabled=false;
-    var estilos=TIPO_COLORES[valor]||'';
-    selectEl.setAttribute('style','font-size:11px;border-radius:6px;border:1px solid #e5e5e0;padding:3px 6px;cursor:pointer;outline:none;'+estilos);
+    pillEl.style.opacity='1';
+    var tipoKey=valor.toLowerCase().replace(/[^a-z]/g,'');
+    pillEl.className='tipo-pill tipo-pill-'+tipoKey+' tipo-pill-btn';
+    pillEl.setAttribute('data-tipo',valor);
+    pillEl.innerHTML='<span class="tipo-pill-dot tipo-pill-dot-'+tipoKey+'"></span>'+valor+'<span class="tipo-pill-chevron">▾</span>';
     showToast('Tipo: '+valor,'#1D9E75');
   })
-  .catch(function(){selectEl.disabled=false;showToast('Error al actualizar tipo','#c62828');});
+  .catch(function(){pillEl.style.opacity='1';showToast('Error al actualizar tipo','#c62828');});
 }
 /* === FIX 2: showTab definido UNA SOLA VEZ, consolida todo === */
 function showTab(tab,btn){
@@ -561,10 +598,35 @@ function bindBotones(tbodyId){
     else if(accion==='confirmar-evento') abrirModalConfirmar(id,tel,nombre,hora,personas,'evento');
     else if(accion==='cancelar') pedirConfirmacionCancelar(tipo,id,tel,nombre);
   };
-  tb.addEventListener('change',function(e){
-    var sel=e.target;
-    if(!sel.classList.contains('tipo-select')) return;
-    updateTipo(parseInt(sel.getAttribute('data-rid')),sel.value,sel);
+  tb.addEventListener('click',function(e){
+    var pill=e.target.closest('.tipo-pill-btn');
+    if(!pill) {
+      if(!e.target.closest('.tipo-popover')) cerrarPopoverTipo();
+      return;
+    }
+    e.stopPropagation();
+    var existing=pill.querySelector('.tipo-popover');
+    cerrarPopoverTipo();
+    if(existing) return;
+    var rid=parseInt(pill.getAttribute('data-rid'));
+    var tipoActual=pill.getAttribute('data-tipo')||'Reserva';
+    var pop=document.createElement('div');
+    pop.className='tipo-popover';
+    var DOTS={Reserva:'#888780',Cumpleanos:'#D4537E',Empresarial:'#378ADD',Aniversario:'#7F77DD',Otro:'#B4B2A9',Evento:'#534AB7'};
+    TIPOS_EVENTO.forEach(function(t){
+      var opt=document.createElement('button');
+      opt.className='tipo-popover-opt'+(t===tipoActual?' activo':'');
+      opt.innerHTML='<span class="tipo-popover-dot" style="background:'+( DOTS[t]||'#888')+';"></span><span>'+t+'</span>'+(t===tipoActual?'<i class="ti ti-check tipo-popover-check" style="color:'+(DOTS[t]||'#888')+'" aria-hidden="true"></i>':'');
+      opt.addEventListener('click',function(ev){
+        ev.stopPropagation();
+        cerrarPopoverTipo();
+        if(t===tipoActual) return;
+        updateTipoPill(rid,t,pill);
+      });
+      pop.appendChild(opt);
+    });
+    pill.style.position='relative';
+    pill.appendChild(pop);
   });
 }
 if(localStorage.getItem('dark')==='1'){document.body.classList.add('dark');document.getElementById('dark-btn').textContent='Modo claro';}
