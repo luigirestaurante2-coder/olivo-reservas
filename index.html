@@ -209,7 +209,6 @@ body.dark .tipo-select{background:#2a2a2a;border-color:#444 !important;color:#e5
 <div class="section">
   <div class="tab-bar">
     <button class="tab active" id="tab-btn-solicitudes" onclick="showTab('solicitudes',this)">Solicitudes <span id="badge-pendientes" style="display:none;position:relative;display:inline-flex;align-items:center;margin-left:4px"><i class="ti ti-bell" id="bell-icon" style="font-size:15px;color:#1a1a1a" aria-hidden="true"></i><span id="badge-num" style="position:absolute;top:-5px;right:-7px;min-width:14px;height:14px;border-radius:7px;background:#E24B4A;color:#fff;font-size:9px;font-weight:500;display:flex;align-items:center;justify-content:center;padding:0 3px">0</span></span></button>
-    <button class="tab" id="tab-btn-eventos" onclick="showTab('eventos',this)">Solo Reservas</button>
     <button class="tab" onclick="showTab('mesas',this)">Mesas por area</button>
     <button class="tab" onclick="showTab('ocupacion',this)">Ocupacion por hora</button>
   </div>
@@ -226,25 +225,11 @@ body.dark .tipo-select{background:#2a2a2a;border-color:#444 !important;color:#e5
       <button class="filter-btn" onclick="filtrar('Pendiente',this)">Pendientes</button>
       <button class="filter-btn" onclick="filtrar('Confirmada',this)">Confirmadas</button>
       <button class="filter-btn" onclick="filtrar('Cancelada',this)">Canceladas</button>
-      <button class="filter-btn evento-btn" onclick="filtrar('solo_eventos',this)">Solo eventos</button>
     </div>
     <div class="tabla-wrap">
       <table>
         <thead><tr><th>Nombre</th><th>Tipo</th><th>Fecha</th><th>Hora</th><th>Pers.</th><th>Telefono</th><th>Estado</th><th>Mesa</th><th>Acciones</th></tr></thead>
         <tbody id="tabla-body"><tr><td colspan="9" class="loading">Cargando reservas...</td></tr></tbody>
-      </table>
-    </div>
-  </div>
-  <div id="tab-eventos" style="display:none">
-    <div class="filter-bar">
-      <button class="filter-btn active" onclick="filtrarEventos('todas',this)">Todas</button>
-      <button class="filter-btn" onclick="filtrarEventos('pendiente',this)">Pendientes</button>
-      <button class="filter-btn" onclick="filtrarEventos('confirmada',this)">Confirmadas</button>
-    </div>
-    <div class="tabla-wrap">
-      <table>
-        <thead><tr><th>Nombre</th><th>Tipo</th><th>Fecha</th><th>Hora</th><th>Pers.</th><th>Telefono</th><th>Estado</th><th>Acciones</th></tr></thead>
-        <tbody id="tabla-eventos-body"><tr><td colspan="8" class="loading">Cargando...</td></tr></tbody>
       </table>
     </div>
   </div>
@@ -353,13 +338,10 @@ body.dark .tipo-select{background:#2a2a2a;border-color:#444 !important;color:#e5
 var BASEROW_TOKEN='H8sBhz0TS1T870ghr5qVmie7CPC3MSey';
 var TABLA_RESERVAS='981190';
 var TABLA_WALKINS='990728';
-var TABLA_EVENTOS='993201';
 var CAPACIDAD_TOTAL=70;
 var WEBHOOK_CONFIRMAR='https://qwsd-n8n.hi49ib.easypanel.host/webhook/confirmar-reserva';
 var WEBHOOK_CANCELAR='https://qwsd-n8n.hi49ib.easypanel.host/webhook/cancelar-reserva';
 var ESTADOS={confirmada:6206820,pendiente:6206821,cancelada:6206822};
-var FIELD_ESTADO_EVENTOS=8694936;
-var ESTADOS_EVENTOS={confirmada:'Confirmada',cancelada:'Cancelada'};
 var FIELD_MESA=8694049;
 var FIELD_TIPO_EVENTO=8710010;
 var TIPOS_EVENTO=['Reserva','Cumpleanos','Empresarial','Aniversario','Otro','Evento'];
@@ -380,8 +362,8 @@ var mesasData={
   cava:[{num:'CV1',cap:8,walkin:0,walkinId:null,reserva:null}]
 };
 var horasData=[{h:'12:00'},{h:'12:30'},{h:'13:00'},{h:'13:30'},{h:'14:00'},{h:'19:00'},{h:'19:30'},{h:'20:00'},{h:'20:30'}];
-var reservas=[],reservasSolicitudes=[],eventosTodos=[],eventos=[];
-var filtroEstado='todas',filtroEventos='todas';
+var reservas=[],reservasSolicitudes=[];
+var filtroEstado='todas';
 var mesaSeleccionada=null,reservaActual=null;
 var fechaSeleccionada=new Date();fechaSeleccionada.setHours(0,0,0,0);
 var calMes=new Date();calMes.setDate(1);calMes.setHours(0,0,0,0);
@@ -409,7 +391,7 @@ function renderCalendario(){
   document.getElementById('calendar-dropdown').innerHTML='<div class="dias-rapidos">'+diasRapidos+'</div><div class="cal-header"><button class="cal-nav" onclick="cambiarMes(-1)">&#8249;</button><div class="cal-title">'+meses[mes]+' '+anio+'</div><button class="cal-nav" onclick="cambiarMes(1)">&#8250;</button></div><div class="cal-days-header">'+cabecera+'</div><div class="cal-days">'+celdas+'</div>';
 }
 function cambiarMes(dir){calMes=new Date(calMes.getFullYear(),calMes.getMonth()+dir,1);renderCalendario();}
-function seleccionarFecha(fechaStr){var p=fechaStr.split('-');fechaSeleccionada=new Date(parseInt(p[0]),parseInt(p[1])-1,parseInt(p[2]));fechaSeleccionada.setHours(0,0,0,0);document.getElementById('fecha-hoy').textContent=formatFechaLabel(fechaSeleccionada)+', '+fechaSeleccionada.getFullYear();cerrarCalendario();var allMesas=mesasData.comedor.concat(mesasData.patio).concat(mesasData.cava);allMesas.forEach(function(m){m.walkin=0;m.walkinId=null;m.reserva=null;});cargarReservas();cargarEventos();renderMesas();renderMetrics();}
+function seleccionarFecha(fechaStr){var p=fechaStr.split('-');fechaSeleccionada=new Date(parseInt(p[0]),parseInt(p[1])-1,parseInt(p[2]));fechaSeleccionada.setHours(0,0,0,0);document.getElementById('fecha-hoy').textContent=formatFechaLabel(fechaSeleccionada)+', '+fechaSeleccionada.getFullYear();cerrarCalendario();var allMesas=mesasData.comedor.concat(mesasData.patio).concat(mesasData.cava);allMesas.forEach(function(m){m.walkin=0;m.walkinId=null;m.reserva=null;});cargarReservas();renderMesas();renderMetrics();}
 document.addEventListener('click',function(e){if(calAbierto){var cal=document.getElementById('calendar-dropdown');var btn=document.getElementById('date-btn');if(!cal.contains(e.target)&&!btn.contains(e.target)) cerrarCalendario();}});
 function toggleDark(){var btn=document.getElementById('dark-btn');if(document.body.classList.contains('dark')){document.body.classList.remove('dark');btn.textContent='Modo oscuro';localStorage.setItem('dark','0');}else{document.body.classList.add('dark');btn.textContent='Modo claro';localStorage.setItem('dark','1');}}
 function showToast(msg,color){if(!color) color='#1a1a1a';var t=document.getElementById('toast');t.textContent=msg;t.style.background=color;t.classList.add('show');setTimeout(function(){t.classList.remove('show');},3000);}
@@ -417,7 +399,7 @@ function getColorBarra(pct){if(pct>=70) return '#1D9E75';if(pct>=30) return '#EF
 function parseFecha(f){if(!f) return '';if(f.indexOf('T')>-1) return f.split('T')[0];if(f.indexOf('/')>-1){var p=f.split('/');if(p[0].length===4) return f;return p[2]+'-'+p[1]+'-'+p[0];}return f;}
 function getMesasOcupadas(){var ocupadas=[];var allMesas=mesasData.comedor.concat(mesasData.patio).concat(mesasData.cava);allMesas.forEach(function(m){if(m.walkin>0||m.reserva) ocupadas.push(m.num);});return ocupadas;}
 function getEstadoNombre(r){var v=r['Estado'];if(!v) return 'pendiente';var val=typeof v==='object'?v.value:v;return (val||'').toLowerCase();}
-function actualizarBadgePendientes(){var p1=reservasSolicitudes.filter(function(r){return getEstadoNombre(r)==='pendiente';}).length;var p2=eventosTodos.filter(function(e){return getEstadoNombre(e)==='pendiente';}).length;var total=p1+p2;var badge=document.getElementById('badge-pendientes');var num=document.getElementById('badge-num');if(total>0){badge.style.display='inline-flex';num.textContent=total;}else{badge.style.display='none';}}
+function actualizarBadgePendientes(){var total=reservasSolicitudes.filter(function(r){return getEstadoNombre(r)==='pendiente';}).length;var badge=document.getElementById('badge-pendientes');var num=document.getElementById('badge-num');if(total>0){badge.style.display='inline-flex';num.textContent=total;}else{badge.style.display='none';}}
 function cargarReservas(){
   setSyncState('syncing');
   fetch('https://api.baserow.io/api/database/rows/table/'+TABLA_RESERVAS+'/?user_field_names=true&size=200',{headers:{Authorization:'Token '+BASEROW_TOKEN}})
@@ -432,16 +414,9 @@ function cargarReservas(){
     reservas.forEach(function(r){var mesaNom=r['Mesa']||'';if(mesaNom){var mesa=allMesas.filter(function(m){return m.num===mesaNom;})[0];if(mesa&&getEstadoNombre(r)==='confirmada'){mesa.reserva={nombre:r['Nombre']||'',hora:r['Hora']||'',personas:parseInt(r['Personas'])||0,id:r.id};}}});
     reservasSolicitudes=todasReservas;
     actualizarBadgePendientes();
-    renderTabla();renderMetrics();renderHoras();renderMesas();renderTablaEventos();
+    renderTabla();renderMetrics();renderHoras();renderMesas();
   })
   .catch(function(){setSyncState('error');document.getElementById('tabla-body').innerHTML='<tr><td colspan="9" class="empty">Error al cargar reservas</td></tr>';});
-}
-function cargarEventos(){
-  var fechaStr=formatFecha(fechaSeleccionada);
-  fetch('https://api.baserow.io/api/database/rows/table/'+TABLA_EVENTOS+'/?user_field_names=true&size=200',{headers:{Authorization:'Token '+BASEROW_TOKEN}})
-  .then(function(r){return r.json();})
-  .then(function(data){eventosTodos=data.results||[];eventos=eventosTodos.filter(function(e){return parseFecha(e['Fecha'])===fechaStr;});actualizarBadgePendientes();renderTablaEventos();renderTabla();})
-  .catch(function(e){console.error('Error eventos',e);});
 }
 function cargarWalkins(){
   fetch('https://api.baserow.io/api/database/rows/table/'+TABLA_WALKINS+'/?user_field_names=true&size=200',{headers:{Authorization:'Token '+BASEROW_TOKEN}})
@@ -449,49 +424,23 @@ function cargarWalkins(){
   .then(function(data){var walkins=(data.results||[]).filter(function(w){return w['Activo']===true;});var allMesas=mesasData.comedor.concat(mesasData.patio).concat(mesasData.cava);allMesas.forEach(function(m){m.walkin=0;m.walkinId=null;});walkins.forEach(function(w){var mesa=allMesas.filter(function(m){return m.num===w['Mesa'];})[0];if(mesa){mesa.walkin=parseInt(w['Personas'])||0;mesa.walkinId=w.id;}});renderMesas();renderMetrics();})
   .catch(function(e){console.error('Error walkins',e);});
 }
-function renderTablaEventos(){
-  var tb=document.getElementById('tabla-eventos-body');
-  var lista=reservas.map(function(r){return {tipo:'reserva',data:r};});
-  if(filtroEventos==='pendiente') lista=lista.filter(function(i){return getEstadoNombre(i.data)==='pendiente';});
-  else if(filtroEventos==='confirmada') lista=lista.filter(function(i){return getEstadoNombre(i.data)==='confirmada';});
-  if(!lista.length){tb.innerHTML='<tr><td colspan="8" class="empty">Sin reservas para este día</td></tr>';return;}
-  tb.innerHTML=lista.map(function(item){
-    var r=item.data;var estado=getEstadoNombre(r);var fecha=parseFecha(r['Fecha'])||'--';
-    var tel=r['Telefono']||r['Teléfono']||'--';
-    var nombre=r['Nombre']||'--';
-    var hora=r['Hora']||'';
-    var personas=parseInt(r['Personas'])||0;
-    var acciones=estado==='pendiente'?
-      '<button class="btn-confirm btn-accion" data-accion="confirmar-reserva" data-id="'+r.id+'" data-tel="'+encodeURIComponent(tel)+'" data-nombre="'+encodeURIComponent(nombre)+'" data-hora="'+encodeURIComponent(hora)+'" data-personas="'+personas+'">Confirmar</button>'+
-      '<button class="btn-cancel btn-accion" data-accion="cancelar" data-tipo="reserva" data-id="'+r.id+'" data-tel="'+encodeURIComponent(tel)+'" data-nombre="'+encodeURIComponent(nombre)+'">Cancelar</button>':
-      '<span style="font-size:12px;color:#aaa">'+(estado==='confirmada'?'Confirmada':'Cancelada')+'</span>';
-    return '<tr><td style="font-weight:500">'+nombre+'</td><td><span style="font-size:11px;color:#aaa">Reserva</span></td><td>'+fecha+'</td><td>'+(hora||'--')+'</td><td>'+personas+'</td><td style="font-size:12px;color:#888">'+tel+'</td><td><span class="badge badge-'+estado+'">'+estado+'</span></td><td>'+acciones+'</td></tr>';
-  }).join('');
-  bindBotones('tabla-eventos-body');
-}
-function filtrarEventos(filtro,btn){filtroEventos=filtro;document.querySelectorAll('#tab-eventos .filter-btn').forEach(function(b){b.classList.remove('active');});btn.classList.add('active');renderTablaEventos();}
 function pedirConfirmacionCancelar(tipo,id,telefono,nombre){
   var overlay=document.createElement('div');overlay.className='modal-confirm-bg';overlay.id='confirm-cancel-overlay';
   overlay.innerHTML='<div class="modal-confirm" onclick="event.stopPropagation()"><div class="modal-confirm-title">¿Cancelar esta reserva?</div><div class="modal-confirm-sub">Se cancelará la reserva de <strong>'+nombre+'</strong> y se notificará al cliente por WhatsApp.</div><div class="modal-confirm-btns"><button style="flex:1;padding:10px;border-radius:8px;border:1px solid #e53935;color:#c62828;background:#ffebee;cursor:pointer;font-size:13px;font-weight:500" onclick="ejecutarCancelacion(\''+tipo+'\','+id+',\''+telefono+'\')">Sí, cancelar</button><button style="flex:1;padding:10px;border-radius:8px;border:1px solid #e5e5e0;color:#888;background:transparent;cursor:pointer;font-size:13px" onclick="cerrarConfirmCancelar()">Volver</button></div></div>';
   document.body.appendChild(overlay);
 }
 function cerrarConfirmCancelar(){var el=document.getElementById('confirm-cancel-overlay');if(el) el.remove();}
-function ejecutarCancelacion(tipo,id,telefono){cerrarConfirmCancelar();if(tipo==='evento') cancelarEvento(id,telefono);else accionReserva(id,'cancelar',telefono);}
-function confirmarEvento(id,telefono){var body={};body['field_'+FIELD_ESTADO_EVENTOS]=ESTADOS_EVENTOS.confirmada;fetch('https://api.baserow.io/api/database/rows/table/'+TABLA_EVENTOS+'/'+id+'/?user_field_names=false',{method:'PATCH',headers:{Authorization:'Token '+BASEROW_TOKEN,'Content-Type':'application/json'},body:JSON.stringify(body)}).then(function(){return fetch(WEBHOOK_CONFIRMAR+'?reserva_id='+id+'&telefono='+telefono);}).then(function(){showToast('Evento confirmado','#1D9E75');cargarEventos();}).catch(function(){showToast('Error al confirmar evento','#c62828');});}
-function cancelarEvento(id,telefono){var body={};body['field_'+FIELD_ESTADO_EVENTOS]=ESTADOS_EVENTOS.cancelada;fetch('https://api.baserow.io/api/database/rows/table/'+TABLA_EVENTOS+'/'+id+'/?user_field_names=false',{method:'PATCH',headers:{Authorization:'Token '+BASEROW_TOKEN,'Content-Type':'application/json'},body:JSON.stringify(body)}).then(function(){return fetch(WEBHOOK_CANCELAR+'?reserva_id='+id+'&telefono='+telefono);}).then(function(){showToast('Evento cancelado','#c62828');cargarEventos();}).catch(function(){showToast('Error al cancelar evento','#c62828');});}
+function ejecutarCancelacion(tipo,id,telefono){cerrarConfirmCancelar();accionReserva(id,'cancelar',telefono);}
 
 /* === renderTabla usa data-attributes para evitar problemas de escapes === */
 function renderTabla(){
   var tb=document.getElementById('tabla-body');
-  var listaReservas=reservasSolicitudes.map(function(r){return {tipo:'reserva',data:r};});
-  var listaEventosTodos=eventosTodos.map(function(e){return {tipo:'evento',data:e};});
-  var lista;
-  if(filtroEstado==='solo_eventos'){lista=listaEventosTodos;}
-  else{lista=listaReservas.concat(listaEventosTodos);if(filtroEstado!=='todas'){lista=lista.filter(function(i){return getEstadoNombre(i.data)===filtroEstado.toLowerCase();});}}
+  var lista=reservasSolicitudes.map(function(r){return {tipo:'reserva',data:r};});
+  if(filtroEstado!=='todas'){lista=lista.filter(function(i){return getEstadoNombre(i.data)===filtroEstado.toLowerCase();});}
   if(textoBusqueda){lista=lista.filter(function(i){var nombre=(i.data['Nombre']||'').toLowerCase();var tel=(i.data['Telefono']||i.data['Teléfono']||'').toLowerCase();return nombre.indexOf(textoBusqueda)>-1||tel.indexOf(textoBusqueda)>-1;});}
   if(!lista.length){tb.innerHTML='<tr><td colspan="9" class="empty">Sin registros</td></tr>';return;}
   tb.innerHTML=lista.map(function(item){
-    var r=item.data;var esEvento=item.tipo==='evento';var estado=getEstadoNombre(r);
+    var r=item.data;var estado=getEstadoNombre(r);
     var fecha=parseFecha(r['Fecha'])||'--';
     var tel=r['Telefono']||r['Teléfono']||'--';
     var mesa=r['Mesa']||'--';
@@ -501,22 +450,15 @@ function renderTabla(){
     var tipoActual=(r['Tipo_Evento']&&typeof r['Tipo_Evento']==='object'?r['Tipo_Evento'].value:(r['Tipo_Evento']||''))||'Reserva';
     var estiloTipo=TIPO_COLORES[tipoActual]||'';
     var opcionesTipo=TIPOS_EVENTO.map(function(t){return '<option value="'+t+'"'+(t===tipoActual?' selected':'')+'>'+t+'</option>';}).join('');
-    var tipoBadge=esEvento
-      ?'<span class="badge badge-evento"><span class="dot-evento"></span>Evento</span>'
-      :'<select class="tipo-select" data-rid="'+r.id+'" style="font-size:11px;border-radius:6px;border:1px solid #e5e5e0;padding:3px 6px;cursor:pointer;outline:none;'+estiloTipo+'">'+opcionesTipo+'</select>';
+    var tipoBadge='<select class="tipo-select" data-rid="'+r.id+'" data-tabla="reserva" style="font-size:11px;border-radius:6px;border:1px solid #e5e5e0;padding:3px 6px;cursor:pointer;outline:none;'+estiloTipo+'">'+opcionesTipo+'</select>';
     var acciones='';
     if(estado==='pendiente'){
-      if(esEvento){
-        acciones='<button class="btn-confirm btn-accion" data-accion="confirmar-evento" data-id="'+r.id+'" data-tel="'+encodeURIComponent(tel)+'" data-nombre="'+encodeURIComponent(nombre)+'" data-hora="'+encodeURIComponent(hora)+'" data-personas="'+personas+'">Confirmar</button>'+
-          '<button class="btn-cancel btn-accion" data-accion="cancelar" data-tipo="evento" data-id="'+r.id+'" data-tel="'+encodeURIComponent(tel)+'" data-nombre="'+encodeURIComponent(nombre)+'">Cancelar</button>';
-      } else {
-        acciones='<button class="btn-confirm btn-accion" data-accion="confirmar-reserva" data-id="'+r.id+'" data-tel="'+encodeURIComponent(tel)+'" data-nombre="'+encodeURIComponent(nombre)+'" data-hora="'+encodeURIComponent(hora)+'" data-personas="'+personas+'">Confirmar</button>'+
-          '<button class="btn-cancel btn-accion" data-accion="cancelar" data-tipo="reserva" data-id="'+r.id+'" data-tel="'+encodeURIComponent(tel)+'" data-nombre="'+encodeURIComponent(nombre)+'">Cancelar</button>';
-      }
+      acciones='<button class="btn-confirm btn-accion" data-accion="confirmar-reserva" data-id="'+r.id+'" data-tel="'+encodeURIComponent(tel)+'" data-nombre="'+encodeURIComponent(nombre)+'" data-hora="'+encodeURIComponent(hora)+'" data-personas="'+personas+'">Confirmar</button>'+
+        '<button class="btn-cancel btn-accion" data-accion="cancelar" data-tipo="reserva" data-id="'+r.id+'" data-tel="'+encodeURIComponent(tel)+'" data-nombre="'+encodeURIComponent(nombre)+'">Cancelar</button>';
     } else {
       acciones='<span style="font-size:12px;color:#aaa">'+(estado==='confirmada'?'Confirmada':'Cancelada')+'</span>';
     }
-    return '<tr><td style="font-weight:500">'+nombre+'</td><td>'+tipoBadge+'</td><td>'+fecha+'</td><td>'+(hora||'--')+'</td><td>'+personas+'</td><td style="font-size:12px;color:#888">'+tel+'</td><td><span class="badge badge-'+estado+'">'+estado+'</span></td><td style="font-size:12px;color:#888">'+(esEvento?'--':mesa)+'</td><td>'+acciones+'</td></tr>';
+    return '<tr><td style="font-weight:500">'+nombre+'</td><td>'+tipoBadge+'</td><td>'+fecha+'</td><td>'+(hora||'--')+'</td><td>'+personas+'</td><td style="font-size:12px;color:#888">'+tel+'</td><td><span class="badge badge-'+estado+'">'+estado+'</span></td><td style="font-size:12px;color:#888">'+mesa+'</td><td>'+acciones+'</td></tr>';
   }).join('');
   bindBotones('tabla-body');
 }
@@ -533,21 +475,11 @@ function abrirModalConfirmar(id,telefono,nombre,hora,personas){
 function seleccionarMesa(mesaNum){mesaSeleccionada=mesaNum;document.querySelectorAll('.mesa-opt').forEach(function(el){el.classList.remove('selected');});var el=document.getElementById('opt-'+mesaNum.replace('/','_'));if(el) el.classList.add('selected');var btn=document.getElementById('btn-confirmar-final');if(btn){btn.style.opacity='1';btn.style.pointerEvents='auto';}}
 function confirmarConMesa(){
   if(!mesaSeleccionada||!reservaActual) return;
-  if(reservaActual.tipo==='evento'){
-    var bodyE={};
-    bodyE['field_'+FIELD_ESTADO_EVENTOS]=ESTADOS_EVENTOS.confirmada;
-    bodyE['field_'+FIELD_MESA]=mesaSeleccionada;
-    fetch('https://api.baserow.io/api/database/rows/table/'+TABLA_EVENTOS+'/'+reservaActual.id+'/?user_field_names=false',{method:'PATCH',headers:{Authorization:'Token '+BASEROW_TOKEN,'Content-Type':'application/json'},body:JSON.stringify(bodyE)})
-    .then(function(){return fetch(WEBHOOK_CONFIRMAR+'?reserva_id='+reservaActual.id+'&telefono='+reservaActual.telefono);})
-    .then(function(){showToast('Evento confirmado en mesa '+mesaSeleccionada,'#1D9E75');cerrarModal();cargarReservas();cargarEventos();})
-    .catch(function(){showToast('Error al confirmar evento','#c62828');});
-  } else {
-    var body={};body['field_8586169']=ESTADOS.confirmada;body['field_'+FIELD_MESA]=mesaSeleccionada;
-    fetch('https://api.baserow.io/api/database/rows/table/'+TABLA_RESERVAS+'/'+reservaActual.id+'/?user_field_names=false',{method:'PATCH',headers:{Authorization:'Token '+BASEROW_TOKEN,'Content-Type':'application/json'},body:JSON.stringify(body)})
-    .then(function(){return fetch(WEBHOOK_CONFIRMAR+'?reserva_id='+reservaActual.id+'&telefono='+reservaActual.telefono);})
-    .then(function(){showToast('Reserva confirmada en mesa '+mesaSeleccionada,'#1D9E75');cerrarModal();cargarReservas();})
-    .catch(function(){showToast('Error al confirmar','#c62828');});
-  }
+  var body={};body['field_8586169']=ESTADOS.confirmada;body['field_'+FIELD_MESA]=mesaSeleccionada;
+  fetch('https://api.baserow.io/api/database/rows/table/'+TABLA_RESERVAS+'/'+reservaActual.id+'/?user_field_names=false',{method:'PATCH',headers:{Authorization:'Token '+BASEROW_TOKEN,'Content-Type':'application/json'},body:JSON.stringify(body)})
+  .then(function(){return fetch(WEBHOOK_CONFIRMAR+'?reserva_id='+reservaActual.id+'&telefono='+reservaActual.telefono);})
+  .then(function(){showToast('Reserva confirmada en mesa '+mesaSeleccionada,'#1D9E75');cerrarModal();cargarReservas();})
+  .catch(function(){showToast('Error al confirmar','#c62828');});
 }
 function accionReserva(id,accion,telefono){var body={};body['field_8586169']=ESTADOS.cancelada;fetch('https://api.baserow.io/api/database/rows/table/'+TABLA_RESERVAS+'/'+id+'/?user_field_names=false',{method:'PATCH',headers:{Authorization:'Token '+BASEROW_TOKEN,'Content-Type':'application/json'},body:JSON.stringify(body)}).then(function(){return fetch(WEBHOOK_CANCELAR+'?reserva_id='+id+'&telefono='+telefono);}).then(function(){showToast('Reserva cancelada','#c62828');cargarReservas();}).catch(function(){showToast('Error al cancelar','#c62828');});}
 function filtrar(estado,btn){filtroEstado=estado;document.querySelectorAll('#tab-solicitudes .filter-btn').forEach(function(b){b.classList.remove('active');});btn.classList.add('active');renderTabla();}
@@ -578,9 +510,10 @@ function filtrarArea(area,btn){document.querySelectorAll('#tab-ocupacion .filter
 
 function updateTipo(id,valor,selectEl){
   selectEl.disabled=true;
+  var tabla=TABLA_RESERVAS;
   var body={};
   body['field_'+FIELD_TIPO_EVENTO]=valor;
-  fetch('https://api.baserow.io/api/database/rows/table/'+TABLA_RESERVAS+'/'+id+'/?user_field_names=false',{
+  fetch('https://api.baserow.io/api/database/rows/table/'+tabla+'/'+id+'/?user_field_names=false',{
     method:'PATCH',headers:{Authorization:'Token '+BASEROW_TOKEN,'Content-Type':'application/json'},
     body:JSON.stringify(body)
   })
@@ -608,7 +541,6 @@ function showTab(tab,btn){
     var btnM=document.getElementById('btn-mover-mesas');
     if(btnM){btnM.textContent='Mover mesas: OFF';btnM.style.background='transparent';btnM.style.color='#666';btnM.style.borderColor='#e5e5e0';}
   }
-  if(tab==='eventos') renderTablaEventos();
 }
 
 /* === event delegation para botones de accion === */
@@ -637,8 +569,8 @@ function bindBotones(tbodyId){
 }
 if(localStorage.getItem('dark')==='1'){document.body.classList.add('dark');document.getElementById('dark-btn').textContent='Modo claro';}
 document.getElementById('fecha-hoy').textContent=formatFechaLabel(fechaSeleccionada)+', '+fechaSeleccionada.getFullYear();
-cargarReservas();cargarWalkins();cargarEventos();
-setInterval(function(){cargarReservas();cargarWalkins();cargarEventos();},5000);
+cargarReservas();cargarWalkins();
+setInterval(function(){cargarReservas();cargarWalkins();},5000);
 
 var textoBusqueda='';
 function filtrarBusqueda(){textoBusqueda=document.getElementById('buscar-reserva').value.toLowerCase().trim();renderTabla();}
@@ -726,7 +658,7 @@ function generarResumen(){
   var pPatio=reservasHoy.filter(function(r){return (r['Mesa']||'').startsWith('P');}).reduce(function(s,r){return s+(parseInt(r['Personas'])||0);},0);
   var pCava=reservasHoy.filter(function(r){return (r['Mesa']||'').startsWith('CV');}).reduce(function(s,r){return s+(parseInt(r['Personas'])||0);},0);
   document.getElementById('resumen-areas').innerHTML='<div style="display:flex;align-items:center;gap:8px;padding:3px 0"><span style="font-size:11px;color:#555;width:56px">Comedor</span><div style="flex:1;height:6px;background:#f0f0f0;border-radius:3px;overflow:hidden"><div style="width:'+Math.round((pComedor/45)*100)+'%;height:100%;background:#3DB58A;border-radius:3px"></div></div><span style="font-size:11px;color:#555;width:40px;text-align:right">'+pComedor+' p.</span></div><div style="display:flex;align-items:center;gap:8px;padding:3px 0"><span style="font-size:11px;color:#555;width:56px">Patio</span><div style="flex:1;height:6px;background:#f0f0f0;border-radius:3px;overflow:hidden"><div style="width:'+Math.round((pPatio/15)*100)+'%;height:100%;background:#3DB58A;border-radius:3px"></div></div><span style="font-size:11px;color:'+(pPatio>0?'#555':'#ccc')+';width:40px;text-align:right">'+pPatio+' p.</span></div><div style="display:flex;align-items:center;gap:8px;padding:3px 0"><span style="font-size:11px;color:#555;width:56px">Cava</span><div style="flex:1;height:6px;background:#f0f0f0;border-radius:3px;overflow:hidden"><div style="width:'+Math.round((pCava/8)*100)+'%;height:100%;background:#3DB58A;border-radius:3px"></div></div><span style="font-size:11px;color:'+(pCava>0?'#555':'#ccc')+';width:40px;text-align:right">'+pCava+' p.</span></div>';
-  var eventosHoy=eventos.filter(function(e){return parseFecha(e['Fecha'])===fechaStr;});
+  var eventosHoy=[];
   document.getElementById('resumen-eventos').innerHTML=eventosHoy.length>0?eventosHoy.map(function(e){return '<div style="display:flex;justify-content:space-between;padding:4px 0;font-size:12px;border-bottom:0.5px solid #f5f5f0"><span style="font-weight:500;color:#3C3489">'+(e['Nombre']||'--')+'</span><span style="font-size:11px;color:#7F77DD">'+(e['Hora']||'')+(e['Personas']?' · '+e['Personas']+' pers.':'')+'</span></div>';}).join(''):'<div style="font-size:11px;color:#aaa">Sin eventos hoy.</div>';
   var card=document.getElementById('resumen-card');
   card.style.left='0';card.style.zIndex='9999';card.style.position='fixed';card.style.top='0';
