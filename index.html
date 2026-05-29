@@ -452,16 +452,17 @@ function renderTablaEventos(){
   if(!lista.length){tb.innerHTML='<tr><td colspan="8" class="empty">Sin reservas para este día</td></tr>';return;}
   tb.innerHTML=lista.map(function(item){
     var r=item.data;var estado=getEstadoNombre(r);var fecha=parseFecha(r['Fecha'])||'--';
-    var tel=(r['Telefono']||r['Teléfono']||'--').replace(/'/g,'');
-    var nombre=(r['Nombre']||'--').replace(/'/g,'');
-    var hora=(r['Hora']||'').replace(/'/g,'');
+    var tel=r['Telefono']||r['Teléfono']||'--';
+    var nombre=r['Nombre']||'--';
+    var hora=r['Hora']||'';
     var personas=parseInt(r['Personas'])||0;
     var acciones=estado==='pendiente'?
-      '<button class="btn-confirm" onclick="abrirModalConfirmar('+r.id+',\''+tel+'\',\''+nombre+'\',\''+hora+'\','+personas+')">Confirmar</button>'+
-      '<button class="btn-cancel" onclick="pedirConfirmacionCancelar(\'reserva\','+r.id+',\''+tel+'\',\''+nombre+'\')">Cancelar</button>':
+      '<button class="btn-confirm btn-accion" data-accion="confirmar-reserva" data-id="'+r.id+'" data-tel="'+encodeURIComponent(tel)+'" data-nombre="'+encodeURIComponent(nombre)+'" data-hora="'+encodeURIComponent(hora)+'" data-personas="'+personas+'">Confirmar</button>'+
+      '<button class="btn-cancel btn-accion" data-accion="cancelar" data-tipo="reserva" data-id="'+r.id+'" data-tel="'+encodeURIComponent(tel)+'" data-nombre="'+encodeURIComponent(nombre)+'">Cancelar</button>':
       '<span style="font-size:12px;color:#aaa">'+(estado==='confirmada'?'Confirmada':'Cancelada')+'</span>';
     return '<tr><td style="font-weight:500">'+nombre+'</td><td><span style="font-size:11px;color:#aaa">Reserva</span></td><td>'+fecha+'</td><td>'+(hora||'--')+'</td><td>'+personas+'</td><td style="font-size:12px;color:#888">'+tel+'</td><td><span class="badge badge-'+estado+'">'+estado+'</span></td><td>'+acciones+'</td></tr>';
   }).join('');
+  bindBotones('tabla-eventos-body');
 }
 function filtrarEventos(filtro,btn){filtroEventos=filtro;document.querySelectorAll('#tab-eventos .filter-btn').forEach(function(b){b.classList.remove('active');});btn.classList.add('active');renderTablaEventos();}
 function pedirConfirmacionCancelar(tipo,id,telefono,nombre){
@@ -474,7 +475,7 @@ function ejecutarCancelacion(tipo,id,telefono){cerrarConfirmCancelar();if(tipo==
 function confirmarEvento(id,telefono){var body={};body['field_'+FIELD_ESTADO_EVENTOS]=ESTADOS_EVENTOS.confirmada;fetch('https://api.baserow.io/api/database/rows/table/'+TABLA_EVENTOS+'/'+id+'/?user_field_names=false',{method:'PATCH',headers:{Authorization:'Token '+BASEROW_TOKEN,'Content-Type':'application/json'},body:JSON.stringify(body)}).then(function(){return fetch(WEBHOOK_CONFIRMAR+'?reserva_id='+id+'&telefono='+telefono);}).then(function(){showToast('Evento confirmado','#1D9E75');cargarEventos();}).catch(function(){showToast('Error al confirmar evento','#c62828');});}
 function cancelarEvento(id,telefono){var body={};body['field_'+FIELD_ESTADO_EVENTOS]=ESTADOS_EVENTOS.cancelada;fetch('https://api.baserow.io/api/database/rows/table/'+TABLA_EVENTOS+'/'+id+'/?user_field_names=false',{method:'PATCH',headers:{Authorization:'Token '+BASEROW_TOKEN,'Content-Type':'application/json'},body:JSON.stringify(body)}).then(function(){return fetch(WEBHOOK_CANCELAR+'?reserva_id='+id+'&telefono='+telefono);}).then(function(){showToast('Evento cancelado','#c62828');cargarEventos();}).catch(function(){showToast('Error al cancelar evento','#c62828');});}
 
-/* === FIX 1: renderTabla pasa parámetros directamente a abrirModalConfirmar === */
+/* === renderTabla usa data-attributes para evitar problemas de escapes === */
 function renderTabla(){
   var tb=document.getElementById('tabla-body');
   var listaReservas=reservasSolicitudes.map(function(r){return {tipo:'reserva',data:r};});
@@ -487,26 +488,27 @@ function renderTabla(){
   tb.innerHTML=lista.map(function(item){
     var r=item.data;var esEvento=item.tipo==='evento';var estado=getEstadoNombre(r);
     var fecha=parseFecha(r['Fecha'])||'--';
-    var tel=(r['Telefono']||r['Teléfono']||'--').replace(/'/g,'');
+    var tel=r['Telefono']||r['Teléfono']||'--';
     var mesa=r['Mesa']||'--';
-    var nombre=(r['Nombre']||'--').replace(/'/g,'');
-    var hora=(r['Hora']||'').replace(/'/g,'');
+    var nombre=r['Nombre']||'--';
+    var hora=r['Hora']||'';
     var personas=parseInt(r['Personas'])||0;
     var tipoBadge=esEvento?'<span class="badge badge-evento"><span class="dot-evento"></span>Evento</span>':'<span style="font-size:11px;color:#aaa">Reserva</span>';
     var acciones='';
     if(estado==='pendiente'){
       if(esEvento){
-        acciones='<button class="btn-confirm" onclick="confirmarEvento('+r.id+',\''+tel+'\')">Confirmar</button>'+
-          '<button class="btn-cancel" onclick="pedirConfirmacionCancelar(\'evento\','+r.id+',\''+tel+'\',\''+nombre+'\')">Cancelar</button>';
+        acciones='<button class="btn-confirm btn-accion" data-accion="confirmar-evento" data-id="'+r.id+'" data-tel="'+encodeURIComponent(tel)+'" data-nombre="'+encodeURIComponent(nombre)+'" data-hora="'+encodeURIComponent(hora)+'" data-personas="'+personas+'">Confirmar</button>'+
+          '<button class="btn-cancel btn-accion" data-accion="cancelar" data-tipo="evento" data-id="'+r.id+'" data-tel="'+encodeURIComponent(tel)+'" data-nombre="'+encodeURIComponent(nombre)+'">Cancelar</button>';
       } else {
-        acciones='<button class="btn-confirm" onclick="abrirModalConfirmar('+r.id+',\''+tel+'\',\''+nombre+'\',\''+hora+'\','+personas+')">Confirmar</button>'+
-          '<button class="btn-cancel" onclick="pedirConfirmacionCancelar(\'reserva\','+r.id+',\''+tel+'\',\''+nombre+'\')">Cancelar</button>';
+        acciones='<button class="btn-confirm btn-accion" data-accion="confirmar-reserva" data-id="'+r.id+'" data-tel="'+encodeURIComponent(tel)+'" data-nombre="'+encodeURIComponent(nombre)+'" data-hora="'+encodeURIComponent(hora)+'" data-personas="'+personas+'">Confirmar</button>'+
+          '<button class="btn-cancel btn-accion" data-accion="cancelar" data-tipo="reserva" data-id="'+r.id+'" data-tel="'+encodeURIComponent(tel)+'" data-nombre="'+encodeURIComponent(nombre)+'">Cancelar</button>';
       }
     } else {
       acciones='<span style="font-size:12px;color:#aaa">'+(estado==='confirmada'?'Confirmada':'Cancelada')+'</span>';
     }
     return '<tr><td style="font-weight:500">'+nombre+'</td><td>'+tipoBadge+'</td><td>'+fecha+'</td><td>'+(hora||'--')+'</td><td>'+personas+'</td><td style="font-size:12px;color:#888">'+tel+'</td><td><span class="badge badge-'+estado+'">'+estado+'</span></td><td style="font-size:12px;color:#888">'+(esEvento?'--':mesa)+'</td><td>'+acciones+'</td></tr>';
   }).join('');
+  bindBotones('tabla-body');
 }
 
 function abrirModalConfirmar(id,telefono,nombre,hora,personas){
@@ -521,11 +523,21 @@ function abrirModalConfirmar(id,telefono,nombre,hora,personas){
 function seleccionarMesa(mesaNum){mesaSeleccionada=mesaNum;document.querySelectorAll('.mesa-opt').forEach(function(el){el.classList.remove('selected');});var el=document.getElementById('opt-'+mesaNum.replace('/','_'));if(el) el.classList.add('selected');var btn=document.getElementById('btn-confirmar-final');if(btn){btn.style.opacity='1';btn.style.pointerEvents='auto';}}
 function confirmarConMesa(){
   if(!mesaSeleccionada||!reservaActual) return;
-  var body={};body['field_8586169']=ESTADOS.confirmada;body['field_'+FIELD_MESA]=mesaSeleccionada;
-  fetch('https://api.baserow.io/api/database/rows/table/'+TABLA_RESERVAS+'/'+reservaActual.id+'/?user_field_names=false',{method:'PATCH',headers:{Authorization:'Token '+BASEROW_TOKEN,'Content-Type':'application/json'},body:JSON.stringify(body)})
-  .then(function(){return fetch(WEBHOOK_CONFIRMAR+'?reserva_id='+reservaActual.id+'&telefono='+reservaActual.telefono);})
-  .then(function(){showToast('Reserva confirmada en mesa '+mesaSeleccionada,'#1D9E75');cerrarModal();cargarReservas();})
-  .catch(function(){showToast('Error al confirmar','#c62828');});
+  if(reservaActual.tipo==='evento'){
+    var bodyE={};
+    bodyE['field_'+FIELD_ESTADO_EVENTOS]=ESTADOS_EVENTOS.confirmada;
+    bodyE['field_'+FIELD_MESA]=mesaSeleccionada;
+    fetch('https://api.baserow.io/api/database/rows/table/'+TABLA_EVENTOS+'/'+reservaActual.id+'/?user_field_names=false',{method:'PATCH',headers:{Authorization:'Token '+BASEROW_TOKEN,'Content-Type':'application/json'},body:JSON.stringify(bodyE)})
+    .then(function(){return fetch(WEBHOOK_CONFIRMAR+'?reserva_id='+reservaActual.id+'&telefono='+reservaActual.telefono);})
+    .then(function(){showToast('Evento confirmado en mesa '+mesaSeleccionada,'#1D9E75');cerrarModal();cargarReservas();cargarEventos();})
+    .catch(function(){showToast('Error al confirmar evento','#c62828');});
+  } else {
+    var body={};body['field_8586169']=ESTADOS.confirmada;body['field_'+FIELD_MESA]=mesaSeleccionada;
+    fetch('https://api.baserow.io/api/database/rows/table/'+TABLA_RESERVAS+'/'+reservaActual.id+'/?user_field_names=false',{method:'PATCH',headers:{Authorization:'Token '+BASEROW_TOKEN,'Content-Type':'application/json'},body:JSON.stringify(body)})
+    .then(function(){return fetch(WEBHOOK_CONFIRMAR+'?reserva_id='+reservaActual.id+'&telefono='+reservaActual.telefono);})
+    .then(function(){showToast('Reserva confirmada en mesa '+mesaSeleccionada,'#1D9E75');cerrarModal();cargarReservas();})
+    .catch(function(){showToast('Error al confirmar','#c62828');});
+  }
 }
 function accionReserva(id,accion,telefono){var body={};body['field_8586169']=ESTADOS.cancelada;fetch('https://api.baserow.io/api/database/rows/table/'+TABLA_RESERVAS+'/'+id+'/?user_field_names=false',{method:'PATCH',headers:{Authorization:'Token '+BASEROW_TOKEN,'Content-Type':'application/json'},body:JSON.stringify(body)}).then(function(){return fetch(WEBHOOK_CANCELAR+'?reserva_id='+id+'&telefono='+telefono);}).then(function(){showToast('Reserva cancelada','#c62828');cargarReservas();}).catch(function(){showToast('Error al cancelar','#c62828');});}
 function filtrar(estado,btn){filtroEstado=estado;document.querySelectorAll('#tab-solicitudes .filter-btn').forEach(function(b){b.classList.remove('active');});btn.classList.add('active');renderTabla();}
@@ -573,6 +585,25 @@ function showTab(tab,btn){
   if(tab==='eventos') renderTablaEventos();
 }
 
+/* === event delegation para botones de accion === */
+function bindBotones(tbodyId){
+  var tb=document.getElementById(tbodyId);
+  if(!tb) return;
+  tb.onclick=function(e){
+    var btn=e.target.closest('.btn-accion');
+    if(!btn) return;
+    var accion=btn.getAttribute('data-accion');
+    var id=parseInt(btn.getAttribute('data-id'));
+    var tel=decodeURIComponent(btn.getAttribute('data-tel')||'');
+    var nombre=decodeURIComponent(btn.getAttribute('data-nombre')||'');
+    var hora=decodeURIComponent(btn.getAttribute('data-hora')||'');
+    var personas=parseInt(btn.getAttribute('data-personas'))||0;
+    var tipo=btn.getAttribute('data-tipo')||'reserva';
+    if(accion==='confirmar-reserva') abrirModalConfirmar(id,tel,nombre,hora,personas);
+    else if(accion==='confirmar-evento') abrirModalConfirmar(id,tel,nombre,hora,personas,'evento');
+    else if(accion==='cancelar') pedirConfirmacionCancelar(tipo,id,tel,nombre);
+  };
+}
 if(localStorage.getItem('dark')==='1'){document.body.classList.add('dark');document.getElementById('dark-btn').textContent='Modo claro';}
 document.getElementById('fecha-hoy').textContent=formatFechaLabel(fechaSeleccionada)+', '+fechaSeleccionada.getFullYear();
 cargarReservas();cargarWalkins();cargarEventos();
